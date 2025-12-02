@@ -1,0 +1,20 @@
+{
+  "name": "Wheel Library",
+  "short_name": "WheelLibrary",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#A5D8FF",
+  "theme_color": "#A5D8FF",
+  "icons": [
+    {
+      "src": "wheel_library_icon_192_rounded_noborder.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "wheel_library_icon_512_rounded_noborder.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wheel Library</title>
+
+  <!-- Fun, bubbly retro-ish fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Optional PWA bits (safe to leave even if manifest/service-worker not set up yet) -->
+  <meta name="theme-color" content="#1b1024" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Wheel Library" />
+  <!-- Update this filename if you rename the icon -->
+  <link rel="apple-touch-icon" href="wheel_library_icon_192_rounded_noborder.png" />
+  <link rel="manifest" href="manifest.json" />
+
+  <style>
+    :root {
+      /* 70s-ish palette */
+      --peach: #ff9b73;
+      --peach-dark: #e86c3b;
+      --gold: #f7c948;
+      --mint: #58c2a3;
+      --brown: #5b3b2e;
+      --cream: #fff7e7;
+      --ink: #2c2137;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 0 0, #ffd4a8 0, transparent 55%),
+        radial-gradient(circle at 100% 0, #ffb3c1 0, transparent 55%),
+        radial-gradient(circle at 0 100%, #b5f3de 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #ffe66d 0, transparent 55%),
+        #1b1024;
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(145deg, #fef1dd 0%, #ffe6cf 40%, #ffeef8 100%);
+      border-radius: 24px;
+      border: 4px solid var(--brown);
+      box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.25),
+        0 0 0 6px rgba(255, 255, 255, 0.3);
+      padding: 18px 18px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Groovy top stripes */
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      top: -60%;
+      background: linear-gradient(
+        to right,
+        #f25f5c 0%,
+        #f7b32b 25%,
+        #00a896 50%,
+        #9b5de5 75%,
+        #f25f5c 100%
+      );
+      opacity: 0.25;
+      transform: rotate(-4deg);
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .logo-badge {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 30% 30%,
+        #fffadd 0,
+        #ffe0c2 45%,
+        #ff9b73 80%
+      );
+      border: 4px solid var(--brown);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Baloo 2", system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--brown);
+      box-shadow: 0 6px 0 rgba(91, 59, 46, 0.25);
+    }
+
+    .title-block {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    h1 {
+      font-family: "Baloo 2", system-ui, sans-serif;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      margin: 0 0 4px;
+      color: var(--brown);
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #6b4e42;
+    }
+
+    .badge-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tiny-badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: rgba(255, 255, 255, 0.85);
+      color: var(--brown);
+    }
+
+    .actions-top {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      min-width: 150px;
+    }
+
+    .reset-btn {
+      border-radius: 999px;
+      border: 2px solid var(--brown);
+      padding: 5px 12px;
+      background: var(--cream);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--brown);
+      box-shadow: 0 3px 0 rgba(91, 59, 46, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s;
+    }
+
+    .reset-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(91, 59, 46, 0.35);
+    }
+
+    .pill-indicator {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #00b894, #ffeaa7);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    .pill-indicator span {
+      font-size: 1em;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 780px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      border: 2px solid rgba(91, 59, 46, 0.22);
+      padding: 12px 12px 14px;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      font-family: "Baloo 2", system-ui, sans-serif;
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .panel h2 span.emoji {
+      font-size: 1.1rem;
+    }
+
+    .group {
+      margin-bottom: 10px;
+    }
+
+    .group-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7f5a4a;
+      margin-bottom: 6px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      background: linear-gradient(135deg, #fffdf5, #ffe8d7);
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--brown);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s, border-color 0.1s;
+    }
+
+    .chip-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 2px rgba(88, 194, 163, 0.35);
+    }
+
+    .chip.selected {
+      background: linear-gradient(135deg, var(--peach), var(--gold));
+      color: var(--ink);
+      border-color: var(--brown);
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.16);
+    }
+
+    .chip.selected .chip-dot {
+      background: var(--cream);
+      box-shadow: 0 0 0 2px rgba(255, 247, 231, 0.7);
+    }
+
+    #output {
+      font-size: 0.86rem;
+      color: #5d4940;
+      line-height: 1.4;
+    }
+
+    #output ul {
+      padding-left: 18px;
+      margin: 6px 0 8px;
+    }
+
+    #output p {
+      margin: 4px 0;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #9b7a6a;
+      margin-top: 4px;
+    }
+
+    /* Matches panel */
+
+    #matches {
+      font-size: 0.86rem;
+      color: #4c3a35;
+    }
+
+    .matches-empty {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #fff7e7;
+      border: 1px dashed rgba(91, 59, 46, 0.35);
+      text-align: center;
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .wheel-card {
+      border-radius: 14px;
+      border: 1px solid rgba(91, 59, 46, 0.18);
+      padding: 8px 10px;
+      background: linear-gradient(135deg, #fffdf7, #ffeae5);
+      margin-bottom: 8px;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .wheel-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .wheel-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .wheel-availability {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e8ffe9;
+      border: 1px solid #2d8a4d;
+      color: #205d35;
+      font-weight: 600;
+    }
+
+    .wheel-availability.none {
+      background: #ffe8e8;
+      border-color: #b3261e;
+      color: #7b1510;
+    }
+
+    .tag-row {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.72rem;
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--peach);
+    }
+
+    .wheel-footer {
+      margin-top: 6px;
+      font-size: 0.76rem;
+      color: #7e6257;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .borrow-btn {
+      border-radius: 999px;
+      border: 1px solid var(--brown);
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ffe7d9, #ffd2c5);
+      color: var(--brown);
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+      white-space: nowrap;
+    }
+
+    .borrow-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .footnote {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: #8a6c60;
+      border-top: 1px dashed rgba(0, 0, 0, 0.12);
+      padding-top: 6px;
+    }
+
+    /* Loan log */
+
+    #loanLog {
+      margin-top: 10px;
+      border-top: 1px dashed rgba(0, 0, 0, 0.12);
+      padding-top: 8px;
+      font-size: 0.8rem;
+    }
+
+    #loanLog h3 {
+      margin: 0 0 6px;
+      font-size: 0.85rem;
+      font-family: "Baloo 2", system-ui, sans-serif;
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .loan-item {
+      padding: 4px 0;
+      border-bottom: 1px dotted rgba(0, 0, 0, 0.12);
+    }
+
+    .loan-item:last-child {
+      border-bottom: none;
+    }
+
+    .loan-main {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .loan-borrower {
+      font-weight: 600;
+    }
+
+    .loan-note {
+      color: #87685b;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="content">
+      <header>
+        <div class="logo-badge">
+          🛼
+        </div>
+        <div class="title-block">
+          <h1>Wheel Library</h1>
+          <div class="subtitle">
+            Let skaters try wheels before they buy – pick the vibe, match the set.
+          </div>
+          <div class="badge-strip">
+            <div class="tiny-badge">Retro • Rink • Derby • Street</div>
+            <div class="tiny-badge">Try &amp; Return</div>
+          </div>
+        </div>
+        <div class="actions-top">
+          <button class="reset-btn" id="resetFilters">Reset filters</button>
+          <div class="pill-indicator">
+            <span>●</span> Live filter
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <!-- LEFT: Filters & notes -->
+        <section class="panel">
+          <h2><span class="emoji">🎚️</span> Choose your session</h2>
+
+          <div class="group" data-group="environment">
+            <div class="group-label">Environment</div>
+            <div class="buttons">
+              <button class="chip" data-group="environment" data-value="Indoor - Rhythm">
+                <span class="chip-dot"></span> Indoor – Rhythm
+              </button>
+              <button class="chip" data-group="environment" data-value="Indoor - Jam">
+                <span class="chip-dot"></span> Indoor – Jam
+              </button>
+              <button class="chip" data-group="environment" data-value="Indoor - Artistic">
+                <span class="chip-dot"></span> Indoor – Artistic
+              </button>
+              <button class="chip" data-group="environment" data-value="Indoor - Skatepark">
+                <span class="chip-dot"></span> Indoor – Skatepark
+              </button>
+              <button class="chip" data-group="environment" data-value="Indoor - Derby">
+                <span class="chip-dot"></span> Indoor – Derby
+              </button>
+              <button class="chip" data-group="environment" data-value="Outdoor - Paved path">
+                <span class="chip-dot"></span> Outdoor – Path
+              </button>
+              <button class="chip" data-group="environment" data-value="Outdoor - Skatepark">
+                <span class="chip-dot"></span> Outdoor – Skatepark
+              </button>
+              <button class="chip" data-group="environment" data-value="Outdoor - Street">
+                <span class="chip-dot"></span> Outdoor – Street
+              </button>
+            </div>
+          </div>
+
+          <div class="group" data-group="size">
+            <div class="group-label">Wheel size</div>
+            <div class="buttons">
+              <button class="chip" data-group="size" data-value="57mm">
+                <span class="chip-dot"></span> 57mm
+              </button>
+              <button class="chip" data-group="size" data-value="59mm">
+                <span class="chip-dot"></span> 59mm
+              </button>
+              <button class="chip" data-group="size" data-value="62mm">
+                <span class="chip-dot"></span> 62mm
+              </button>
+              <button class="chip" data-group="size" data-value="65mm+">
+                <span class="chip-dot"></span> 65mm+
+              </button>
+            </div>
+          </div>
+
+          <div class="group" data-group="duro">
+            <div class="group-label">Durometer (hardness)</div>
+            <div class="buttons">
+              <button class="chip" data-group="duro" data-value="88A–92A">
+                <span class="chip-dot"></span> 88A–92A (softer)
+              </button>
+              <button class="chip" data-group="duro" data-value="93A–96A">
+                <span class="chip-dot"></span> 93A–96A (mid)
+              </button>
+              <button class="chip" data-group="duro" data-value="97A–103A">
+                <span class="chip-dot"></span> 97A–103A (hard)
+              </button>
+            </div>
+          </div>
+
+          <div class="group" data-group="material">
+            <div class="group-label">Material</div>
+            <div class="buttons">
+              <button class="chip" data-group="material" data-value="Urethane">
+                <span class="chip-dot"></span> Urethane
+              </button>
+              <button class="chip" data-group="material" data-value="Fiberglass">
+                <span class="chip-dot"></span> Fiberglass
+              </button>
+              <button class="chip" data-group="material" data-value="Modern Vanathane">
+                <span class="chip-dot"></span> Modern Vanathane
+              </button>
+              <button class="chip" data-group="material" data-value="Vintage Vanathane">
+                <span class="chip-dot"></span> Vintage Vanathane
+              </button>
+              <button class="chip" data-group="material" data-value="Wood">
+                <span class="chip-dot"></span> Wood
+              </button>
+              <button class="chip" data-group="material" data-value="Clay">
+                <span class="chip-dot"></span> Clay
+              </button>
+            </div>
+          </div>
+
+          <div id="output">
+            <strong>Tap a few chips to set the vibe.</strong>
+            <p>Your picks will show here with quick notes on what usually works.</p>
+          </div>
+          <div class="hint">
+            Choose as many or as few filters as you like. The right panel only shows wheels you actually have free to lend.
+          </div>
+        </section>
+
+        <!-- RIGHT: Matching wheels + borrower mockup -->
+        <section class="panel">
+          <h2><span class="emoji">📦</span> Wheels ready to borrow</h2>
+          <div id="matches">
+            <div class="matches-empty">
+              No filters yet. Start by choosing where you’re skating (rink, path, street, park…).
+            </div>
+          </div>
+
+          <div id="loanLog">
+            <h3>📝 Today’s check-outs</h3>
+            <div class="loan-empty">
+              No loans logged yet. Tap “Borrow this set” on a wheel card to mock up a checkout.
+            </div>
+          </div>
+
+          <div class="footnote">
+            This is a visual mockup for the lending flow. In a full app, this log would sync to a sheet or database so you can track who has what.
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const selections = {
+      environment: null,
+      size: null,
+      duro: null,
+      material: null,
+    };
+
+    // Simple in-memory loan log for the mockup
+    const loans = [];
+
+    // ✨ YOUR INVENTORY – EDIT THIS WITH YOUR REAL WHEELS LATER ✨
+    const inventory = [
+      {
+        id: "w1",
+        name: "Radar Energy 62mm (Soft Outdoor Set)",
+        brand: "Radar",
+        size: "62mm",
+        duroRange: "88A–92A", // grouped as "softer"
+        material: "Urethane",
+        bestFor: ["Outdoor - Paved path", "Outdoor - Street"],
+        totalSets: 2,
+        onLoanSets: 1,
+      },
+      {
+        id: "w2",
+        name: "Atom Savant 59mm 93A (Derby / Rhythm)",
+        brand: "Atom",
+        size: "59mm",
+        duroRange: "93A–96A",
+        material: "Urethane",
+        bestFor: ["Indoor - Derby", "Indoor - Rhythm"],
+        totalSets: 3,
+        onLoanSets: 0,
+      },
+      {
+        id: "w3",
+        name: "Vintage Vanathane 57mm 101A",
+        brand: "Vintage",
+        size: "57mm",
+        duroRange: "97A–103A",
+        material: "Vintage Vanathane",
+        bestFor: ["Indoor - Jam", "Indoor - Artistic"],
+        totalSets: 1,
+        onLoanSets: 0,
+      },
+      {
+        id: "w4",
+        name: "Fiberglass Park Experiment 62mm 99A",
+        brand: "Custom",
+        size: "62mm",
+        duroRange: "97A–103A",
+        material: "Fiberglass",
+        bestFor: ["Indoor - Skatepark", "Outdoor - Skatepark"],
+        totalSets: 1,
+        onLoanSets: 1,
+      },
+      {
+        id: "w5",
+        name: "Modern Vanathane Jam 59mm 101A",
+        brand: "Custom",
+        size: "59mm",
+        duroRange: "97A–103A",
+        material: "Modern Vanathane",
+        bestFor: ["Indoor - Jam", "Indoor - Rhythm"],
+        totalSets: 2,
+        onLoanSets: 0,
+      },
+      {
+        id: "w6",
+        name: "Old School Wood Rink 57mm 100A",
+        brand: "Retro",
+        size: "57mm",
+        duroRange: "97A–103A",
+        material: "Wood",
+        bestFor: ["Indoor - Rhythm"],
+        totalSets: 1,
+        onLoanSets: 0,
+      },
+      {
+        id: "w7",
+        name: "Clay Classic Artistic 57mm 100A",
+        brand: "Retro",
+        size: "57mm",
+        duroRange: "97A–103A",
+        material: "Clay",
+        bestFor: ["Indoor - Artistic"],
+        totalSets: 1,
+        onLoanSets: 0,
+      },
+    ];
+
+    function updateOutput() {
+      const { environment, size, duro, material } = selections;
+      const output = document.getElementById("output");
+
+      if (!environment && !size && !duro && !material) {
+        output.innerHTML = `
+          <strong>Tap a few chips to set the vibe.</strong>
+          <p>Your picks will show here with quick notes on what usually works.</p>
+        `;
+        updateMatches();
+        return;
+      }
+
+      let html = "<h3>Your selections</h3><ul>";
+      if (environment)
+        html += `<li><strong>Environment:</strong> ${environment}</li>`;
+      if (size) html += `<li><strong>Size:</strong> ${size}</li>`;
+      if (duro) html += `<li><strong>Durometer:</strong> ${duro}</li>`;
+      if (material) html += `<li><strong>Material:</strong> ${material}</li>`;
+      html += "</ul>";
+
+      html += "<h3>Peach’s quick notes</h3>";
+
+      // Indoor discipline-specific notes
+      if (["Indoor - Rhythm", "Indoor - Artistic", "Indoor - Derby"].includes(environment)) {
+        html +=
+          "<p>Indoor floors usually like mid–hard wheels (around 93A–96A) in the 57–62mm range for control and response.</p>";
+      }
+
+      if (environment === "Indoor - Rhythm") {
+        html +=
+          "<p>Rhythm skaters often prefer mid-hard wheels with smooth roll and predictable grip for clean footwork.</p>";
+      }
+
+      if (environment === "Indoor - Jam") {
+        html +=
+          "<p>Jam skating usually feels best on harder wheels (97A–103A) that make spins and slides feel easy.</p>";
+      }
+
+      if (environment === "Indoor - Artistic") {
+        html +=
+          "<p>Artistic disciplines love precise, responsive wheels — typically mid-to-hard with solid edge control.</p>";
+      }
+
+      if (environment === "Indoor - Derby") {
+        html +=
+          "<p>Derby setups focus on control and lateral stability, often in the mid-hard range so you can stop and start fast.</p>";
+      }
+
+      // Outdoor / park notes
+      if (environment === "Outdoor - Paved path" || environment === "Outdoor - Street") {
+        html +=
+          "<p>For paths and streets, softer wheels and larger sizes help smooth out cracks and rough patches.</p>";
+      }
+
+      if (environment === "Outdoor - Skatepark" || environment === "Indoor - Skatepark") {
+        html +=
+          "<p>Skateparks often feel best on harder wheels with a bit of slide, especially on smooth concrete bowls and ramps.</p>";
+      }
+
+      // Durometer notes
+      if (duro) {
+        if (duro === "88A–92A") {
+          html +=
+            "<p>You picked a softer range – good for comfort, grip, and rougher surfaces.</p>";
+        } else if (duro === "93A–96A") {
+          html +=
+            "<p>Mid-range hardness – a nice balance between grip and roll for most indoor use.</p>";
+        } else if (duro === "97A–103A") {
+          html +=
+            "<p>Hard wheels (97A–103A) are great for slide, agility, and very smooth surfaces.</p>";
+        }
+      }
+
+      // Material notes
+      if (material === "Urethane") {
+        html +=
+          "<p>Urethane is the modern standard — predictable, durable, and available in almost every hardness.</p>";
+      }
+      if (material === "Fiberglass") {
+        html +=
+          "<p>Fiberglass blends can feel very fast and precise, often used for park or performance setups.</p>";
+      }
+      if (material === "Modern Vanathane") {
+        html +=
+          "<p>Modern Vanathane gives a slidey, lively feel with a bit more consistency than true vintage formulas.</p>";
+      }
+      if (material === "Vintage Vanathane") {
+        html +=
+          "<p>Vintage Vanathane has that classic 70s–80s vibe — unique slide, lots of character, usually on very smooth indoor floors.</p>";
+      }
+      if (material === "Wood") {
+        html +=
+          "<p>Wood wheels are extremely old-school and very slidey — best for smooth rinks and confident skaters.</p>";
+      }
+      if (material === "Clay") {
+        html +=
+          "<p>Clay wheels are quirky vintage: they can feel both grippy and chattery, and really want a very smooth artistic floor.</p>";
+      }
+
+      output.innerHTML = html;
+      updateMatches();
+    }
+
+    function updateMatches() {
+      const { environment, size, duro, material } = selections;
+      const matchesDiv = document.getElementById("matches");
+
+      const matches = inventory.filter((wheel) => {
+        const availableSets = wheel.totalSets - wheel.onLoanSets;
+        if (availableSets <= 0) return false;
+
+        if (environment && !wheel.bestFor.includes(environment)) return false;
+        if (size && wheel.size !== size) return false;
+        if (duro && wheel.duroRange !== duro) return false;
+        if (material && wheel.material !== material) return false;
+
+        return true;
+      });
+
+      if (!environment && !size && !duro && !material) {
+        matchesDiv.innerHTML = `
+          <div class="matches-empty">
+            No filters yet. Start by choosing where you’re skating (rink, path, street, park…).
+          </div>
+        `;
+        return;
+      }
+
+      if (matches.length === 0) {
+        matchesDiv.innerHTML = `
+          <div class="matches-empty">
+            No wheels match that combo and are free to lend right now. Try relaxing one of the filters.
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      matches.forEach((wheel) => {
+        const availableSets = wheel.totalSets - wheel.onLoanSets;
+        html += `
+          <div class="wheel-card">
+            <div class="wheel-header">
+              <div class="wheel-name">${wheel.name}</div>
+              <div class="wheel-availability${availableSets <= 0 ? " none" : ""}">
+                ${availableSets} set${availableSets !== 1 ? "s" : ""} available
+              </div>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><span class="tag-dot"></span>${wheel.brand}</span>
+              <span class="tag"><span class="tag-dot"></span>${wheel.size}</span>
+              <span class="tag"><span class="tag-dot"></span>${wheel.duroRange}</span>
+              <span class="tag"><span class="tag-dot"></span>${wheel.material}</span>
+            </div>
+            <div class="wheel-footer">
+              <span>Best for: ${wheel.bestFor.join(", ")}</span>
+              <button class="borrow-btn" data-wheel-id="${wheel.id}">
+                Borrow this set
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      matchesDiv.innerHTML = html;
+
+      // Wire up borrow buttons each time we render matches
+      document.querySelectorAll(".borrow-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-wheel-id");
+          handleBorrow(id);
+        });
+      });
+    }
+
+    function handleBorrow(wheelId) {
+      const wheel = inventory.find((w) => w.id === wheelId);
+      if (!wheel) return;
+
+      const availableSets = wheel.totalSets - wheel.onLoanSets;
+      if (availableSets <= 0) {
+        alert("All sets of this wheel are already out on loan.");
+        return;
+      }
+
+      const name = prompt(
+        "Skater name (or description)?\nExample: Jess – purple helmet"
+      );
+      if (!name) {
+        return; // cancelled
+      }
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const note = `Checked out around ${timeStr}.`;
+
+      // Update inventory count
+      wheel.onLoanSets += 1;
+
+      // Add to loan log (newest on top)
+      loans.unshift({
+        id: "loan-" + now.getTime(),
+        wheelName: wheel.name,
+        borrower: name.trim(),
+        time: timeStr,
+        note,
+      });
+
+      renderLoans();
+      updateMatches();
+    }
+
+    function renderLoans() {
+      const container = document.getElementById("loanLog");
+      let html = '<h3>📝 Today’s check-outs</h3>';
+
+      if (loans.length === 0) {
+        html +=
+          '<div class="loan-empty">No loans logged yet. Tap “Borrow this set” on a wheel card to mock up a checkout.</div>';
+        container.innerHTML = html;
+        return;
+      }
+
+      loans.slice(0, 8).forEach((loan) => {
+        html += `
+          <div class="loan-item">
+            <div class="loan-main">
+              <span class="loan-borrower">${loan.borrower}</span>
+              <span>${loan.time}</span>
+            </div>
+            <div class="loan-note">
+              ${loan.wheelName}<br />
+              ${loan.note}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Chip interactions
+    document.querySelectorAll(".chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const group = chip.dataset.group;
+        const value = chip.dataset.value;
+
+        // toggle: if you tap the same one again, clear it
+        if (chip.classList.contains("selected")) {
+          chip.classList.remove("selected");
+          selections[group] = null;
+          updateOutput();
+          return;
+        }
+
+        // otherwise, choose that chip and clear siblings in group
+        document
+          .querySelectorAll(`.chip[data-group="${group}"]`)
+          .forEach((c) => {
+            c.classList.remove("selected");
+          });
+        chip.classList.add("selected");
+        selections[group] = value;
+        updateOutput();
+      });
+    });
+
+    // Reset button
+    document.getElementById("resetFilters").addEventListener("click", () => {
+      Object.keys(selections).forEach((key) => (selections[key] = null));
+      document
+        .querySelectorAll(".chip")
+        .forEach((c) => c.classList.remove("selected"));
+      updateOutput();
+    });
+
+    // Initial render
+    updateOutput();
+    renderLoans();
+
+    // Optional PWA service worker registration (safe even if file missing; it will just fail silently in console)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .catch(() => {
+            /* ignore failures */
+          });
+      });
+    }
+  </script>
+</body>
+</html>
