@@ -14,7 +14,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Wheel Library" />
-  <!-- Update this filename if you rename the icon -->
+  <!-- Remember to update this filename if you rename the icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json" />
 
@@ -996,13 +996,13 @@
     updateOutput();
     renderLoans();
 
-    // Optional PWA service worker registration (safe even if file missing; it will just fail silently in console)
+    // Optional PWA service worker registration (safe even if file missing; it will just fail silently in console...I think.)
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker
           .register("service-worker.js")
           .catch(() => {
-            /* ignore failures */
+            /* ignore failures. I have. */
           });
       });
     }
