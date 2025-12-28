@@ -576,6 +576,42 @@
     min-height: 100vh;
   }
 }
+/* ===== Mobile: full-screen filter experience ===== */
+@media (max-width: 768px) {
+
+  .filters,
+  .left-panel,
+  .controls {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .results,
+  .right-panel {
+    margin-top: 24px;
+  }
+
+  .results {
+    display: none;
+  }
+
+  body.filters-active .results {
+    display: block;
+  }
+
+  body.filters-active .filters {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  h1, h2 {
+    font-size: 1.4rem;
+  }
+
+  .section {
+    padding: 16px;
+  }
+}
   </style>
 </head>
 <body>
