@@ -631,8 +631,63 @@
     // Simple in-memory loan log for the mockup
     const loans = [];
 
+    // -------------------------------
+    // LIVE DATA FROM GOOGLE SHEETS (CSV)
+    // -------------------------------
+    const SHEET_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
+
+    function parseCSV(text) {
+      // Simple CSV parser (safe as long as cells don't contain commas)
+      return text
+        .trim()
+        .split("\n")
+        .map((row) =>
+          row.split(",").map((cell) =>
+            cell.replace(/^"|"$/g, "").trim()
+          )
+        );
+    }
+
+// === Google Sheets CSV source ===
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
+
+    async function loadInventoryFromSheet() {
+      const res = await fetch(SHEET_URL);
+      const text = await res.text();
+
+      const rows = parseCSV(text);
+      if (!rows.length) return [];
+
+      // Normalize headers to lowercase
+      const headers = rows[0].map((h) => h.toLowerCase());
+      const data = rows.slice(1);
+
+      const wheels = data.map((row, idx) => {
+        const obj = {};
+        headers.forEach((h, i) => (obj[h] = row[i] || ""));
+
+        return {
+  id: obj.wheel_id,
+  name: obj.wheel_name,
+  brand: obj.brand,
+  size: obj.wheel_size,
+  material: obj.wheel_material,
+  duroRange: obj.durometer_category,
+  bestFor: obj.best_for
+    ? obj.best_for.split(",").map(s => s.trim())
+    : [],
+  totalSets: 1,
+  onLoanSets: obj.status && String(obj.status).toLowerCase() !== "available" ? 1 : 0,
+};
+      });
+
+      return wheels;
+    }
+
     // ✨ YOUR INVENTORY – EDIT THIS WITH YOUR REAL WHEELS LATER ✨
-    const inventory = [
+    let inventory = [
       {
         id: "w1",
         name: "Radar Energy 62mm (Soft Outdoor Set)",
@@ -995,6 +1050,17 @@
     // Initial render
     updateOutput();
     renderLoans();
+    loadInventoryFromSheet()
+      .then((inv) => {
+        if (inv.length) {
+          inventory = inv;
+          updateOutput();
+          renderLoans();
+        }
+      })
+      .catch((err) => {
+        console.log("Failed to load sheet, using demo inventory", err);
+      });
 
     // Optional PWA service worker registration (safe even if file missing; it will just fail silently in console...I think.)
     if ("serviceWorker" in navigator) {
