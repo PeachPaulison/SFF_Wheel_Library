@@ -7,7 +7,18 @@ self.addEventListener("install", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  if (e.request.mode === "navigate") {
+    // Always try network for index.html
+    e.respondWith(
+      fetch(e.request).catch(() => caches.match("index.html"))
+    );
+    return;
+  }
+
+  // Other assets: cache-first
   e.respondWith(
-    caches.match(e.request).then((response) => response || fetch(e.request))
+    caches.match(e.request).then((response) =>
+      response || fetch(e.request)
+    )
   );
 });
