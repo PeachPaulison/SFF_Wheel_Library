@@ -530,6 +530,52 @@
     padding: 6px 10px;
   }
 }
+/* ===== Mobile-first layout fix ===== */
+@media (max-width: 768px) {
+
+  body {
+    padding: 0;
+  }
+
+  .container,
+  .main,
+  .app,
+  .layout {
+    max-width: 100%;
+    margin: 0;
+    padding: 12px;
+  }
+
+  /* Make cards fill the screen */
+  .card,
+  .panel,
+  .section {
+    width: 100%;
+    margin: 0 0 16px 0;
+    border-radius: 16px;
+  }
+
+  /* Stack everything vertically */
+  .row,
+  .grid,
+  .columns {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Bigger touch targets */
+  .chip,
+  button {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+@media (max-width: 768px) {
+  .filters {
+    min-height: 100vh;
+  }
+}
   </style>
 </head>
 <body>
