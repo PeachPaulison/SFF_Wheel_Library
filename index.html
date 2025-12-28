@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Wheel Library</title>
 
   <!-- Fun, bubbly retro-ish fonts -->
@@ -468,6 +469,67 @@
       font-size: 0.75rem;
       margin-top: 2px;
     }
+/* ===== Mobile improvements ===== */
+@media (max-width: 780px) {
+  body {
+    padding: 10px;
+  }
+
+  .shell {
+    border-radius: 18px;
+    padding: 12px;
+  }
+
+  header {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  /* Make the layout single-column (each panel fills the width) */
+  main {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  /* Bigger tap targets */
+  .chip {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .reset-btn {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  .borrow-btn {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  /* Make the “matches” cards easier to read */
+  .wheel-name {
+    font-size: 1rem;
+  }
+
+  .tag {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+}
   </style>
 </head>
 <body>
