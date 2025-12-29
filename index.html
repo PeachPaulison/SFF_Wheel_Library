@@ -782,20 +782,54 @@
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
 
     function parseCSV(text) {
-      // Simple CSV parser (safe as long as cells don't contain commas)
-      return text
-        .trim()
-        .split("\n")
-        .map((row) =>
-          row.split(",").map((cell) =>
-            cell.replace(/^"|"$/g, "").trim()
-          )
-        );
+  // Robust CSV parser:
+  // - handles commas inside quotes
+  // - handles escaped quotes ("")
+  // - handles CRLF newlines
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  // Normalize newlines
+  text = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && next === '"') {
+        cell += '"';
+        i++;
+      } else {
+        inQuotes = notice = !inQuotes;
+      }
+      continue;
     }
 
-// === Google Sheets CSV source ===
-const SHEET_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
+    if (char === "," && !inQuotes) {
+      row.push(cell.trim());
+      cell = "";
+      continue;
+    }
+
+    if (char === "\n" && !inQuotes) {
+      row.push(cell.trim());
+      if (row.some((v) => v !== "")) rows.push(row);
+      row = [];
+      cell = "";
+      continue;
+    }
+
+    cell += char;
+  }
+
+  row.push(cell.trim());
+  if (row.some((v) => v !== "")) rows.push(row);
+
+  return rows;
+}
 
     async function loadInventoryFromSheet() {
       const res = await fetch(SHEET_URL);
