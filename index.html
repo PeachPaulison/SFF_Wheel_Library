@@ -201,26 +201,25 @@
       font-size: 1em;
     }
 /* Data status pill states */
-#dataStatus.live {
+#dataStatus.pill-indicator.live {
   background: linear-gradient(120deg, #00b894, #b5f3de);
 }
 
-#dataStatus.offline {
+#dataStatus.pill-indicator.offline {
   background: linear-gradient(120deg, #ff7675, #ffeaa7);
 }
 
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 780px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-    }
-
+ main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 780px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
     .panel {
       background: rgba(255, 255, 255, 0.9);
       border-radius: 18px;
@@ -533,26 +532,13 @@
     font-size: 1rem;
   }
 
-  .tag {
+   .tag {
     font-size: 0.85rem;
     padding: 6px 10px;
   }
-}
-/*===== Mobile-first layout fix ===== 
-@media (max-width: 768px) {
+} /* end @media (max-width: 780px) */
 
-  body {
-    padding: 0;
-  }
-
-  
-
-@media (max-width: 768px) {
-  h1, h2 {
-    font-size: 1.4rem;
-  }
-}
- 	.data-meta {
+.data-meta {
   margin: 6px 0 10px;
   font-size: 0.78rem;
   color: #7e6257;
@@ -560,7 +546,7 @@
   border-radius: 12px;
   background: rgba(255, 247, 231, 0.7);
   border: 1px dashed rgba(91, 59, 46, 0.25);
-	}
+}
  </style>
 </head>
 <body>
@@ -696,8 +682,8 @@
         <section class="panel">
           <h2><span class="emoji">📦</span> Wheels ready to borrow</h2>
 <div class="data-meta" id="dataMeta">
-  Data source: <strong>Google Sheets</strong> • Last updated: <span id="lastUpdated">—</span>
-</div> 
+  Data source: <strong>Google Sheets</strong> • Last synced: <span id="lastUpdated">—</span>
+</div>
           <div id="matches">
             <div class="matches-empty">
               No filters yet. Start by choosing where you’re skating (rink, path, street, park…).
@@ -785,38 +771,42 @@
   return rows;
 }
 
-    async function loadInventoryFromSheet() {
-      const res = await fetch(SHEET_URL);
-      const text = await res.text();
+async function loadInventoryFromSheet() {
+  const res = await fetch(SHEET_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      const rows = parseCSV(text);
-      if (!rows.length) return [];
+  const text = await res.text();
+  if (text.toLowerCase().includes("<html")) {
+    throw new Error("Got HTML instead of CSV (publish/share issue)");
+  }
 
-      // Normalize headers to lowercase
-      const headers = rows[0].map((h) => h.toLowerCase());
-      const data = rows.slice(1);
+  const rows = parseCSV(text);
+  if (!rows.length) return [];
 
-      const wheels = data.map((row, idx) => {
-        const obj = {};
-        headers.forEach((h, i) => (obj[h] = row[i] || ""));
+  // Normalize headers to lowercase
+  const headers = rows[0].map((h) => h.toLowerCase());
+  const data = rows.slice(1);
 
-        return {
-  id: obj.wheel_id,
-  name: obj.wheel_name,
-  brand: obj.brand,
-  size: obj.wheel_size,
-  material: obj.wheel_material,
-  duroRange: obj.durometer_category,
-  bestFor: obj.best_for
-    ? obj.best_for.split(",").map(s => s.trim())
-    : [],
-  totalSets: 1,
-  onLoanSets: obj.status && String(obj.status).toLowerCase() !== "available" ? 1 : 0,
-};
-      });
+  const wheels = data.map((row) => {
+    const obj = {};
+    headers.forEach((h, i) => (obj[h] = row[i] || ""));
 
-      return wheels;
-    }
+    return {
+      id: obj.wheel_id,
+      name: obj.wheel_name,
+      brand: obj.brand,
+      size: obj.wheel_size,
+      material: obj.wheel_material,
+      duroRange: obj.durometer_category,
+      bestFor: obj.best_for ? obj.best_for.split(",").map((s) => s.trim()) : [],
+      totalSets: 1,
+      onLoanSets:
+        obj.status && String(obj.status).toLowerCase() !== "available" ? 1 : 0,
+    };
+  });
+
+  return wheels;
+}
 // LIVE inventory only
 let inventory = [];
 
