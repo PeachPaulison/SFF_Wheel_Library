@@ -200,6 +200,14 @@
     .pill-indicator span {
       font-size: 1em;
     }
+/* Data status pill states */
+#dataStatus.live {
+  background: linear-gradient(120deg, #00b894, #b5f3de);
+}
+
+#dataStatus.offline {
+  background: linear-gradient(120deg, #ff7675, #ffeaa7);
+}
 
     main {
       display: grid;
@@ -530,89 +538,30 @@
     padding: 6px 10px;
   }
 }
-/* ===== Mobile-first layout fix ===== */
+/*===== Mobile-first layout fix ===== 
 @media (max-width: 768px) {
 
   body {
     padding: 0;
   }
 
-  .container,
-  .main,
-  .app,
-  .layout {
-    max-width: 100%;
-    margin: 0;
-    padding: 12px;
-  }
+  
 
-  /* Make cards fill the screen */
-  .card,
-  .panel,
-  .section {
-    width: 100%;
-    margin: 0 0 16px 0;
-    border-radius: 16px;
-  }
-
-  /* Stack everything vertically */
-  .row,
-  .grid,
-  .columns {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  /* Bigger touch targets */
-  .chip,
-  button {
-    min-height: 44px;
-    font-size: 16px;
-  }
-}
-@media (max-width: 768px) {
-  .filters {
-    min-height: 100vh;
-  }
-}
-/* ===== Mobile: full-screen filter experience ===== */
-@media (max-width: 768px) {
-
-  .filters,
-  .left-panel,
-  .controls {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .results,
-  .right-panel {
-    margin-top: 24px;
-  }
-
-  .results {
-    display: none;
-  }
-
-  body.filters-active .results {
-    display: block;
-  }
-
-  body.filters-active .filters {
-    display: none;
-  }
-}
 @media (max-width: 768px) {
   h1, h2 {
     font-size: 1.4rem;
   }
-
-  .section {
-    padding: 16px;
-  }
 }
-  </style>
+ 	.data-meta {
+  margin: 6px 0 10px;
+  font-size: 0.78rem;
+  color: #7e6257;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(255, 247, 231, 0.7);
+  border: 1px dashed rgba(91, 59, 46, 0.25);
+	}
+ </style>
 </head>
 <body>
   <div class="shell">
@@ -636,6 +585,9 @@
           <div class="pill-indicator">
             <span>●</span> Live filter
           </div>
+			<div class="pill-indicator" id="dataStatus">
+  <span>●</span> Loading data…
+			</div>
         </div>
       </header>
 
@@ -743,6 +695,9 @@
         <!-- RIGHT: Matching wheels + borrower mockup -->
         <section class="panel">
           <h2><span class="emoji">📦</span> Wheels ready to borrow</h2>
+<div class="data-meta" id="dataMeta">
+  Data source: <strong>Google Sheets</strong> • Last updated: <span id="lastUpdated">—</span>
+</div> 
           <div id="matches">
             <div class="matches-empty">
               No filters yet. Start by choosing where you’re skating (rink, path, street, park…).
@@ -764,7 +719,6 @@
     </div>
   </div>
   <script>
-    alert("JS LOADED");
     const selections = {
       environment: null,
       size: null,
@@ -781,7 +735,7 @@
     const SHEET_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
 
-    function parseCSV(text) {
+	function parseCSV(text) {
   // Robust CSV parser:
   // - handles commas inside quotes
   // - handles escaped quotes ("")
@@ -803,7 +757,7 @@
         cell += '"';
         i++;
       } else {
-        inQuotes = notice = !inQuotes;
+        inQuotes = !inQuotes;
       }
       continue;
     }
@@ -863,88 +817,29 @@
 
       return wheels;
     }
+// LIVE inventory only
+let inventory = [];
 
-    // ✨ YOUR INVENTORY – EDIT THIS WITH YOUR REAL WHEELS LATER ✨
-    let inventory = [
-      {
-        id: "w1",
-        name: "Radar Energy 62mm (Soft Outdoor Set)",
-        brand: "Radar",
-        size: "62mm",
-        duroRange: "88A–92A", // grouped as "softer"
-        material: "Urethane",
-        bestFor: ["Outdoor - Paved path", "Outdoor - Street"],
-        totalSets: 2,
-        onLoanSets: 1,
-      },
-      {
-        id: "w2",
-        name: "Atom Savant 59mm 93A (Derby / Rhythm)",
-        brand: "Atom",
-        size: "59mm",
-        duroRange: "93A–96A",
-        material: "Urethane",
-        bestFor: ["Indoor - Derby", "Indoor - Rhythm"],
-        totalSets: 3,
-        onLoanSets: 0,
-      },
-      {
-        id: "w3",
-        name: "Vintage Vanathane 57mm 101A",
-        brand: "Vintage",
-        size: "57mm",
-        duroRange: "97A–103A",
-        material: "Vintage Vanathane",
-        bestFor: ["Indoor - Jam", "Indoor - Artistic"],
-        totalSets: 1,
-        onLoanSets: 0,
-      },
-      {
-        id: "w4",
-        name: "Fiberglass Park Experiment 62mm 99A",
-        brand: "Custom",
-        size: "62mm",
-        duroRange: "97A–103A",
-        material: "Fiberglass",
-        bestFor: ["Indoor - Skatepark", "Outdoor - Skatepark"],
-        totalSets: 1,
-        onLoanSets: 1,
-      },
-      {
-        id: "w5",
-        name: "Modern Vanathane Jam 59mm 101A",
-        brand: "Custom",
-        size: "59mm",
-        duroRange: "97A–103A",
-        material: "Modern Vanathane",
-        bestFor: ["Indoor - Jam", "Indoor - Rhythm"],
-        totalSets: 2,
-        onLoanSets: 0,
-      },
-      {
-        id: "w6",
-        name: "Old School Wood Rink 57mm 100A",
-        brand: "Retro",
-        size: "57mm",
-        duroRange: "97A–103A",
-        material: "Wood",
-        bestFor: ["Indoor - Rhythm"],
-        totalSets: 1,
-        onLoanSets: 0,
-      },
-      {
-        id: "w7",
-        name: "Clay Classic Artistic 57mm 100A",
-        brand: "Retro",
-        size: "57mm",
-        duroRange: "97A–103A",
-        material: "Clay",
-        bestFor: ["Indoor - Artistic"],
-        totalSets: 1,
-        onLoanSets: 0,
-      },
-    ];
+function setDataStatus(state, label) {
+  const el = document.getElementById("dataStatus");
+  if (!el) return;
+  el.classList.remove("live", "offline");
+  if (state) el.classList.add(state);
+  el.innerHTML = `<span>●</span> ${label}`;
+}
+	function setLastUpdated(dateObj) {
+  const el = document.getElementById("lastUpdated");
+  if (!el) return;
 
+  // Friendly local time
+  el.textContent = dateObj.toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+	
     function updateOutput() {
       const { environment, size, duro, material } = selections;
       const output = document.getElementById("output");
@@ -1053,6 +948,15 @@
       const { environment, size, duro, material } = selections;
       const matchesDiv = document.getElementById("matches");
 
+// If inventory hasn't loaded yet
+if (!inventory.length) {
+  matchesDiv.innerHTML = `
+    <div class="matches-empty">
+      Loading live wheel data… If this doesn’t load, you may be offline.
+    </div>
+  `;
+  return;
+}
       const matches = inventory.filter((wheel) => {
         const availableSets = wheel.totalSets - wheel.onLoanSets;
         if (availableSets <= 0) return false;
@@ -1225,20 +1129,29 @@
       updateOutput();
     });
 
-    // Initial render
+  // Initial render
+setDataStatus("", "Loading data…");
+updateOutput();
+renderLoans();
+
+loadInventoryFromSheet()
+  .then((inv) => {
+    if (inv && inv.length) {
+      inventory = inv;
+      setDataStatus("live", "LIVE DATA (synced)");
+		setLastUpdated(new Date());
+      updateOutput();
+      renderLoans();
+    } else {
+      setDataStatus("offline", "NO LIVE DATA");
+      updateOutput();
+    }
+  })
+  .catch((err) => {
+    console.log("Failed to load sheet", err);
+    setDataStatus("offline", "OFFLINE / NO LIVE DATA");
     updateOutput();
-    renderLoans();
-    loadInventoryFromSheet()
-      .then((inv) => {
-        if (inv.length) {
-          inventory = inv;
-          updateOutput();
-          renderLoans();
-        }
-      })
-      .catch((err) => {
-        console.log("Failed to load sheet, using demo inventory", err);
-      });
+  });
 
     // Optional PWA service worker registration (safe even if file missing; it will just fail silently in console...I think.)
     if ("serviceWorker" in navigator) {
