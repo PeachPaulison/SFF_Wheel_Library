@@ -17,7 +17,7 @@
   <meta name="apple-mobile-web-app-title" content="Wheel Library" />
   <!-- Remember to update this filename if you rename the icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="manifest" href="manifest.json" />
+
 
   <style>
     :root {
@@ -1084,7 +1084,7 @@ if (!inventory.length) {
       container.innerHTML = html;
     }
 
-    // Chip interactions 
+    // Chip interactions
     document.querySelectorAll(".chip").forEach((chip) => {
       chip.addEventListener("click", () => {
         const group = chip.dataset.group;
@@ -1143,16 +1143,6 @@ loadInventoryFromSheet()
     updateOutput();
   });
 
-    /*Optional PWA service worker registration (safe even if file missing; it will just fail silently in console...I think.)
-    //if ("serviceWorker" in navigator) {
-     // window.addEventListener("load", () => {
-  	 // navigator.serviceWorker
-     //   .register("service-worker.js")
-     // .catch(() => {
-            /* ignore failures. I have. */
-       //   });
-    //  });
-    }
   </script>
 </body>
 </html>
