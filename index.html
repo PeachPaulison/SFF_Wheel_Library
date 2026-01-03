@@ -1096,6 +1096,28 @@
         navigator.serviceWorker.register("./service-worker.js").catch(console.log);
       });
     }
+    if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").then((reg) => {
+      // Check for updates every time the page loads
+      reg.update();
+      
+      console.log("Service Worker registered");
+      
+      // Listen for updates
+      reg.addEventListener("updatefound", () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener("statechange", () => {
+          if (newWorker.state === "activated") {
+            console.log("New service worker activated - reload to see changes");
+            // Optional: automatically reload
+            // window.location.reload();
+          }
+        });
+      });
+    }).catch(console.log);
+  });
+}
   </script>
 </body>
 </html>
