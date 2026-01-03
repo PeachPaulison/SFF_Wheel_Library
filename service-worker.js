@@ -1,4 +1,4 @@
-const CACHE_NAME = "wheel-library-v1.0.5"; // Change this whenever you update!
+const CACHE_NAME = "wheel-library-v1.0.6"; // Change this whenever you update!
 const ASSETS = [
   "./",
   "./index.html",
