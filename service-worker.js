@@ -1,4 +1,4 @@
-const CACHE_NAME = "wheel-library-v1";
+const CACHE_NAME = "wheel-library-v1.0.5"; // Change this whenever you update!
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,28 +6,64 @@ const ASSETS = [
   "./apple-touch-icon.png"
 ];
 
+// Don't cache these URLs - always fetch fresh
+const NEVER_CACHE = [
+  "https://docs.google.com/spreadsheets", // Your Google Sheets data
+  "chrome-extension://", // Browser extensions
+];
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
+  console.log("[SW] Installing...");
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
+  console.log("[SW] Activating...");
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter((k) => k !== CACHE_NAME)
+          .map((k) => {
+            console.log("[SW] Deleting old cache:", k);
+            return caches.delete(k);
+          })
+      )
     )
   );
   self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
+  const url = event.request.url;
+
+  // Never cache these URLs - always go to network
+  if (NEVER_CACHE.some((pattern) => url.includes(pattern))) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Network-first strategy for everything else
   event.respondWith(
     fetch(event.request)
       .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        // Only cache successful responses
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, copy);
+          });
+        }
         return res;
       })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./")))
+      .catch(() => {
+        // If network fails, try cache
+        return caches.match(event.request).then((cached) => {
+          return cached || caches.match("./");
+        });
+      })
   );
 });
