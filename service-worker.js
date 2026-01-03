@@ -1,4 +1,4 @@
-const CACHE_NAME = "wheel-library-v1.0.6"; // Change this whenever you update!
+const CACHE_NAME = "wheel-library-v1.0.2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -10,10 +10,11 @@ const ASSETS = [
 const NEVER_CACHE = [
   "https://docs.google.com/spreadsheets", // Your Google Sheets data
   "chrome-extension://", // Browser extensions
+  "cdn.jsdelivr.net/npm/eruda" // Eruda debugging tool
 ];
 
 self.addEventListener("install", (event) => {
-  console.log("[SW] Installing...");
+  console.log("[SW] Installing service worker...");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
@@ -21,7 +22,7 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-  console.log("[SW] Activating...");
+  console.log("[SW] Activating service worker...");
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
