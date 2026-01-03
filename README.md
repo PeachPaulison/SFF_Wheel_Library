@@ -46,13 +46,13 @@ Nothing here is polished, official, complete, or FDA-approved.
 
 This is a *proof-of-concept*, a *prototype*, and maybe even a *fever dream*.
 
-If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies —  
-come find me in the **SFF Wheel Warehouse**.
+If you have thoughts, ideas, questions, concerns, compliments, complaints, 
+or cookies — come find me in the **SFF Wheel Warehouse**.
 
 ---
 
 ## 🌈 What This Does (Right Now)
-- Lets you check out *pretend* wheels  
+- Lets you *pretend* check out wheels  
 - Lets you filter wheels by:
   - Environment  
   - Durometer  
@@ -60,7 +60,7 @@ come find me in the **SFF Wheel Warehouse**.
   - Material  
 - Helps you match a "vibe" (and isn't that the whole point anyway?)  
 - Functions as a **PWA**, so you can add it to your phone like a real app  
-  *(because fake it till you make it)*
+  * (because fake it till you make it)*
 
 ---
 
