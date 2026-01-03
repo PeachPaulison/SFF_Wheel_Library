@@ -13,7 +13,7 @@ Recent updates changed how the app loads and caches data, and older installs may
 4. Open Safari and go to:  
    👉 **https://peachpaulison.github.io/SFF_Wheel_Library**  
 5. Tap **Share** → **Add to Home Screen**  
-6. You’re good to go ✨
+6. You're good to go ✨
 
 ### 🤖 On Android
 1. Uninstall the existing **Wheel Library** app  
@@ -24,10 +24,10 @@ Recent updates changed how the app loads and caches data, and older installs may
 ### 🧠 Why this matters
 This app is a **Progressive Web App (PWA)**, which means:
 - Your phone remembers older versions  
-- Updates don’t always refresh automatically  
-- A fresh install guarantees you’re seeing the newest behavior  
+- Updates don't always refresh automatically  
+- A fresh install guarantees you're seeing the newest behavior  
 
-If something looks weird after reinstalling, that’s a **bug**, not user error — please tell me 💛
+If something looks weird after reinstalling, that's a **bug**, not user error — please tell me 💛
 
 ---
 
@@ -58,19 +58,20 @@ come find me in the **SFF Wheel Warehouse**.
   - Durometer  
   - Size  
   - Material  
-- Helps you match a “vibe” (and isn’t that the whole point anyway?)  
+- Helps you match a "vibe" (and isn't that the whole point anyway?)  
 - Functions as a **PWA**, so you can add it to your phone like a real app  
   *(because fake it till you make it)*
 
 ---
 
-## 🛞 What This *Will* Do Eventually (Manifesting ✨)
-- Real wheel inventory  
-- Real check-outs and returns  
+## 🛞 What This *Will* Do Eventually (✨Manifesting✨)
+- Real wheel inventory check-outs and returns  
 - Borrower tracking  
+- Wheel review system (so you can tell everyone why you loved or hated that one slidey set)
 - Notes, saved favorites, wheel comparisons  
 - Photos, reviews, and maybe even ✨sparkles✨  
 - A full mobile loaner program interface for SFF
+- Heck, maybe even a snack bar
 
 ---
 
@@ -88,8 +89,8 @@ come find me in the **SFF Wheel Warehouse**.
 ## 🧪 Want to Help Me Test?
 ⚠️ **If you previously installed the app and something seems off, try deleting and reinstalling — PWAs are sneaky like that.**
 
-I’d *LOVE* testers! Push the buttons, check out the notes on the bottom.  
-Just don’t lick anything.
+I'd *LOVE* testers! Push the buttons, check out the notes on the bottom.  
+Just don't lick anything.
 
 Message me in the **SFF Wheel Warehouse** with:
 - Bugs  
@@ -98,9 +99,20 @@ Message me in the **SFF Wheel Warehouse** with:
 - Weird behavior  
 - Ideas  
 - Vibes  
+- Job Offers
 
-You won’t hurt my feelings — but it is **NOT baby deer hunting season** either.  
+You won't hurt my feelings — but it is **NOT baby deer hunting season** either.  
 This whole thing is made of duct tape, unicorn kisses, and vibes.
+
+---
+
+## 🐞 Known Issues (Working On It!)
+- Cache can be sticky sometimes (hence the "delete and reinstall" dance)
+- Google Sheets data might take a second to load on first visit
+- The loan tracking is just a mockup right now (doesn't persist across sessions)
+- That floating button in the corner? That's **Eruda** — my mobile debugging tool. It'll vanish before launch.
+
+*These will all get fixed as we go! Rome wasn't debugged in a day.*
 
 ---
 
@@ -108,9 +120,20 @@ This whole thing is made of duct tape, unicorn kisses, and vibes.
 - Built as a static HTML/CSS/JS PWA  
 - Deployed via GitHub Pages  
 - Uses a service worker for caching  
-- Icons generated with love and questionable sanity  
+- Icons generated with love and questionable taste  
 - Designed on an iPhone with Koder like a complete gremlin  
   *(yes, really — ancient laptop, ancient editors)*
+
+---
+
+## 🐛 Mobile Debugging (For Fellow Nerds)
+This app includes **Eruda** for on-device debugging:
+- That floating button in the bottom-right corner? That's it.
+- Tap it to access Console, Network, and Storage tabs
+- Super handy for seeing errors on mobile
+- **This is temporary** — it'll be removed before the official community launch
+
+*(If you're seeing weird errors in the console, screenshot them and send them my way! Extra credit if you draw a little smiley face on the screenshot.)*
 
 ---
 
