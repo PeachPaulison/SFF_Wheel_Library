@@ -278,8 +278,411 @@
       line-height: 1.4;
     }
 
-    #output ul { padding-left: 18px; margin: 6px 0 8px; }​​​​​​​​​​​​​​​​
-                  <button class="chip" data-group="size" data-value="65mm+"><span class="chip-dot"></span> 65mm+</button>
+    #output ul { padding-left: 18px; margin: 6px 0 8px; }
+    #output p { margin: 4px 0; }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #9b7a6a;
+      margin-top: 4px;
+    }
+
+    .data-meta {
+      margin: 6px 0 10px;
+      font-size: 0.78rem;
+      color: #7e6257;
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: rgba(255, 247, 231, 0.7);
+      border: 1px dashed rgba(91, 59, 46, 0.25);
+    }
+
+    #matches {
+      font-size: 0.86rem;
+      color: #4c3a35;
+    }
+
+    .matches-empty {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #fff7e7;
+      border: 1px dashed rgba(91, 59, 46, 0.35);
+      text-align: center;
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    .wheel-card {
+      border-radius: 14px;
+      border: 1px solid rgba(91, 59, 46, 0.18);
+      padding: 8px 10px;
+      background: linear-gradient(135deg, #fffdf7, #ffeae5);
+      margin-bottom: 8px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+    }
+
+    .wheel-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .wheel-name { font-weight: 700; font-size: 0.95rem; }
+
+    .wheel-availability {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e8ffe9;
+      border: 1px solid #2d8a4d;
+      color: #205d35;
+      font-weight: 800;
+    }
+
+    .wheel-availability.none {
+      background: #ffe8e8;
+      border-color: #b3261e;
+      color: #7b1510;
+    }
+
+    .tag-row {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.16);
+      background: rgba(255,255,255,0.9);
+      font-size: 0.72rem;
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--peach);
+    }
+
+    .wheel-footer {
+      margin-top: 6px;
+      font-size: 0.76rem;
+      color: #7e6257;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .borrow-btn {
+      border-radius: 999px;
+      border: 1px solid var(--brown);
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffe7d9, #ffd2c5);
+      color: var(--brown);
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+      white-space: nowrap;
+    }
+
+    .borrow-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.12);
+    }
+
+    .footnote {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: #8a6c60;
+      border-top: 1px dashed rgba(0,0,0,0.12);
+      padding-top: 6px;
+    }
+
+    #loanLog {
+      margin-top: 10px;
+      border-top: 1px dashed rgba(0,0,0,0.12);
+      padding-top: 8px;
+      font-size: 0.8rem;
+    }
+
+    #loanLog h3 {
+      margin: 0 0 6px;
+      font-size: 0.85rem;
+      font-family: "Baloo 2", system-ui, sans-serif;
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .loan-item {
+      padding: 4px 0;
+      border-bottom: 1px dotted rgba(0,0,0,0.12);
+    }
+
+    .loan-item:last-child { border-bottom: none; }
+
+    .loan-main {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .loan-borrower { font-weight: 800; }
+
+    .loan-note {
+      color: #87685b;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    /* Mobile */
+    @media (max-width: 780px) {
+      body { padding: 10px; }
+      .shell { border-radius: 18px; padding: 12px; }
+      header { gap: 10px; margin-bottom: 12px; }
+      h1 { font-size: 1.45rem; }
+      .subtitle { font-size: 0.95rem; line-height: 1.25; }
+      main { grid-template-columns: 1fr !important; gap: 12px; }
+      .panel { padding: 14px; }
+      .chip, .reset-btn, .borrow-btn {
+        padding: 10px 14px;
+        font-size: 0.95rem;
+      }
+      .wheel-name { font-size: 1rem; }
+      .tag { font-size: 0.85rem; padding: 6px 10px; }
+    }
+
+    /* =========================
+       MSW RINK RUG THEME OVERRIDES
+       Neon skates + stars on charcoal
+       ========================= */
+
+    :root{
+      --ink: #f4f2ff;
+      --brown: #241b2f;           /* now acts like deep outline */
+      --cream: rgba(255,255,255,.08);
+
+      --bg0: #0f0c14;             /* charcoal */
+      --bg1: #171022;             /* deep plum */
+      --panel: rgba(20, 16, 30, .62);
+
+      --neon-pink: #ff3fb4;
+      --neon-blue: #39b6ff;
+      --neon-lime: #b9ff2a;
+      --neon-purple: #9a5bff;
+      --neon-orange: #ff8a2a;
+      --neon-yellow: #ffe44d;
+
+      --stroke: rgba(255,255,255,.12);
+      --stroke-strong: rgba(255,255,255,.18);
+      --shadow: rgba(0,0,0,.45);
+    }
+
+    body{
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,.22) 0 1px, transparent 2px),
+        radial-gradient(circle at 55% 22%, rgba(255,255,255,.16) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 35%, rgba(255,255,255,.18) 0 1px, transparent 2px),
+        radial-gradient(circle at 20% 72%, rgba(255,255,255,.14) 0 1px, transparent 2px),
+        radial-gradient(circle at 88% 78%, rgba(255,255,255,.20) 0 1px, transparent 2px),
+        radial-gradient(800px 520px at 18% 20%, rgba(255,63,180,.22), transparent 60%),
+        radial-gradient(760px 520px at 80% 25%, rgba(57,182,255,.20), transparent 60%),
+        radial-gradient(820px 560px at 30% 88%, rgba(185,255,42,.16), transparent 62%),
+        radial-gradient(900px 560px at 92% 86%, rgba(154,91,255,.16), transparent 62%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+    }
+
+    .shell{
+      background:
+        radial-gradient(900px 520px at 20% 10%, rgba(255,63,180,.10), transparent 60%),
+        radial-gradient(820px 520px at 85% 15%, rgba(57,182,255,.10), transparent 60%),
+        radial-gradient(820px 520px at 35% 95%, rgba(185,255,42,.07), transparent 62%),
+        linear-gradient(145deg, rgba(18,14,26,.92), rgba(12,10,18,.92));
+      border: 3px solid rgba(255,255,255,.18);
+      box-shadow:
+        0 20px 55px rgba(0,0,0,.55),
+        0 0 0 6px rgba(255,255,255,.06);
+    }
+
+    .shell::before{
+      opacity: .08;
+      filter: saturate(1.2) contrast(1.1);
+    }
+
+    h1{ color: rgba(255,255,255,.92); text-shadow: 0 2px 0 rgba(0,0,0,.35); }
+    .subtitle{ color: rgba(255,255,255,.70); }
+    .tiny-badge{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.18);
+      color: rgba(255,255,255,.78);
+    }
+
+    .logo-badge{
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.25), transparent 55%),
+        radial-gradient(circle at 50% 55%, rgba(57,182,255,.28), transparent 60%),
+        radial-gradient(circle at 60% 55%, rgba(255,63,180,.22), transparent 62%),
+        radial-gradient(circle at 45% 70%, rgba(185,255,42,.18), transparent 60%),
+        rgba(20,16,30,.85);
+      border: 3px solid rgba(255,255,255,.24);
+      color: rgba(255,255,255,.95);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.55),
+        0 0 0 4px rgba(57,182,255,.10);
+    }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 10px 28px rgba(0,0,0,.40);
+    }
+
+    .panel h2{ color: rgba(255,255,255,.92); }
+
+    .chip{
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.18);
+      color: rgba(255,255,255,.86);
+      box-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
+    .chip-dot{
+      background: var(--neon-blue);
+      box-shadow: 0 0 0 2px rgba(57,182,255,.25), 0 0 14px rgba(57,182,255,.25);
+    }
+    .chip.selected{
+      background: linear-gradient(135deg, rgba(255,63,180,.92), rgba(57,182,255,.92));
+      border-color: rgba(255,255,255,.22);
+      color: #0f0c14;
+    }
+    .chip.selected .chip-dot{
+      background: var(--neon-yellow);
+      box-shadow: 0 0 0 2px rgba(255,228,77,.35), 0 0 14px rgba(255,228,77,.22);
+    }
+
+    .reset-btn{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.25);
+      color: rgba(255,255,255,.90);
+      box-shadow: 0 3px 0 rgba(0,0,0,.35);
+    }
+    .reset-btn:active{
+      box-shadow: 0 1px 0 rgba(0,0,0,.35);
+    }
+
+    .pill-indicator{
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.90);
+      box-shadow: 0 2px 0 rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    #dataStatus.pill-indicator.live{
+      background: linear-gradient(120deg, rgba(57,182,255,.95), rgba(185,255,42,.75));
+      color: #0f0c14;
+      border-color: rgba(255,255,255,.18);
+    }
+    #dataStatus.pill-indicator.offline{
+      background: linear-gradient(120deg, rgba(255,63,180,.90), rgba(255,138,42,.80));
+      color: #0f0c14;
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .data-meta,
+    .matches-empty{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.14);
+      color: rgba(255,255,255,.75);
+    }
+
+    .wheel-card{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.14);
+    }
+    .wheel-availability{
+      background: rgba(185,255,42,.18);
+      border-color: rgba(185,255,42,.45);
+      color: rgba(255,255,255,.92);
+    }
+    .wheel-availability.none{
+      background: rgba(255,63,180,.16);
+      border-color: rgba(255,63,180,.45);
+    }
+    .tag{
+      background: rgba(0,0,0,.10);
+      border-color: rgba(255,255,255,.14);
+      color: rgba(255,255,255,.85);
+    }
+    .tag-dot{ background: var(--neon-purple); }
+
+    .borrow-btn{
+      background: linear-gradient(135deg, rgba(255,63,180,.90), rgba(154,91,255,.85));
+      color: #0f0c14;
+      border-color: rgba(255,255,255,.18);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <div class="content">
+      <header>
+        <div class="logo-badge">🛼</div>
+
+        <div class="title-block">
+          <h1>Wheel Library</h1>
+          <div class="subtitle">
+            Let skaters try wheels before they buy – pick the vibe, match the set.
+          </div>
+          <div class="badge-strip">
+            <div class="tiny-badge">Retro • Rink • Derby • Street</div>
+            <div class="tiny-badge">Try &amp; Return</div>
+          </div>
+        </div>
+
+        <div class="actions-top">
+          <button class="reset-btn" id="resetFilters">Reset filters</button>
+          <div class="pill-indicator"><span>●</span> Live filter</div>
+          <div class="pill-indicator" id="dataStatus"><span>●</span> Loading data…</div>
+        </div>
+      </header>
+
+      <main>
+        <!-- LEFT: Filters & notes -->
+        <section class="panel">
+          <h2><span class="emoji">🎚️</span> Choose your session</h2>
+
+          <div class="group" data-group="environment">
+            <div class="group-label">Environment</div>
+            <div class="buttons">
+              <button class="chip" data-group="environment" data-value="Indoor - Rhythm"><span class="chip-dot"></span> Indoor – Rhythm</button>
+              <button class="chip" data-group="environment" data-value="Indoor - Jam"><span class="chip-dot"></span> Indoor – Jam</button>
+              <button class="chip" data-group="environment" data-value="Indoor - Artistic"><span class="chip-dot"></span> Indoor – Artistic</button>
+              <button class="chip" data-group="environment" data-value="Indoor - Skatepark"><span class="chip-dot"></span> Indoor – Skatepark</button>
+              <button class="chip" data-group="environment" data-value="Indoor - Derby"><span class="chip-dot"></span> Indoor – Derby</button>
+              <button class="chip" data-group="environment" data-value="Outdoor - Paved path"><span class="chip-dot"></span> Outdoor – Path</button>
+              <button class="chip" data-group="environment" data-value="Outdoor - Skatepark"><span class="chip-dot"></span> Outdoor – Skatepark</button>
+              <button class="chip" data-group="environment" data-value="Outdoor - Street"><span class="chip-dot"></span> Outdoor – Street</button>
+            </div>
+          </div>
+
+          <div class="group" data-group="size">
+            <div class="group-label">Wheel size</div>
+            <div class="buttons">
+              <button class="chip" data-group="size" data-value="57mm"><span class="chip-dot"></span> 57mm</button>
+              <button class="chip" data-group="size" data-value="59mm"><span class="chip-dot"></span> 59mm</button>
+              <button class="chip" data-group="size" data-value="62mm"><span class="chip-dot"></span> 62mm</button>
+              <button class="chip" data-group="size" data-value="65mm+"><span class="chip-dot"></span> 65mm+</button>
             </div>
           </div>
 
@@ -324,14 +727,14 @@
 
           <div id="matches">
             <div class="matches-empty">
-              No filters yet. Start by choosing where you're skating (rink, path, street, park…).
+              No filters yet. Start by choosing where you’re skating (rink, path, street, park…).
             </div>
           </div>
 
           <div id="loanLog">
-            <h3>📝 Today's check-outs</h3>
+            <h3>📝 Today’s check-outs</h3>
             <div class="loan-empty">
-              No loans logged yet. Tap "Borrow this set" on a wheel card to mock up a checkout.
+              No loans logged yet. Tap “Borrow this set” on a wheel card to mock up a checkout.
             </div>
           </div>
 
@@ -342,10 +745,6 @@
       </main>
     </div>
   </div>
-
-  <!-- Mobile DevTools -->
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
 
   <script>
     const selections = { environment: null, size: null, duro: null, material: null };
@@ -474,7 +873,7 @@
       if (material) html += `<li><strong>Material:</strong> ${material}</li>`;
       html += "</ul>";
 
-      html += "<h3>Peach's quick notes</h3>";
+      html += "<h3>Peach’s quick notes</h3>";
 
       if (["Indoor - Rhythm", "Indoor - Artistic", "Indoor - Derby"].includes(environment)) {
         html += "<p>Indoor floors usually like mid–hard wheels (around 93A–96A) in the 57–62mm range for control and response.</p>";
@@ -513,7 +912,7 @@
       if (!inventory.length) {
         matchesDiv.innerHTML = `
           <div class="matches-empty">
-            Loading live wheel data… If this doesn't load, you may be offline.
+            Loading live wheel data… If this doesn’t load, you may be offline.
           </div>
         `;
         return;
@@ -532,7 +931,7 @@
       if (!environment && !size && !duro && !material) {
         matchesDiv.innerHTML = `
           <div class="matches-empty">
-            No filters yet. Start by choosing where you're skating (rink, path, street, park…).
+            No filters yet. Start by choosing where you’re skating (rink, path, street, park…).
           </div>
         `;
         return;
@@ -615,10 +1014,10 @@
 
     function renderLoans() {
       const container = document.getElementById("loanLog");
-      let html = '<h3>📝 Today's check-outs</h3>';
+      let html = '<h3>📝 Today’s check-outs</h3>';
 
       if (loans.length === 0) {
-        html += '<div class="loan-empty">No loans logged yet. Tap "Borrow this set" on a wheel card to mock up a checkout.</div>';
+        html += '<div class="loan-empty">No loans logged yet. Tap “Borrow this set” on a wheel card to mock up a checkout.</div>';
         container.innerHTML = html;
         return;
       }
@@ -689,7 +1088,8 @@
         updateOutput();
       });
   </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
   <script>
     // PWA: register service worker (safe no-op if unsupported)
     if ("serviceWorker" in navigator) {
@@ -697,7 +1097,28 @@
         navigator.serviceWorker.register("./service-worker.js").catch(console.log);
       });
     }
+    if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").then((reg) => {
+      // Check for updates every time the page loads
+      reg.update();
+      
+      console.log("Service Worker registered");
+      
+      // Listen for updates
+      reg.addEventListener("updatefound", () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener("statechange", () => {
+          if (newWorker.state === "activated") {
+            console.log("New service worker activated - reload to see changes");
+            // Optional: automatically reload
+            // window.location.reload();
+          }
+        });
+      });
+    }).catch(console.log);
+  });
+}
   </script>
 </body>
 </html>
-
