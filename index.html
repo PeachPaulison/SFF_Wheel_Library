@@ -18,619 +18,251 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.json" />
 
-  <style>
-    :root {
-      /* Icon-ish / retro rink palette */
-      --bg: #1b1024;        /* deep plum (night rink) */
-      --peach: #ff9b73;
-      --peach-dark: #e86c3b;
-      --gold: #f7c948;
-      --mint: #58c2a3;
-      --brown: #5b3b2e;
-      --cream: #fff7e7;
-      --ink: #2c2137;
-
-      --panel: rgba(255, 255, 255, 0.92);
-      --panel-border: rgba(91, 59, 46, 0.22);
-      --shadow: rgba(0, 0, 0, 0.22);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(255, 155, 115, 0.22) 0, transparent 55%),
-        radial-gradient(circle at 90% 15%, rgba(247, 201, 72, 0.18) 0, transparent 55%),
-        radial-gradient(circle at 15% 90%, rgba(88, 194, 163, 0.18) 0, transparent 55%),
-        var(--bg);
-      color: var(--ink);
-      display: flex;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .shell {
-      width: 100%;
-      max-width: 980px;
-      background: linear-gradient(145deg, #fff2df 0%, #ffe7d7 45%, #fff1fb 100%);
-      border-radius: 24px;
-      border: 4px solid var(--brown);
-      box-shadow: 0 18px 35px var(--shadow), 0 0 0 6px rgba(255,255,255,0.18);
-      padding: 18px 18px 22px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Subtle retro ribbon (NOT rainbow) */
-    .shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      top: -55%;
-      background: linear-gradient(
-        to right,
-        rgba(255,155,115,0.35) 0%,
-        rgba(247,201,72,0.28) 35%,
-        rgba(88,194,163,0.24) 65%,
-        rgba(255,155,115,0.35) 100%
-      );
-      opacity: 0.55;
-      transform: rotate(-4deg);
-      pointer-events: none;
-    }
-
-    .content { position: relative; z-index: 1; }
-
-    header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .logo-badge {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fffadd 0, #ffe0c2 45%, var(--peach) 80%);
-      border: 4px solid var(--brown);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Baloo 2", system-ui, sans-serif;
-      font-weight: 700;
-      font-size: 26px;
-      color: var(--brown);
-      box-shadow: 0 6px 0 rgba(91, 59, 46, 0.25);
-    }
-
-    .title-block { flex: 1; min-width: 180px; }
-
-    h1 {
-      font-family: "Baloo 2", system-ui, sans-serif;
-      font-size: 1.7rem;
-      line-height: 1.1;
-      margin: 0 0 4px;
-      color: var(--brown);
-      letter-spacing: 0.03em;
-      text-shadow: 0 2px 0 rgba(255,255,255,0.85);
-    }
-
-    .subtitle {
-      font-size: 0.92rem;
-      color: #6b4e42;
-    }
-
-    .badge-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .tiny-badge {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.12);
-      background: rgba(255,255,255,0.88);
-      color: var(--brown);
-    }
-
-    .actions-top {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      min-width: 150px;
-    }
-
-    .reset-btn {
-      border-radius: 999px;
-      border: 2px solid var(--brown);
-      padding: 6px 12px;
-      background: var(--cream);
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--brown);
-      box-shadow: 0 3px 0 rgba(91,59,46,0.35);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s;
-    }
-
-    .reset-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 rgba(91,59,46,0.35);
-    }
-
-    .pill-indicator {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: linear-gradient(120deg, rgba(88,194,163,0.9), rgba(247,201,72,0.85));
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--ink);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.18);
-    }
-
-    #dataStatus.pill-indicator.live {
-      background: linear-gradient(120deg, rgba(88,194,163,0.95), rgba(181,243,222,0.95));
-    }
-
-    #dataStatus.pill-indicator.offline {
-      background: linear-gradient(120deg, rgba(255,118,117,0.95), rgba(255,234,167,0.95));
-    }
-
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
-      gap: 16px;
-      align-items: start;
-    }
-
-    @media (max-width: 780px) {
-      main { grid-template-columns: 1fr; }
-    }
-
-    .panel {
-      background: var(--panel);
-      border-radius: 18px;
-      border: 2px solid var(--panel-border);
-      padding: 12px 12px 14px;
-      box-shadow: 0 6px 0 rgba(0,0,0,0.05);
-    }
-
-    .panel h2 {
-      margin: 0 0 10px;
-      font-size: 1.05rem;
-      font-family: "Baloo 2", system-ui, sans-serif;
-      color: var(--brown);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .group { margin-bottom: 10px; }
-
-    .group-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #7f5a4a;
-      margin-bottom: 6px;
-    }
+  
 
     .buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
+/* =========================
+   MSW RINK RUG THEME OVERRIDES
+   Real MSW carpet colors!
+   ========================= */
 
-    .chip {
-      padding: 7px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(0, 0, 0, 0.18);
-      background: linear-gradient(135deg, #fffdf5, #ffe8d7);
-      font-size: 0.82rem;
-      cursor: pointer;
-      color: var(--brown);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.12);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s, border-color 0.1s;
-    }
+:root{
+  --ink: #f4f2ff;
+  --brown: #241b2f;
+  --cream: rgba(255,255,255,.08);
 
-    .chip-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--mint);
-      box-shadow: 0 0 0 2px rgba(88, 194, 163, 0.35);
-    }
+  --bg0: #0d0d0d;
+  --bg1: #1a1a1a;
+  --panel: rgba(26, 26, 26, .68);
 
-    .chip.selected {
-      background: linear-gradient(135deg, var(--peach), var(--gold));
-      color: var(--ink);
-      border-color: var(--brown);
-      transform: translateY(1px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.16);
-    }
+  --neon-pink: #ff1493;
+  --neon-blue: #00bfff;
+  --neon-lime: #bfff00;
+  --neon-purple: #9b30ff;
+  --neon-orange: #ff6b35;
+  --neon-yellow: #ffd700;
 
-    .chip.selected .chip-dot {
-      background: var(--cream);
-      box-shadow: 0 0 0 2px rgba(255, 247, 231, 0.7);
-    }
+  --stroke: rgba(255,255,255,.14);
+  --stroke-strong: rgba(255,255,255,.22);
+  --shadow: rgba(0,0,0,.50);
+}
 
-    #output {
-      font-size: 0.86rem;
-      color: #5d4940;
-      line-height: 1.4;
-    }
+body{
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,.18) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 55% 22%, rgba(255,255,255,.14) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 35%, rgba(255,255,255,.16) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 20% 72%, rgba(255,255,255,.12) 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 78%, rgba(255,255,255,.18) 0 1.5px, transparent 2px),
+    radial-gradient(800px 520px at 18% 20%, rgba(255,20,147,.18), transparent 60%),
+    radial-gradient(760px 520px at 80% 25%, rgba(0,191,255,.16), transparent 60%),
+    radial-gradient(820px 560px at 30% 88%, rgba(191,255,0,.14), transparent 62%),
+    radial-gradient(900px 560px at 92% 86%, rgba(155,48,255,.14), transparent 62%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+}
 
-    #output ul { padding-left: 18px; margin: 6px 0 8px; }
-    #output p { margin: 4px 0; }
+.shell{
+  background:
+    radial-gradient(900px 520px at 20% 10%, rgba(255,20,147,.08), transparent 60%),
+    radial-gradient(820px 520px at 85% 15%, rgba(0,191,255,.08), transparent 60%),
+    radial-gradient(820px 520px at 35% 95%, rgba(191,255,0,.06), transparent 62%),
+    linear-gradient(145deg, rgba(26,26,26,.94), rgba(13,13,13,.94));
+  border: 3px solid rgba(255,255,255,.20);
+  box-shadow:
+    0 20px 55px rgba(0,0,0,.60),
+    0 0 0 6px rgba(255,255,255,.06);
+}
 
-    .hint {
-      font-size: 0.78rem;
-      color: #9b7a6a;
-      margin-top: 4px;
-    }
+.shell::before{
+  opacity: .06;
+  filter: saturate(1.3) contrast(1.15);
+}
 
-    .data-meta {
-      margin: 6px 0 10px;
-      font-size: 0.78rem;
-      color: #7e6257;
-      padding: 6px 10px;
-      border-radius: 12px;
-      background: rgba(255, 247, 231, 0.7);
-      border: 1px dashed rgba(91, 59, 46, 0.25);
-    }
+h1{ 
+  color: rgba(255,255,255,.95); 
+  text-shadow: 0 2px 6px rgba(255,20,147,.35), 0 0 20px rgba(0,191,255,.15);
+}
 
-    #matches {
-      font-size: 0.86rem;
-      color: #4c3a35;
-    }
+.subtitle{ color: rgba(255,255,255,.78); }
 
-    .matches-empty {
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: #fff7e7;
-      border: 1px dashed rgba(91, 59, 46, 0.35);
-      text-align: center;
-      font-size: 0.82rem;
-      margin-bottom: 8px;
-    }
+.tiny-badge{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.20);
+  color: rgba(255,255,255,.85);
+}
 
-    .wheel-card {
-      border-radius: 14px;
-      border: 1px solid rgba(91, 59, 46, 0.18);
-      padding: 8px 10px;
-      background: linear-gradient(135deg, #fffdf7, #ffeae5);
-      margin-bottom: 8px;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.08);
-    }
+.logo-badge{
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,.28), transparent 55%),
+    radial-gradient(circle at 50% 55%, rgba(0,191,255,.32), transparent 60%),
+    radial-gradient(circle at 60% 55%, rgba(255,20,147,.28), transparent 62%),
+    radial-gradient(circle at 45% 70%, rgba(191,255,0,.22), transparent 60%),
+    rgba(26,26,26,.92);
+  border: 3px solid rgba(255,255,255,.28);
+  color: rgba(255,255,255,.98);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.60),
+    0 0 0 4px rgba(0,191,255,.12);
+}
 
-    .wheel-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: baseline;
-    }
+.panel{
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  box-shadow: 0 10px 28px rgba(0,0,0,.45);
+}
 
-    .wheel-name { font-weight: 700; font-size: 0.95rem; }
+.panel h2{ color: rgba(255,255,255,.95); }
 
-    .wheel-availability {
-      font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #e8ffe9;
-      border: 1px solid #2d8a4d;
-      color: #205d35;
-      font-weight: 800;
-    }
+.group-label{
+  color: rgba(255,255,255,.65);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+}
 
-    .wheel-availability.none {
-      background: #ffe8e8;
-      border-color: #b3261e;
-      color: #7b1510;
-    }
+.chip{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.20);
+  color: rgba(255,255,255,.90);
+  box-shadow: 0 2px 0 rgba(0,0,0,.40);
+}
 
-    .tag-row {
-      margin-top: 6px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
+.chip-dot{
+  background: var(--neon-blue);
+  box-shadow: 0 0 0 2px rgba(0,191,255,.30), 0 0 16px rgba(0,191,255,.28);
+}
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.16);
-      background: rgba(255,255,255,0.9);
-      font-size: 0.72rem;
-    }
+.chip.selected{
+  background: linear-gradient(135deg, rgba(255,20,147,.95), rgba(155,48,255,.90));
+  border-color: rgba(255,255,255,.25);
+  color: #0d0d0d;
+  font-weight: 700;
+}
 
-    .tag-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--peach);
-    }
+.chip.selected .chip-dot{
+  background: var(--neon-yellow);
+  box-shadow: 0 0 0 2px rgba(255,215,0,.40), 0 0 16px rgba(255,215,0,.25);
+}
 
-    .wheel-footer {
-      margin-top: 6px;
-      font-size: 0.76rem;
-      color: #7e6257;
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+.reset-btn{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.28);
+  color: rgba(255,255,255,.95);
+  box-shadow: 0 3px 0 rgba(0,0,0,.40);
+}
 
-    .borrow-btn {
-      border-radius: 999px;
-      border: 1px solid var(--brown);
-      padding: 5px 10px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #ffe7d9, #ffd2c5);
-      color: var(--brown);
-      cursor: pointer;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.12);
-      white-space: nowrap;
-    }
+.reset-btn:active{
+  box-shadow: 0 1px 0 rgba(0,0,0,.40);
+}
 
-    .borrow-btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.12);
-    }
+.pill-indicator{
+  background: rgba(255,255,255,.10);
+  color: rgba(255,255,255,.92);
+  box-shadow: 0 2px 0 rgba(0,0,0,.40);
+  border: 1px solid rgba(255,255,255,.16);
+}
 
-    .footnote {
-      margin-top: 8px;
-      font-size: 0.75rem;
-      color: #8a6c60;
-      border-top: 1px dashed rgba(0,0,0,0.12);
-      padding-top: 6px;
-    }
+#dataStatus.pill-indicator.live{
+  background: linear-gradient(120deg, rgba(0,191,255,.95), rgba(191,255,0,.85));
+  color: #0d0d0d;
+  border-color: rgba(255,255,255,.20);
+  font-weight: 700;
+}
 
-    #loanLog {
-      margin-top: 10px;
-      border-top: 1px dashed rgba(0,0,0,0.12);
-      padding-top: 8px;
-      font-size: 0.8rem;
-    }
+#dataStatus.pill-indicator.offline{
+  background: linear-gradient(120deg, rgba(255,20,147,.92), rgba(255,107,53,.88));
+  color: #0d0d0d;
+  border-color: rgba(255,255,255,.20);
+  font-weight: 700;
+}
 
-    #loanLog h3 {
-      margin: 0 0 6px;
-      font-size: 0.85rem;
-      font-family: "Baloo 2", system-ui, sans-serif;
-      color: var(--brown);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+#output{
+  color: rgba(255,255,255,.85);
+}
 
-    .loan-item {
-      padding: 4px 0;
-      border-bottom: 1px dotted rgba(0,0,0,0.12);
-    }
+.hint{
+  color: rgba(255,255,255,.60);
+}
 
-    .loan-item:last-child { border-bottom: none; }
+.data-meta,
+.matches-empty{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.80);
+}
 
-    .loan-main {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
+.wheel-card{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.16);
+}
 
-    .loan-borrower { font-weight: 800; }
+.wheel-name{
+  color: rgba(255,255,255,.95);
+}
 
-    .loan-note {
-      color: #87685b;
-      font-size: 0.75rem;
-      margin-top: 2px;
-    }
+.wheel-availability{
+  background: rgba(191,255,0,.22);
+  border-color: rgba(191,255,0,.50);
+  color: rgba(255,255,255,.95);
+  font-weight: 800;
+}
 
-    /* Mobile */
-    @media (max-width: 780px) {
-      body { padding: 10px; }
-      .shell { border-radius: 18px; padding: 12px; }
-      header { gap: 10px; margin-bottom: 12px; }
-      h1 { font-size: 1.45rem; }
-      .subtitle { font-size: 0.95rem; line-height: 1.25; }
-      main { grid-template-columns: 1fr !important; gap: 12px; }
-      .panel { padding: 14px; }
-      .chip, .reset-btn, .borrow-btn {
-        padding: 10px 14px;
-        font-size: 0.95rem;
-      }
-      .wheel-name { font-size: 1rem; }
-      .tag { font-size: 0.85rem; padding: 6px 10px; }
-    }
+.wheel-availability.none{
+  background: rgba(255,20,147,.20);
+  border-color: rgba(255,20,147,.50);
+}
 
-    /* =========================
-       MSW RINK RUG THEME OVERRIDES
-       Neon skates + stars on charcoal
-       ========================= */
+.tag{
+  background: rgba(0,0,0,.12);
+  border-color: rgba(255,255,255,.16);
+  color: rgba(255,255,255,.88);
+}
 
-    :root{
-      --ink: #f4f2ff;
-      --brown: #241b2f;           /* now acts like deep outline */
-      --cream: rgba(255,255,255,.08);
+.tag-dot{ 
+  background: var(--neon-purple);
+  box-shadow: 0 0 8px rgba(155,48,255,.25);
+}
 
-      --bg0: #0f0c14;             /* charcoal */
-      --bg1: #171022;             /* deep plum */
-      --panel: rgba(20, 16, 30, .62);
+.wheel-footer{
+  color: rgba(255,255,255,.70);
+}
 
-      --neon-pink: #ff3fb4;
-      --neon-blue: #39b6ff;
-      --neon-lime: #b9ff2a;
-      --neon-purple: #9a5bff;
-      --neon-orange: #ff8a2a;
-      --neon-yellow: #ffe44d;
+.borrow-btn{
+  background: linear-gradient(135deg, rgba(255,20,147,.92), rgba(155,48,255,.88));
+  color: #0d0d0d;
+  border-color: rgba(255,255,255,.20);
+  font-weight: 800;
+}
 
-      --stroke: rgba(255,255,255,.12);
-      --stroke-strong: rgba(255,255,255,.18);
-      --shadow: rgba(0,0,0,.45);
-    }
+.borrow-btn:active{
+  transform: translateY(1px);
+}
 
-    body{
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 12% 18%, rgba(255,255,255,.22) 0 1px, transparent 2px),
-        radial-gradient(circle at 55% 22%, rgba(255,255,255,.16) 0 1px, transparent 2px),
-        radial-gradient(circle at 78% 35%, rgba(255,255,255,.18) 0 1px, transparent 2px),
-        radial-gradient(circle at 20% 72%, rgba(255,255,255,.14) 0 1px, transparent 2px),
-        radial-gradient(circle at 88% 78%, rgba(255,255,255,.20) 0 1px, transparent 2px),
-        radial-gradient(800px 520px at 18% 20%, rgba(255,63,180,.22), transparent 60%),
-        radial-gradient(760px 520px at 80% 25%, rgba(57,182,255,.20), transparent 60%),
-        radial-gradient(820px 560px at 30% 88%, rgba(185,255,42,.16), transparent 62%),
-        radial-gradient(900px 560px at 92% 86%, rgba(154,91,255,.16), transparent 62%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
-    }
+.footnote{
+  color: rgba(255,255,255,.65);
+  border-top: 1px dashed rgba(255,255,255,.14);
+}
 
-    .shell{
-      background:
-        radial-gradient(900px 520px at 20% 10%, rgba(255,63,180,.10), transparent 60%),
-        radial-gradient(820px 520px at 85% 15%, rgba(57,182,255,.10), transparent 60%),
-        radial-gradient(820px 520px at 35% 95%, rgba(185,255,42,.07), transparent 62%),
-        linear-gradient(145deg, rgba(18,14,26,.92), rgba(12,10,18,.92));
-      border: 3px solid rgba(255,255,255,.18);
-      box-shadow:
-        0 20px 55px rgba(0,0,0,.55),
-        0 0 0 6px rgba(255,255,255,.06);
-    }
+#loanLog h3{
+  color: rgba(255,255,255,.92);
+}
 
-    .shell::before{
-      opacity: .08;
-      filter: saturate(1.2) contrast(1.1);
-    }
+.loan-item{
+  border-bottom: 1px dotted rgba(255,255,255,.14);
+  color: rgba(255,255,255,.85);
+}
 
-    h1{ color: rgba(255,255,255,.92); text-shadow: 0 2px 0 rgba(0,0,0,.35); }
-    .subtitle{ color: rgba(255,255,255,.70); }
-    .tiny-badge{
-      background: rgba(255,255,255,.08);
-      border-color: rgba(255,255,255,.18);
-      color: rgba(255,255,255,.78);
-    }
-
-    .logo-badge{
-      background:
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.25), transparent 55%),
-        radial-gradient(circle at 50% 55%, rgba(57,182,255,.28), transparent 60%),
-        radial-gradient(circle at 60% 55%, rgba(255,63,180,.22), transparent 62%),
-        radial-gradient(circle at 45% 70%, rgba(185,255,42,.18), transparent 60%),
-        rgba(20,16,30,.85);
-      border: 3px solid rgba(255,255,255,.24);
-      color: rgba(255,255,255,.95);
-      box-shadow:
-        0 10px 30px rgba(0,0,0,.55),
-        0 0 0 4px rgba(57,182,255,.10);
-    }
-
-    .panel{
-      background: var(--panel);
-      border: 1px solid var(--stroke);
-      box-shadow: 0 10px 28px rgba(0,0,0,.40);
-    }
-
-    .panel h2{ color: rgba(255,255,255,.92); }
-
-    .chip{
-      background: rgba(255,255,255,.07);
-      border-color: rgba(255,255,255,.18);
-      color: rgba(255,255,255,.86);
-      box-shadow: 0 2px 0 rgba(0,0,0,.35);
-    }
-    .chip-dot{
-      background: var(--neon-blue);
-      box-shadow: 0 0 0 2px rgba(57,182,255,.25), 0 0 14px rgba(57,182,255,.25);
-    }
-    .chip.selected{
-      background: linear-gradient(135deg, rgba(255,63,180,.92), rgba(57,182,255,.92));
-      border-color: rgba(255,255,255,.22);
-      color: #0f0c14;
-    }
-    .chip.selected .chip-dot{
-      background: var(--neon-yellow);
-      box-shadow: 0 0 0 2px rgba(255,228,77,.35), 0 0 14px rgba(255,228,77,.22);
-    }
-
-    .reset-btn{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.25);
-      color: rgba(255,255,255,.90);
-      box-shadow: 0 3px 0 rgba(0,0,0,.35);
-    }
-    .reset-btn:active{
-      box-shadow: 0 1px 0 rgba(0,0,0,.35);
-    }
-
-    .pill-indicator{
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.90);
-      box-shadow: 0 2px 0 rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-    #dataStatus.pill-indicator.live{
-      background: linear-gradient(120deg, rgba(57,182,255,.95), rgba(185,255,42,.75));
-      color: #0f0c14;
-      border-color: rgba(255,255,255,.18);
-    }
-    #dataStatus.pill-indicator.offline{
-      background: linear-gradient(120deg, rgba(255,63,180,.90), rgba(255,138,42,.80));
-      color: #0f0c14;
-      border-color: rgba(255,255,255,.18);
-    }
-
-    .data-meta,
-    .matches-empty{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.14);
-      color: rgba(255,255,255,.75);
-    }
-
-    .wheel-card{
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.14);
-    }
-    .wheel-availability{
-      background: rgba(185,255,42,.18);
-      border-color: rgba(185,255,42,.45);
-      color: rgba(255,255,255,.92);
-    }
-    .wheel-availability.none{
-      background: rgba(255,63,180,.16);
-      border-color: rgba(255,63,180,.45);
-    }
-    .tag{
-      background: rgba(0,0,0,.10);
-      border-color: rgba(255,255,255,.14);
-      color: rgba(255,255,255,.85);
-    }
-    .tag-dot{ background: var(--neon-purple); }
-
-    .borrow-btn{
-      background: linear-gradient(135deg, rgba(255,63,180,.90), rgba(154,91,255,.85));
-      color: #0f0c14;
-      border-color: rgba(255,255,255,.18);
-    }
+.loan-note{
+  color: rgba(255,255,255,.65);
+}
   </style>
+
+
 </head>
 
 <body>
