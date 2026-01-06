@@ -1554,9 +1554,14 @@ const formMessage = document.getElementById('formMessage');
 
 // Open modal
 reviewBtn.addEventListener('click', () => {
+  if (!inventory || inventory.length === 0) {
+    alert('Wheel inventory is still loading. Please wait a moment and try again.');
+    return;
+  }
   reviewModal.classList.add('active');
   populateWheelDropdown();
 });
+
 
 // Close modal
 closeModal.addEventListener('click', () => {
