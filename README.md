@@ -46,32 +46,35 @@ Nothing here is polished, official, complete, or FDA-approved.
 
 This is a *proof-of-concept*, a *prototype*, and maybe even a *fever dream*.
 
-If you have thoughts, ideas, questions, concerns, compliments, complaints, 
-or cookies — come find me in the **SFF Wheel Warehouse**.
+If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies —  
+come find me in the **SFF Wheel Warehouse**.
 
 ---
 
 ## 🌈 What This Does (Right Now)
-- Lets you *pretend* check out wheels  
+- Lets you check out *pretend* wheels  
 - Lets you filter wheels by:
-  - Environment  
-  - Durometer  
-  - Size  
-  - Material  
+  - Environment (color-coded: blue outlines)
+  - Size (color-coded: lime green outlines)
+  - Durometer (color-coded: hot pink outlines)
+  - Material (color-coded: purple outlines)
 - Helps you match a "vibe" (and isn't that the whole point anyway?)  
 - Functions as a **PWA**, so you can add it to your phone like a real app  
-  * (because fake it till you make it)*
+  *(because fake it till you make it)*
+- **NEW!** Authentic MSW carpet neon colors - hot pink, electric blue, lime green, purple on dark background
+- **NEW!** Color-coded filter sections for easy navigation
 
 ---
 
 ## 🛞 What This *Will* Do Eventually (✨Manifesting✨)
-- Real wheel inventory check-outs and returns  
+- Real wheel inventory ✅ **(DONE - syncs with Google Sheets!)**
+- Real check-outs and returns  
 - Borrower tracking  
-- Wheel review system (so you can tell everyone why you loved or hated that one slidey set)
+- **Wheel review system** *(Currently building!)*
 - Notes, saved favorites, wheel comparisons  
 - Photos, reviews, and maybe even ✨sparkles✨  
 - A full mobile loaner program interface for SFF
-- Heck, maybe even a snack bar
+- What the heck, maybe even a snack bar
 
 ---
 
@@ -87,10 +90,10 @@ or cookies — come find me in the **SFF Wheel Warehouse**.
 ---
 
 ## 🧪 Want to Help Me Test?
-⚠️ **If you previously installed the app and something seems off, try deleting and reinstalling — PWAs are sneaky like that.**
+⚠️ **If you previously installed the app and something seems off, try following the directions at the top of this page for deleting and reinstalling — PWAs are sneaky like that.**
 
 I'd *LOVE* testers! Push the buttons, check out the notes on the bottom.  
-Just don't lick anything.
+Just don't lick anything or you'll need a shot.
 
 Message me in the **SFF Wheel Warehouse** with:
 - Bugs  
@@ -99,9 +102,8 @@ Message me in the **SFF Wheel Warehouse** with:
 - Weird behavior  
 - Ideas  
 - Vibes  
-- Job Offers
 
-You won't hurt my feelings — but it is **NOT baby deer hunting season** either.  
+If something is just not right, let me know. You won't hurt my feelings — but it is **NOT baby deer hunting season** either.  
 This whole thing is made of duct tape, unicorn kisses, and vibes.
 
 ---
@@ -123,6 +125,29 @@ This whole thing is made of duct tape, unicorn kisses, and vibes.
 - Icons generated with love and questionable taste  
 - Designed on an iPhone with Koder like a complete gremlin  
   *(yes, really — ancient laptop, ancient editors)*
+- **Live data integration** with Google Sheets for wheel inventory
+- **Apps Script backend** for review submissions (coming very soon!)
+
+---
+
+## 🔧 Developer Notes
+
+### Google Apps Script Deployment
+The review system uses Google Apps Script as a backend. 
+
+**Web App URL (for review submissions):**  
+https://script.google.com/macros/s/AKfycbynqdoLigNVyALncipI-FaDVl7mUjxgBqgD0cCn730ONoVGlc_IYHsFF06SlDQih8sP/exec
+
+**Script Functions:**
+- `doPost()` - Handles review submissions from PWA
+- `doGet()` - Retrieves reviews for display
+- `onEdit()` - Auto-generates wheel IDs and manages durometer categories
+
+**Review Data Structure:**
+- Sheet: "Reviews" in SFF_Wheel_Library workbook
+- Columns: phone_number, display_name, wheel_id, wheel_name, experience_level, hours_on_wheels, rating, review_text, environment, timestamp
+
+**Privacy:** Phone numbers are stored for member verification but never displayed publicly.
 
 ---
 
