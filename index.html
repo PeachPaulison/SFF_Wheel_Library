@@ -834,6 +834,100 @@ h1{
           </div>
         </section>
       </main>
+
+      <!-- REVIEW BUTTON -->
+      <button class="review-fab" id="reviewBtn" title="Submit a Review">
+        ⭐ Review
+      </button>
+
+      <!-- REVIEW MODAL -->
+      <div class="review-modal" id="reviewModal">
+        <div class="review-modal-content">
+          <div class="review-modal-header">
+            <h2>🛼 Submit a Wheel Review</h2>
+            <button class="review-close" id="closeModal">&times;</button>
+          </div>
+
+          <div class="privacy-notice">
+            <strong>Privacy Notice:</strong> Your phone number is used only to verify Skate Flow Fam membership and will never be displayed publicly. Only your display name will appear on reviews.
+          </div>
+
+          <form id="reviewForm">
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number *</label>
+              <input type="tel" id="phoneNumber" name="phone_number" placeholder="(555) 123-4567" required>
+            </div>
+
+            <div class="form-group">
+              <label for="displayName">Display Name (from WhatsApp group) *</label>
+              <input type="text" id="displayName" name="display_name" placeholder="Your name as it appears in SFF group" required>
+            </div>
+
+            <div class="form-group">
+              <label for="wheelSelect">Wheel Being Reviewed *</label>
+              <select id="wheelSelect" name="wheel_id" required>
+                <option value="">-- Select a wheel --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="experienceLevel">Your Skating Experience *</label>
+              <select id="experienceLevel" name="experience_level" required>
+                <option value="">-- Select experience level --</option>
+                <option value="Beginner (less than 1 year)">Beginner (less than 1 year)</option>
+                <option value="Intermediate (1-3 years)">Intermediate (1-3 years)</option>
+                <option value="Advanced (3-5 years)">Advanced (3-5 years)</option>
+                <option value="Expert (5+ years)">Expert (5+ years)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="hoursOnWheels">Hours on These Wheels *</label>
+              <input type="number" id="hoursOnWheels" name="hours_on_wheels" min="0" placeholder="Approximate hours" required>
+            </div>
+
+            <div class="form-group">
+              <label for="rating">Star Rating (optional)</label>
+              <div class="star-rating" id="starRating">
+                <span class="star" data-value="1">☆</span>
+                <span class="star" data-value="2">☆</span>
+                <span class="star" data-value="3">☆</span>
+                <span class="star" data-value="4">☆</span>
+                <span class="star" data-value="5">☆</span>
+              </div>
+              <input type="hidden" id="ratingValue" name="rating" value="">
+            </div>
+
+            <div class="form-group">
+              <label for="environment">Used For (optional)</label>
+              <select id="environment" name="environment">
+                <option value="">-- Select environment --</option>
+                <option value="Indoor - Rhythm">Indoor - Rhythm</option>
+                <option value="Indoor - Jam">Indoor - Jam</option>
+                <option value="Indoor - Artistic">Indoor - Artistic</option>
+                <option value="Indoor - Skatepark">Indoor - Skatepark</option>
+                <option value="Indoor - Derby">Indoor - Derby</option>
+                <option value="Outdoor - Paved path">Outdoor - Paved path</option>
+                <option value="Outdoor - Skatepark">Outdoor - Skatepark</option>
+                <option value="Outdoor - Street">Outdoor - Street</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="reviewText">Your Review *</label>
+              <textarea id="reviewText" name="review_text" rows="6" placeholder="Share your experience with these wheels..." required></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+              <button type="submit" class="btn-primary">Submit Review</button>
+            </div>
+          </form>
+
+          <div id="formMessage" class="form-message"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
