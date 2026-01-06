@@ -65,7 +65,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 
 ---
 
-## 🛞 What This *Will* Do Eventually (✨Manifesting✨)
+## 🛞 What This *Will* Do/Have Eventually (✨Manifesting✨)
 - Real wheel inventory ✅ **(DONE - syncs with Google Sheets!)**
 - Real check-outs and returns  
 - Borrower tracking  
