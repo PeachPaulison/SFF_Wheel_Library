@@ -46,8 +46,7 @@ Nothing here is polished, official, complete, or FDA-approved.
 
 This is a *proof-of-concept*, a *prototype*, and maybe even a *fever dream*.
 
-If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies —  
-come find me in the **SFF Wheel Warehouse**.
+If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies —  come find me in the **SFF Wheel Warehouse**.
 
 ---
 
