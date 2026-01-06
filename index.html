@@ -1194,7 +1194,12 @@ h1{
 
     const SHEET_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
-
+    const SHEET_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
+    
+    // Review form Apps Script URL
+    const REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynqdoLigNVyALncipI-FaDVl7mUjxgBqgD0cCn730ONoVGlc_IYHsFF06SlDQih8sP/exec";
+    
     function parseCSV(text) {
       const rows = [];
       let row = [];
@@ -1533,12 +1538,159 @@ h1{
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
   <script>
-    // PWA: register service worker (safe no-op if unsupported)
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js").catch(console.log);
-      });
+  // =========================
+// REVIEW FORM FUNCTIONALITY
+// =========================
+
+const reviewBtn = document.getElementById('reviewBtn');
+const reviewModal = document.getElementById('reviewModal');
+const closeModal = document.getElementById('closeModal');
+const cancelBtn = document.getElementById('cancelBtn');
+const reviewForm = document.getElementById('reviewForm');
+const wheelSelect = document.getElementById('wheelSelect');
+const starRating = document.getElementById('starRating');
+const ratingValue = document.getElementById('ratingValue');
+const formMessage = document.getElementById('formMessage');
+
+// Open modal
+reviewBtn.addEventListener('click', () => {
+  reviewModal.classList.add('active');
+  populateWheelDropdown();
+});
+
+// Close modal
+closeModal.addEventListener('click', () => {
+  reviewModal.classList.remove('active');
+  reviewForm.reset();
+  formMessage.style.display = 'none';
+});
+
+cancelBtn.addEventListener('click', () => {
+  reviewModal.classList.remove('active');
+  reviewForm.reset();
+  formMessage.style.display = 'none';
+});
+
+// Close on outside click
+reviewModal.addEventListener('click', (e) => {
+  if (e.target === reviewModal) {
+    reviewModal.classList.remove('active');
+    reviewForm.reset();
+    formMessage.style.display = 'none';
+  }
+});
+
+// Star rating functionality
+const stars = starRating.querySelectorAll('.star');
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    const value = star.getAttribute('data-value');
+    ratingValue.value = value;
+    
+    stars.forEach(s => {
+      if (s.getAttribute('data-value') <= value) {
+        s.classList.add('active');
+        s.textContent = '★';
+      } else {
+        s.classList.remove('active');
+        s.textContent = '☆';
+      }
+    });
+  });
+});
+
+// Populate wheel dropdown from inventory
+function populateWheelDropdown() {
+  wheelSelect.innerHTML = '<option value="">-- Select a wheel --</option>';
+  
+  if (!inventory || inventory.length === 0) {
+    wheelSelect.innerHTML += '<option value="" disabled>No wheels available yet</option>';
+    return;
+  }
+  
+  inventory.forEach(wheel => {
+    const option = document.createElement('option');
+    option.value = wheel.id;
+    option.textContent = `${wheel.name} (${wheel.brand})`;
+    option.setAttribute('data-wheel-name', wheel.name);
+    wheelSelect.appendChild(option);
+  });
+}
+
+// Handle form submission
+reviewForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const submitBtn = reviewForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+  
+  formMessage.style.display = 'none';
+  formMessage.className = 'form-message';
+  
+  try {
+    // Get selected wheel name
+    const selectedOption = wheelSelect.options[wheelSelect.selectedIndex];
+    const wheelName = selectedOption.getAttribute('data-wheel-name');
+    
+    // Prepare form data
+    const formData = {
+      phone_number: document.getElementById('phoneNumber').value,
+      display_name: document.getElementById('displayName').value,
+      wheel_id: document.getElementById('wheelSelect').value,
+      wheel_name: wheelName,
+      experience_level: document.getElementById('experienceLevel').value,
+      hours_on_wheels: document.getElementById('hoursOnWheels').value,
+      rating: document.getElementById('ratingValue').value || '',
+      review_text: document.getElementById('reviewText').value,
+      environment: document.getElementById('environment').value || ''
+    };
+    
+    // Submit to Google Apps Script
+    const response = await fetch(REVIEW_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      formMessage.className = 'form-message success';
+      formMessage.textContent = '✅ Review submitted successfully! Thank you for sharing your experience.';
+      formMessage.style.display = 'block';
+      
+      // Reset form after 2 seconds
+      setTimeout(() => {
+        reviewModal.classList.remove('active');
+        reviewForm.reset();
+        formMessage.style.display = 'none';
+        
+        // Reset stars
+        stars.forEach(s => {
+          s.classList.remove('active');
+          s.textContent = '☆';
+        });
+      }, 2000);
+    } else {
+      throw new Error(result.error || 'Submission failed');
     }
+    
+  } catch (error) {
+    console.error('Review submission error:', error);
+    formMessage.className = 'form-message error';
+    formMessage.textContent = '❌ Failed to submit review. Please try again or contact support.';
+    formMessage.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Review';
+  }
+});
+
+    // PWA: register service worker (safe no-op if unsupported)
+    
     if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js").then((reg) => {
