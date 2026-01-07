@@ -1534,59 +1534,7 @@ h1{
         setDataStatus("offline", "OFFLINE / NO LIVE DATA");
         updateOutput();
       });
-      </script>
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
-  <script>
-  
-// =========================
-// REVIEW FORM FUNCTIONALITY
-// =========================
-
-const reviewBtn = document.getElementById('reviewBtn');
-const reviewModal = document.getElementById('reviewModal');
-const closeModal = document.getElementById('closeModal');
-const cancelBtn = document.getElementById('cancelBtn');
-const reviewForm = document.getElementById('reviewForm');
-const wheelSelect = document.getElementById('wheelSelect');
-const starRating = document.getElementById('starRating');
-const ratingValue = document.getElementById('ratingValue');
-const formMessage = document.getElementById('formMessage');
-
-// Open modal
-reviewBtn.addEventListener('click', () => {
-  if (!inventory || inventory.length === 0) {
-    alert('Wheel inventory is still loading. Please wait a moment and try again.');
-    return;
-  }
-  reviewModal.classList.add('active');
-  populateWheelDropdown();
-});
-
-
-// Close modal
-closeModal.addEventListener('click', () => {
-  reviewModal.classList.remove('active');
-  reviewForm.reset();
-  formMessage.style.display = 'none';
-});
-
-cancelBtn.addEventListener('click', () => {
-  reviewModal.classList.remove('active');
-  reviewForm.reset();
-  formMessage.style.display = 'none';
-});
-
-// Close on outside click
-reviewModal.addEventListener('click', (e) => {
-  if (e.target === reviewModal) {
-    reviewModal.classList.remove('active');
-    reviewForm.reset();
-    formMessage.style.display = 'none';
-  }
-});
-
-// Star rating functionality
+      // Star rating functionality
 const stars = starRating.querySelectorAll('.star');
 stars.forEach(star => {
   star.addEventListener('click', () => {
@@ -1694,6 +1642,59 @@ reviewForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = 'Submit Review';
   }
 });
+
+      </script>
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+  <script>
+  
+// =========================
+// REVIEW FORM FUNCTIONALITY
+// =========================
+
+const reviewBtn = document.getElementById('reviewBtn');
+const reviewModal = document.getElementById('reviewModal');
+const closeModal = document.getElementById('closeModal');
+const cancelBtn = document.getElementById('cancelBtn');
+const reviewForm = document.getElementById('reviewForm');
+const wheelSelect = document.getElementById('wheelSelect');
+const starRating = document.getElementById('starRating');
+const ratingValue = document.getElementById('ratingValue');
+const formMessage = document.getElementById('formMessage');
+
+// Open modal
+reviewBtn.addEventListener('click', () => {
+  if (!inventory || inventory.length === 0) {
+    alert('Wheel inventory is still loading. Please wait a moment and try again.');
+    return;
+  }
+  reviewModal.classList.add('active');
+  populateWheelDropdown();
+});
+
+
+// Close modal
+closeModal.addEventListener('click', () => {
+  reviewModal.classList.remove('active');
+  reviewForm.reset();
+  formMessage.style.display = 'none';
+});
+
+cancelBtn.addEventListener('click', () => {
+  reviewModal.classList.remove('active');
+  reviewForm.reset();
+  formMessage.style.display = 'none';
+});
+
+// Close on outside click
+reviewModal.addEventListener('click', (e) => {
+  if (e.target === reviewModal) {
+    reviewModal.classList.remove('active');
+    reviewForm.reset();
+    formMessage.style.display = 'none';
+  }
+});
+
 
     // PWA: register service worker (safe no-op if unsupported)
     
