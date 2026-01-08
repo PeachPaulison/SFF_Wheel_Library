@@ -976,6 +976,20 @@ h1{
     max-width: 100%;
   }
 }
+    // DEBUG: Force attach click listener
+    console.log('Manually attaching review button listener');
+    document.getElementById('reviewBtn').onclick = function() {
+      console.log('Review button clicked!');
+      if (!inventory || inventory.length === 0) {
+        alert('Wheel inventory is still loading. Please wait a moment and try again.');
+        return;
+      }
+      document.getElementById('reviewModal').classList.add('active');
+      populateWheelDropdown();
+    };
+
+</script>
+
 
   </style>
 
