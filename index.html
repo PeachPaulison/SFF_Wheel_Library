@@ -1565,12 +1565,11 @@ h1{
         setDataStatus("offline", "OFFLINE / NO LIVE DATA");
         updateOutput();
       });
-    // =========================
+     // =========================
     // REVIEW FORM FUNCTIONALITY
     // =========================
     
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
       console.log('Setting up review form...');
       
       const reviewBtn = document.getElementById('reviewBtn');
@@ -1590,7 +1589,7 @@ h1{
       console.log('Review button found, attaching listener');
 
       // Open modal
-      reviewBtn.addEventListener('click', function() {
+      reviewBtn.onclick = function() {
         console.log('Review button clicked!');
         if (!inventory || inventory.length === 0) {
           alert('Wheel inventory is still loading. Please wait a moment and try again.');
@@ -1598,34 +1597,34 @@ h1{
         }
         reviewModal.classList.add('active');
         populateWheelDropdown();
-      });
+      };
 
       // Close modal
-      closeModal.addEventListener('click', function() {
+      closeModal.onclick = function() {
         reviewModal.classList.remove('active');
         reviewForm.reset();
         formMessage.style.display = 'none';
-      });
+      };
 
-      cancelBtn.addEventListener('click', function() {
+      cancelBtn.onclick = function() {
         reviewModal.classList.remove('active');
         reviewForm.reset();
         formMessage.style.display = 'none';
-      });
+      };
 
       // Close on outside click
-      reviewModal.addEventListener('click', function(e) {
+      reviewModal.onclick = function(e) {
         if (e.target === reviewModal) {
           reviewModal.classList.remove('active');
           reviewForm.reset();
           formMessage.style.display = 'none';
         }
-      });
+      };
 
-      // Star rating functionality
+      // Star rating
       const stars = starRating.querySelectorAll('.star');
       stars.forEach(star => {
-        star.addEventListener('click', function() {
+        star.onclick = function() {
           const value = star.getAttribute('data-value');
           ratingValue.value = value;
           
@@ -1638,11 +1637,11 @@ h1{
               s.textContent = '☆';
             }
           });
-        });
+        };
       });
 
-      // Handle form submission
-      reviewForm.addEventListener('submit', async function(e) {
+      // Form submission
+      reviewForm.onsubmit = async function(e) {
         e.preventDefault();
         
         const submitBtn = reviewForm.querySelector('button[type="submit"]');
@@ -1707,10 +1706,10 @@ h1{
           submitBtn.disabled = false;
           submitBtn.textContent = 'Submit Review';
         }
-      });
+      };
 
       console.log('Review form setup complete!');
-    });
+    }, 100);
   </script>
  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
