@@ -1565,16 +1565,19 @@ function populateWheelDropdown() {
   });
 }
 
-// Open modal
-reviewBtn.onclick = function() {
-  console.log('Review button clicked!');
-  if (!inventory || inventory.length === 0) {
-    alert('Wheel inventory is still loading. Please wait a moment and try again.');
-    return;
-  }
-  reviewModal.classList.add('active');
-  populateWheelDropdown();
-};
+// Open modal - delay to ensure DOM is ready
+setTimeout(function() {
+  reviewBtn.onclick = function() {
+    console.log('Review button clicked!');
+    if (!inventory || inventory.length === 0) {
+      alert('Wheel inventory is still loading. Please wait a moment and try again.');
+      return;
+    }
+    reviewModal.classList.add('active');
+    populateWheelDropdown();
+  };
+  console.log('Review button click handler attached');
+}, 100);
 
 // Close modal handlers
 closeModal.onclick = function() {
