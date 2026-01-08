@@ -1194,8 +1194,6 @@ h1{
 
     const SHEET_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
-    const SHEET_URL =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
     
     // Review form Apps Script URL
     const REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynqdoLigNVyALncipI-FaDVl7mUjxgBqgD0cCn730ONoVGlc_IYHsFF06SlDQih8sP/exec";
@@ -1647,54 +1645,6 @@ reviewForm.addEventListener('submit', async (e) => {
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
   <script>
-  
-// =========================
-// REVIEW FORM FUNCTIONALITY
-// =========================
-
-const reviewBtn = document.getElementById('reviewBtn');
-const reviewModal = document.getElementById('reviewModal');
-const closeModal = document.getElementById('closeModal');
-const cancelBtn = document.getElementById('cancelBtn');
-const reviewForm = document.getElementById('reviewForm');
-const wheelSelect = document.getElementById('wheelSelect');
-const starRating = document.getElementById('starRating');
-const ratingValue = document.getElementById('ratingValue');
-const formMessage = document.getElementById('formMessage');
-
-// Open modal
-reviewBtn.addEventListener('click', () => {
-  if (!inventory || inventory.length === 0) {
-    alert('Wheel inventory is still loading. Please wait a moment and try again.');
-    return;
-  }
-  reviewModal.classList.add('active');
-  populateWheelDropdown();
-});
-
-
-// Close modal
-closeModal.addEventListener('click', () => {
-  reviewModal.classList.remove('active');
-  reviewForm.reset();
-  formMessage.style.display = 'none';
-});
-
-cancelBtn.addEventListener('click', () => {
-  reviewModal.classList.remove('active');
-  reviewForm.reset();
-  formMessage.style.display = 'none';
-});
-
-// Close on outside click
-reviewModal.addEventListener('click', (e) => {
-  if (e.target === reviewModal) {
-    reviewModal.classList.remove('active');
-    reviewForm.reset();
-    formMessage.style.display = 'none';
-  }
-});
-
 
     // PWA: register service worker (safe no-op if unsupported)
     
