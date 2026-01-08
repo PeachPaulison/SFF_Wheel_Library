@@ -1532,26 +1532,22 @@ h1{
         setDataStatus("offline", "OFFLINE / NO LIVE DATA");
         updateOutput();
       });
-      // Star rating functionality
-const stars = starRating.querySelectorAll('.star');
-stars.forEach(star => {
-  star.addEventListener('click', () => {
-    const value = star.getAttribute('data-value');
-    ratingValue.value = value;
-    
-    stars.forEach(s => {
-      if (s.getAttribute('data-value') <= value) {
-        s.classList.add('active');
-        s.textContent = '★';
-      } else {
-        s.classList.remove('active');
-        s.textContent = '☆';
-      }
-    });
-  });
-});
+ // =========================
+// REVIEW FORM SETUP
+// =========================
 
-// Populate wheel dropdown from inventory
+// Get all DOM elements
+const reviewBtn = document.getElementById('reviewBtn');
+const reviewModal = document.getElementById('reviewModal');
+const closeModal = document.getElementById('closeModal');
+const cancelBtn = document.getElementById('cancelBtn');
+const reviewForm = document.getElementById('reviewForm');
+const wheelSelect = document.getElementById('wheelSelect');
+const starRating = document.getElementById('starRating');
+const ratingValue = document.getElementById('ratingValue');
+const formMessage = document.getElementById('formMessage');
+
+// Populate wheel dropdown
 function populateWheelDropdown() {
   wheelSelect.innerHTML = '<option value="">-- Select a wheel --</option>';
   
@@ -1569,8 +1565,60 @@ function populateWheelDropdown() {
   });
 }
 
-// Handle form submission
-reviewForm.addEventListener('submit', async (e) => {
+// Open modal
+reviewBtn.onclick = function() {
+  console.log('Review button clicked!');
+  if (!inventory || inventory.length === 0) {
+    alert('Wheel inventory is still loading. Please wait a moment and try again.');
+    return;
+  }
+  reviewModal.classList.add('active');
+  populateWheelDropdown();
+};
+
+// Close modal handlers
+closeModal.onclick = function() {
+  reviewModal.classList.remove('active');
+  reviewForm.reset();
+  formMessage.style.display = 'none';
+};
+
+cancelBtn.onclick = function() {
+  reviewModal.classList.remove('active');
+  reviewForm.reset();
+  formMessage.style.display = 'none';
+};
+
+// Close on outside click
+reviewModal.onclick = function(e) {
+  if (e.target === reviewModal) {
+    reviewModal.classList.remove('active');
+    reviewForm.reset();
+    formMessage.style.display = 'none';
+  }
+};
+
+// Star rating
+const stars = starRating.querySelectorAll('.star');
+stars.forEach(star => {
+  star.onclick = function() {
+    const value = star.getAttribute('data-value');
+    ratingValue.value = value;
+    
+    stars.forEach(s => {
+      if (s.getAttribute('data-value') <= value) {
+        s.classList.add('active');
+        s.textContent = '★';
+      } else {
+        s.classList.remove('active');
+        s.textContent = '☆';
+      }
+    });
+  };
+});
+
+// Form submission
+reviewForm.onsubmit = async function(e) {
   e.preventDefault();
   
   const submitBtn = reviewForm.querySelector('button[type="submit"]');
@@ -1581,24 +1629,21 @@ reviewForm.addEventListener('submit', async (e) => {
   formMessage.className = 'form-message';
   
   try {
-    // Get selected wheel name
     const selectedOption = wheelSelect.options[wheelSelect.selectedIndex];
     const wheelName = selectedOption.getAttribute('data-wheel-name');
     
-    // Prepare form data
     const formData = {
       phone_number: document.getElementById('phoneNumber').value,
       display_name: document.getElementById('displayName').value,
-      wheel_id: document.getElementById('wheelSelect').value,
+      wheel_id: wheelSelect.value,
       wheel_name: wheelName,
       experience_level: document.getElementById('experienceLevel').value,
       hours_on_wheels: document.getElementById('hoursOnWheels').value,
-      rating: document.getElementById('ratingValue').value || '',
+      rating: ratingValue.value || '',
       review_text: document.getElementById('reviewText').value,
       environment: document.getElementById('environment').value || ''
     };
     
-    // Submit to Google Apps Script
     const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
       headers: {
@@ -1614,13 +1659,11 @@ reviewForm.addEventListener('submit', async (e) => {
       formMessage.textContent = '✅ Review submitted successfully! Thank you for sharing your experience.';
       formMessage.style.display = 'block';
       
-      // Reset form after 2 seconds
-      setTimeout(() => {
+      setTimeout(function() {
         reviewModal.classList.remove('active');
         reviewForm.reset();
         formMessage.style.display = 'none';
         
-        // Reset stars
         stars.forEach(s => {
           s.classList.remove('active');
           s.textContent = '☆';
@@ -1639,9 +1682,12 @@ reviewForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Review';
   }
-});
+};
+
+console.log('Review form initialized');
 
       </script>
+
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
   <script>
