@@ -1547,7 +1547,7 @@ h1{
     updateOutput();
     renderLoans();
 
-    loadInventoryFromSheet()
+       loadInventoryFromSheet()
       .then((inv) => {
         if (inv && inv.length) {
           inventory = inv;
@@ -1565,10 +1565,8 @@ h1{
         setDataStatus("offline", "OFFLINE / NO LIVE DATA");
         updateOutput();
       });
-     // =========================
-    // REVIEW FORM FUNCTIONALITY
-    // =========================
-    
+
+    // Review form setup
     setTimeout(function() {
       console.log('Setting up review form...');
       
@@ -1588,7 +1586,6 @@ h1{
 
       console.log('Review button found, attaching listener');
 
-      // Open modal
       reviewBtn.onclick = function() {
         console.log('Review button clicked!');
         if (!inventory || inventory.length === 0) {
@@ -1599,7 +1596,6 @@ h1{
         populateWheelDropdown();
       };
 
-      // Close modal
       closeModal.onclick = function() {
         reviewModal.classList.remove('active');
         reviewForm.reset();
@@ -1612,7 +1608,6 @@ h1{
         formMessage.style.display = 'none';
       };
 
-      // Close on outside click
       reviewModal.onclick = function(e) {
         if (e.target === reviewModal) {
           reviewModal.classList.remove('active');
@@ -1621,7 +1616,6 @@ h1{
         }
       };
 
-      // Star rating
       const stars = starRating.querySelectorAll('.star');
       stars.forEach(star => {
         star.onclick = function() {
@@ -1640,7 +1634,6 @@ h1{
         };
       });
 
-      // Form submission
       reviewForm.onsubmit = async function(e) {
         e.preventDefault();
         
@@ -1709,8 +1702,10 @@ h1{
       };
 
       console.log('Review form setup complete!');
-    }, 100);
-  </script>
+    }, 500);
+
+</script>
+
  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
   <script>eruda.init();</script>
   <script>
