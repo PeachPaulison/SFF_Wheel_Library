@@ -977,6 +977,20 @@ h1{
   .review-modal-content {
     max-width: 100%;
   }
+  
+  /* Force environment pills to be 2 per row */
+  .group[data-group="environment"] .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .group[data-group="environment"] .chip {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 }
 
   </style>
