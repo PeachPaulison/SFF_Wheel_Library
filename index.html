@@ -1652,15 +1652,19 @@ reviewForm.onsubmit = async function(e) {
       environment: document.getElementById('environment').value || ''
     };
     
-    const response = await fetch(REVIEW_SCRIPT_URL, {
+   const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
       body: JSON.stringify(formData)
     });
+
     
-    const result = await response.json();
+    // With no-cors can't read the response, so assume success if no error thrown?
+    const result = { success: true };
+
     
     if (result.success) {
       formMessage.className = 'form-message success';
