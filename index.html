@@ -1009,13 +1009,11 @@ h1{
         <div class="title-block">
           <h1>Wheel Library</h1>
           <div class="subtitle">
-            Lets you try before you buy – pick the vibe, match the set.
+            Lets you try before you buy – pick the vibe - match the set.
           </div>
         </div>
 
         <div class="actions-top">
-          <button class="reset-btn" id="resetFilters">Reset filters</button>
-          <div class="pill-indicator"><span>●</span> Live filter</div>
           <div class="pill-indicator" id="dataStatus"><span>●</span> Loading data…</div>
         </div>
       </header>
@@ -1023,7 +1021,11 @@ h1{
       <main>
         <!-- LEFT: Filters & notes -->
         <section class="panel">
-          <h2><span class="emoji">🎚️</span> Choose your session</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h2 style="margin: 0;">Choose your session</h2>
+          <button class="btn-reset" id="resetBtn">Reset filters</button>
+        </div>
+
 
           <div class="group" data-group="environment">
             <div class="group-label">Environment</div>
@@ -1077,13 +1079,13 @@ h1{
           </div>
 
           <div class="hint">
-            Choose as many or as few filters as you like. The  panel only shows wheels that are actually free to borrow.
+            Choose as many or as few filters as you like. The panel only shows wheels that are actually free to borrow.
           </div>
         </section>
 
         <!-- RIGHT: Matching wheels + borrower mockup -->
         <section class="panel">
-          <h2><span class="emoji">📦</span> Available to Borrow</h2>
+          <h2>Available to Borrow</h2>
 
           <div class="data-meta" id="dataMeta">
             Data source: <strong>Google Sheets</strong> • Last synced: <span id="lastUpdated">—</span>
@@ -1096,7 +1098,7 @@ h1{
           </div>
 
           <div id="loanLog">
-            <h3>📝 Today’s check-outs</h3>
+            <h2>Today’s Check-outs</h2>
             <div class="loan-empty">
               No loans logged yet. Tap “Borrow this Set” on a wheel card to mock up a checkout.
             </div>
@@ -1327,14 +1329,14 @@ h1{
         return;
       }
 
-      let html = "<h3>Your selections</h3><ul>";
+      let html = "<h3>Your Selections</h3><ul>";
       if (environment) html += `<li><strong>Environment:</strong> ${environment}</li>`;
       if (size) html += `<li><strong>Size:</strong> ${size}</li>`;
       if (duro) html += `<li><strong>Durometer:</strong> ${duro}</li>`;
       if (material) html += `<li><strong>Material:</strong> ${material}</li>`;
       html += "</ul>";
 
-      html += "<h3>Peach’s quick notes</h3>";
+      html += "<h3>Quick Notes</h3>";
 
       if (["Indoor - Rhythm", "Indoor - Artistic", "Indoor - Derby"].includes(environment)) {
         html += "<p>Indoor floors usually like mid–hard wheels (around 93A–96A) in the 57–62mm range for control and response.</p>";
