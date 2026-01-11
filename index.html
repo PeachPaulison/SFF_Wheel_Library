@@ -1482,7 +1482,8 @@ h1{
 
     function renderLoans() {
       const container = document.getElementById("loanLog");
-      let html = '<h3>📝 Today’s check-outs</h3>';
+      let html = '<h3>Today\'s check-outs</h3>';
+
 
       if (loans.length === 0) {
         html += '<div class="loan-empty">No loans logged yet. Tap “Borrow this set” on a wheel card to mock up a checkout.</div>';
