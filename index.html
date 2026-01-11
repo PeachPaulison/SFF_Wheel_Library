@@ -1284,6 +1284,9 @@ h1{
       return data.map((row) => {
         const obj = {};
         headers.forEach((h, i) => (obj[h] = row[i] || ""));
+  
+  console.log('🎯 Mapped object:', obj);
+  
 
         return {
           id: obj.wheel_id,
