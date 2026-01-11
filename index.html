@@ -1262,15 +1262,20 @@ h1{
     }
 
     async function loadInventoryFromSheet() {
+      console.log('🔍 Starting to load inventory...');
+      console.log('📍 SHEET_URL:', SHEET_URL);
       const res = await fetch(SHEET_URL);
+      console.log('✅ Fetch response:', res.ok, res.status);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const text = await res.text();
+      console.log('📄 Got text, length:', text.length);
       if (text.toLowerCase().includes("<html")) {
         throw new Error("Got HTML instead of CSV (publish/share issue)");
       }
 
       const rows = parseCSV(text);
+      console.log('📊 Parsed rows:', rows.length);
       if (!rows.length) return [];
 
       const headers = rows[0].map((h) => h.toLowerCase());
