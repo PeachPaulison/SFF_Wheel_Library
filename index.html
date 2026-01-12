@@ -1262,20 +1262,20 @@ h1{
     }
 
     async function loadInventoryFromSheet() {
-      console.log('🔍 Starting to load inventory...');
-      console.log('📍 SHEET_URL:', SHEET_URL);
+      console.log('Starting to load inventory...');
+      console.log('SHEET_URL:', SHEET_URL);
       const res = await fetch(SHEET_URL);
-      console.log('✅ Fetch response:', res.ok, res.status);
+      console.log('Fetch response:', res.ok, res.status);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const text = await res.text();
-      console.log('📄 Got text, length:', text.length);
+      console.log('Got text, length:', text.length);
       if (text.toLowerCase().includes("<html")) {
         throw new Error("Got HTML instead of CSV (publish/share issue)");
       }
 
       const rows = parseCSV(text);
-      console.log('📊 Parsed rows:', rows.length);
+      console.log('Parsed rows:', rows.length);
       if (!rows.length) return [];
 
       const headers = rows[0].map((h) => h.toLowerCase());
@@ -1285,8 +1285,7 @@ h1{
         const obj = {};
         headers.forEach((h, i) => (obj[h] = row[i] || ""));
   
-  console.log('🎯 Mapped object:', obj);
-  
+        console.log('Mapped object:', obj);(
 
         return {
           id: obj.wheel_id,
@@ -1301,6 +1300,7 @@ h1{
             obj.status && String(obj.status).toLowerCase() !== "available" ? 1 : 0,
         };
       });
+      console.log('Finished mapping, returning array');
     }
 
     let inventory = [];
