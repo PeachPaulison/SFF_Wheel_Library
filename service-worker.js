@@ -10,7 +10,6 @@ const ASSETS = [
 const NEVER_CACHE = [
   "https://docs.google.com/spreadsheets", // Your Google Sheets data
   "chrome-extension://", // Browser extensions
-  "jsdelivr.net" // Let CDN scripts load directly, bypass service worker
 ];
 
 self.addEventListener("install", (event) => {
