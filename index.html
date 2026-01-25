@@ -1262,30 +1262,38 @@ h1{
     }
 
     async function loadInventoryFromSheet() {
-      console.log('Starting to load inventory...');
+      console.log('📡 Starting to load inventory from Google Sheets...');
       console.log('SHEET_URL:', SHEET_URL);
+
       const res = await fetch(SHEET_URL);
-      console.log('Fetch response:', res.ok, res.status);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      console.log('Fetch response:', res.ok ? '✅' : '❌', 'Status:', res.status);
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} - Check if sheet is published to web`);
+      }
 
       const text = await res.text();
-      console.log('Got text, length:', text.length);
+      console.log('📄 Received CSV data, length:', text.length, 'characters');
+
       if (text.toLowerCase().includes("<html")) {
-        throw new Error("Got HTML instead of CSV (publish/share issue)");
+        throw new Error("Got HTML instead of CSV - sheet may not be published correctly");
       }
 
       const rows = parseCSV(text);
-      console.log('Parsed rows:', rows.length);
-      if (!rows.length) return [];
+      console.log('📊 Parsed', rows.length, 'rows (including header)');
+
+      if (!rows.length) {
+        console.warn('⚠️ No data rows found in CSV');
+        return [];
+      }
 
       const headers = rows[0].map((h) => h.toLowerCase());
       const data = rows.slice(1);
+      console.log('📋 Column headers:', headers.join(', '));
 
-      return data.map((row) => {
+      const inventory = data.map((row) => {
         const obj = {};
         headers.forEach((h, i) => (obj[h] = row[i] || ""));
-  
-        console.log('Mapped object:', obj);
 
         return {
           id: obj.wheel_id,
@@ -1300,7 +1308,9 @@ h1{
             obj.status && String(obj.status).toLowerCase() !== "available" ? 1 : 0,
         };
       });
-      console.log('Finished mapping, returning array');
+
+      console.log('✅ Successfully loaded', inventory.length, 'wheel types');
+      return inventory;
     }
 
     let inventory = [];
@@ -1540,9 +1550,9 @@ h1{
     setDataStatus("", "Loading data…");
     updateOutput();
     renderLoans();
-console.log('🚨 JAVASCRIPT IS RUNNING');
-loadInventoryFromSheet()
+    console.log('🚨 JAVASCRIPT IS RUNNING');
 
+    // Load inventory from Google Sheets
     loadInventoryFromSheet()
       .then((inv) => {
         if (inv && inv.length) {
@@ -1552,13 +1562,15 @@ loadInventoryFromSheet()
           updateOutput();
           renderLoans();
           updateMatches();
+          console.log('✅ Inventory loaded successfully:', inv.length, 'wheels');
         } else {
           setDataStatus("offline", "NO LIVE DATA");
           updateOutput();
+          console.log('⚠️ No inventory data returned');
         }
       })
       .catch((err) => {
-        console.log("Failed to load sheet", err);
+        console.error("❌ Failed to load inventory:", err);
         setDataStatus("offline", "OFFLINE / NO LIVE DATA");
         updateOutput();
       });
@@ -1752,8 +1764,10 @@ console.log('Review form initialized');
     }).catch(console.log);
   });
 }
-    //Initialize on load
-    loadInventoryFromSheet()
   </script>
+
+  <!-- Eruda mobile debugging console -->
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
 </body>
 </html>
