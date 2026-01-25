@@ -1541,7 +1541,7 @@ h1{
       });
     });
 
-    document.getElementById("resetFilters").addEventListener("click", () => {
+    document.getElementById("resetBtn").addEventListener("click", () => {
       Object.keys(selections).forEach((key) => (selections[key] = null));
       document.querySelectorAll(".chip").forEach((c) => c.classList.remove("selected"));
       updateOutput();
