@@ -1,4 +1,4 @@
-const CACHE_NAME = "wheel-library-v1.0.2";
+const CACHE_NAME = "wheel-library-v1.0.3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -13,7 +13,7 @@ const NEVER_CACHE = [
   "jsdelivr.net" // Let CDN scripts load directly, bypass service worker
 ];
 
-self.addEventListener("install", (event) => 
+self.addEventListener("install", (event) => {
   console.log("[SW] Installing service worker...");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
