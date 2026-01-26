@@ -750,6 +750,33 @@ h1{
   transform: translateY(0);
 }
 
+/* Floating Add Wheels Button */
+.add-wheels-fab {
+  position: fixed;
+  bottom: 160px;
+  right: 30px;
+  background: linear-gradient(135deg, var(--neon-lime), var(--neon-blue));
+  color: #0d0d0d;
+  border: 2px solid rgba(255,255,255,.25);
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(191,255,0,.4), 0 0 20px rgba(191,255,0,.2);
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-wheels-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(191,255,0,.6), 0 0 30px rgba(191,255,0,.3);
+}
+
+.add-wheels-fab:active {
+  transform: translateY(0);
+}
+
 /* Review Modal */
 .review-modal {
   display: none;
@@ -896,6 +923,44 @@ h1{
 .star.active {
   color: var(--neon-yellow);
   transform: scale(1.1);
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.checkbox-label:hover {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.2);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"]:checked + span,
+.checkbox-label:has(input[type="checkbox"]:checked) {
+  color: var(--neon-lime);
+  font-weight: 600;
 }
 
 /* Form Actions */
@@ -1109,6 +1174,11 @@ h1{
         </section>
       </main>
 
+      <!-- ADD WHEELS BUTTON -->
+      <button class="add-wheels-fab" id="addWheelsBtn" title="Lend Your Wheels">
+        + Add Wheels
+      </button>
+
       <!-- REVIEW BUTTON -->
       <button class="review-fab" id="reviewBtn" title="Submit a Review">
         ⭐ Review
@@ -1200,6 +1270,113 @@ h1{
           </form>
 
           <div id="formMessage" class="form-message"></div>
+        </div>
+      </div>
+
+      <!-- ADD WHEELS MODAL -->
+      <div class="review-modal" id="addWheelsModal">
+        <div class="review-modal-content">
+          <div class="review-modal-header">
+            <h2>➕ Add Wheels to Library</h2>
+            <button class="review-close" id="closeAddWheelsModal">&times;</button>
+          </div>
+
+          <div class="privacy-notice">
+            <strong>Note:</strong> All loans are at the discretion of the lender. Your phone number will be used to verify SFF membership.
+          </div>
+
+          <form id="addWheelsForm">
+            <div class="form-group">
+              <label for="lenderPhone">Member ID (Phone Number) *</label>
+              <input type="tel" id="lenderPhone" name="lender_phone" placeholder="(555) 123-4567" required>
+            </div>
+
+            <div class="form-group">
+              <label for="wheelName">Wheel Name *</label>
+              <input type="text" id="wheelName" name="wheel_name" placeholder="e.g., Radar Energy 57" required>
+            </div>
+
+            <div class="form-group">
+              <label for="brand">Brand *</label>
+              <input type="text" id="brand" name="brand" placeholder="e.g., Radar, Moxi, Sure-Grip" required>
+            </div>
+
+            <div class="form-group">
+              <label for="wheelSize">Wheel Size *</label>
+              <select id="wheelSize" name="wheel_size" required>
+                <option value="">-- Select size --</option>
+                <option value="57mm">57mm</option>
+                <option value="59mm">59mm</option>
+                <option value="62mm">62mm</option>
+                <option value="65mm+">65mm+</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="durometer">Durometer (Hardness) *</label>
+              <select id="durometer" name="durometer" required>
+                <option value="">-- Select hardness --</option>
+                <option value="88A-92A (softer)">88A-92A (softer)</option>
+                <option value="93A-96A (mid)">93A-96A (mid)</option>
+                <option value="97A-103A (hard)">97A-103A (hard)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="material">Material *</label>
+              <select id="material" name="material" required>
+                <option value="">-- Select material --</option>
+                <option value="Urethane">Urethane</option>
+                <option value="Modern Vanathane">Modern Vanathane</option>
+                <option value="Vintage Vanathane">Vintage Vanathane</option>
+                <option value="Fiberglass">Fiberglass</option>
+                <option value="Wood">Wood</option>
+                <option value="Clay">Clay</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Best For (select all that apply)</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Indoor-Rhythm"> Indoor-Rhythm
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Indoor-Jam"> Indoor-Jam
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Indoor-Artistic"> Indoor-Artistic
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Indoor-Derby"> Indoor-Derby
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Indoor-Park"> Indoor-Park
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Outdoor-Path"> Outdoor-Path
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Outdoor-Park"> Outdoor-Park
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" name="best_for" value="Outdoor-Street"> Outdoor-Street
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="numSets">Number of Sets Available *</label>
+              <input type="number" id="numSets" name="num_sets" min="1" placeholder="e.g., 1, 2, 3" required>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" id="cancelAddWheelsBtn">Cancel</button>
+              <button type="submit" class="btn-primary">Add to Library</button>
+            </div>
+          </form>
+
+          <div id="addWheelsMessage" class="form-message"></div>
         </div>
       </div>
 
@@ -1733,6 +1910,98 @@ reviewForm.onsubmit = async function(e) {
 };
 
 console.log('Review form initialized');
+
+// =========================
+// ADD WHEELS FORM SETUP
+// =========================
+
+// Get DOM elements
+const addWheelsBtn = document.getElementById('addWheelsBtn');
+const addWheelsModal = document.getElementById('addWheelsModal');
+const closeAddWheelsModal = document.getElementById('closeAddWheelsModal');
+const cancelAddWheelsBtn = document.getElementById('cancelAddWheelsBtn');
+const addWheelsForm = document.getElementById('addWheelsForm');
+const addWheelsMessage = document.getElementById('addWheelsMessage');
+
+// Open modal
+setTimeout(function() {
+  addWheelsBtn.onclick = function() {
+    console.log('Add Wheels button clicked!');
+    addWheelsModal.classList.add('active');
+  };
+  console.log('Add Wheels button click handler attached');
+}, 100);
+
+// Close modal handlers
+closeAddWheelsModal.onclick = function() {
+  addWheelsModal.classList.remove('active');
+  addWheelsForm.reset();
+  addWheelsMessage.style.display = 'none';
+};
+
+cancelAddWheelsBtn.onclick = function() {
+  addWheelsModal.classList.remove('active');
+  addWheelsForm.reset();
+  addWheelsMessage.style.display = 'none';
+};
+
+// Close on outside click
+addWheelsModal.onclick = function(e) {
+  if (e.target === addWheelsModal) {
+    addWheelsModal.classList.remove('active');
+    addWheelsForm.reset();
+    addWheelsMessage.style.display = 'none';
+  }
+};
+
+// Form submission (placeholder - will connect to Apps Script later)
+addWheelsForm.onsubmit = async function(e) {
+  e.preventDefault();
+
+  const submitBtn = addWheelsForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Adding...';
+
+  try {
+    // Collect form data
+    const formData = {
+      lender_phone: document.getElementById('lenderPhone').value,
+      wheel_name: document.getElementById('wheelName').value,
+      brand: document.getElementById('brand').value,
+      wheel_size: document.getElementById('wheelSize').value,
+      durometer: document.getElementById('durometer').value,
+      material: document.getElementById('material').value,
+      best_for: Array.from(document.querySelectorAll('input[name="best_for"]:checked')).map(cb => cb.value).join(', '),
+      num_sets: document.getElementById('numSets').value,
+      timestamp: new Date().toISOString()
+    };
+
+    console.log('Add Wheels form data:', formData);
+
+    // TODO: Send to Google Apps Script endpoint
+    // For now, just show success message
+    addWheelsMessage.className = 'form-message success';
+    addWheelsMessage.textContent = '✅ Wheel added successfully! (Backend connection coming soon)';
+    addWheelsMessage.style.display = 'block';
+
+    setTimeout(function() {
+      addWheelsModal.classList.remove('active');
+      addWheelsForm.reset();
+      addWheelsMessage.style.display = 'none';
+    }, 2000);
+
+  } catch (error) {
+    console.error('Add wheels error:', error);
+    addWheelsMessage.className = 'form-message error';
+    addWheelsMessage.textContent = '❌ Failed to add wheels. Please try again.';
+    addWheelsMessage.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Add to Library';
+  }
+};
+
+console.log('Add Wheels form initialized');
 
       </script>
 
