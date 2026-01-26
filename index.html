@@ -750,6 +750,33 @@ h1{
   transform: translateY(0);
 }
 
+/* Floating Add Wheels Button */
+.add-wheels-fab {
+  position: fixed;
+  bottom: 160px;
+  right: 30px;
+  background: linear-gradient(135deg, var(--neon-lime), var(--neon-blue));
+  color: #0d0d0d;
+  border: 2px solid rgba(255,255,255,.25);
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(191,255,0,.4), 0 0 20px rgba(191,255,0,.2);
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-wheels-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(191,255,0,.6), 0 0 30px rgba(191,255,0,.3);
+}
+
+.add-wheels-fab:active {
+  transform: translateY(0);
+}
+
 /* Review Modal */
 .review-modal {
   display: none;
@@ -1108,6 +1135,11 @@ h1{
           </div>
         </section>
       </main>
+
+      <!-- ADD WHEELS BUTTON -->
+      <button class="add-wheels-fab" id="addWheelsBtn" title="Lend Your Wheels">
+        + Add Wheels
+      </button>
 
       <!-- REVIEW BUTTON -->
       <button class="review-fab" id="reviewBtn" title="Submit a Review">
