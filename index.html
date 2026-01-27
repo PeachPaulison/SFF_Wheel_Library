@@ -1291,8 +1291,13 @@ h1{
 
           <form id="addWheelsForm">
             <div class="form-group">
-              <label for="lenderPhone">Member ID (Phone Number) *</label>
+              <label for="lenderPhone">Phone Number *</label>
               <input type="tel" id="lenderPhone" name="lender_phone" placeholder="(555) 123-4567" required>
+            </div>
+
+            <div class="form-group">
+              <label for="lenderDisplayName">Display Name (from WhatsApp group) *</label>
+              <input type="text" id="lenderDisplayName" name="lender_display_name" placeholder="Your name as it appears in SFF group" required>
             </div>
 
             <div class="form-group">
@@ -1970,6 +1975,7 @@ addWheelsForm.onsubmit = async function(e) {
     // Collect form data
     const formData = {
       lender_phone: document.getElementById('lenderPhone').value,
+      lender_display_name: document.getElementById('lenderDisplayName').value,
       wheel_name: document.getElementById('wheelName').value,
       brand: document.getElementById('brand').value,
       wheel_size: document.getElementById('wheelSize').value,
