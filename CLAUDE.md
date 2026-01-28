@@ -330,17 +330,18 @@ Each filter category has a unique neon color:
 ### Data Structures
 
 #### Inventory Object
+**Note**: Each object represents ONE physical set from ONE lender.
 ```javascript
 {
-  id: "W001",                    // Unique identifier
+  id: "W001",                    // Unique identifier (primary key)
   name: "Radar Energy 57",       // Display name
   brand: "Radar",                // Manufacturer
   size: "57mm",                  // Diameter
   material: "urethane",          // Construction material
   duroRange: "78A",              // Hardness rating
   bestFor: ["rhythm", "jam"],    // Array of environments
-  totalSets: 3,                  // Total sets available
-  onLoanSets: 1                  // Currently checked out
+  status: "available",           // available / checked out / returned
+  lenderId: "V123"               // Member ID of lender
 }
 ```
 
@@ -521,18 +522,19 @@ Grep({
 **Sheet Structure**:
 
 **Inventory Sheet (gid=0)**:
+**Data Model**: Each row represents ONE physical set of wheels from ONE lender. If multiple members lend the same wheel type (e.g., "Radar Energy 57"), they appear as separate rows with unique wheel_ids.
+
 | Column | Type | Example | Notes |
 |--------|------|---------|-------|
-| wheel_id | String | W001 | Unique identifier, auto-generated |
+| wheel_id | String | W001 | Unique identifier (primary key), auto-generated |
 | wheel_name | String | Radar Energy 57 | Display name |
 | brand | String | Radar | Manufacturer |
 | wheel_size | String | 57mm | Diameter with unit |
 | wheel_material | String | urethane | Material type |
 | durometer_category | String | soft (88A-92A) | Hardness range |
 | best_for | String | rhythm, jam | Comma-separated |
-| total_sets | Number | 3 | Total inventory |
-| on_loan_sets | Number | 1 | Currently borrowed |
-| status | String | available | Operational status |
+| status | String | available | available / checked out / returned |
+| lender_id | String | V123 | Member ID of the lender |
 
 **Reviews Sheet (gid=1)**:
 | Column | Type | Example | Notes |
@@ -582,8 +584,43 @@ Grep({
 **Deployment**:
 - Deployed as web app with public access
 - Version: Latest (auto-updates)
-- Execute as: User accessing the web app
-- Who has access: Anyone
+- Execute as: Me
+- Who has access: Anyone with a Google account
+
+#### Backend Implementation (Updated)
+
+**✅ UPDATED**: An updated Google Apps Script backend has been provided in this repository.
+
+**Location**: `/home/user/SFF_Wheel_Library/apps-script-backend.js`
+
+**Deployment Guide**: See `APPS_SCRIPT_DEPLOYMENT.md` for step-by-step instructions.
+
+**Features**:
+1. ✅ Member verification against the Members sheet (security feature)
+2. ✅ Auto-generated wheel IDs with 3-digit format (W001, W002, W003)
+3. ✅ Dynamic column mapping (resilient to column reordering)
+4. ✅ Phone number normalization (handles various formats)
+5. ✅ Bearing fields support (bearings_included, bearing_size, bearing_material)
+6. ✅ Privacy protection (excludes phone numbers from public review data)
+7. ✅ Proper JSON responses with success/error messages
+8. ✅ Error handling with try-catch blocks
+9. ✅ Removed num_sets field (no longer used)
+10. ✅ Sheet name consistency ("Inventory" in both doPost and onEdit)
+
+**Required Sheets**:
+1. **Inventory** - Stores wheel data
+2. **Reviews** - Stores review submissions
+3. **Members** - Validates member phone numbers (NEW - REQUIRED)
+
+**Testing Checklist**:
+- [ ] Submit form with valid member phone → should succeed
+- [ ] Submit form with invalid phone → should fail with error message
+- [ ] Check wheel ID increments correctly (W001, W002, W003...)
+- [ ] Verify all fields appear in correct columns in Inventory sheet
+- [ ] Test bearing fields (with and without bearings)
+- [ ] Confirm status is set to "available" for new wheels
+- [ ] Test doGet() returns reviews without phone numbers
+- [ ] Test dynamic column mapping by reordering columns
 
 ---
 
@@ -1033,10 +1070,13 @@ Based on README.md goals:
 
 ### File Locations
 ```
-Main app:           /home/user/SFF_Wheel_Library/index.html
-Service worker:     /home/user/SFF_Wheel_Library/service-worker.js
-PWA manifest:       /home/user/SFF_Wheel_Library/manifest.json
-Documentation:      /home/user/SFF_Wheel_Library/README.md
+Main app:             /home/user/SFF_Wheel_Library/index.html
+Service worker:       /home/user/SFF_Wheel_Library/service-worker.js
+PWA manifest:         /home/user/SFF_Wheel_Library/manifest.json
+User documentation:   /home/user/SFF_Wheel_Library/README.md
+AI guide:             /home/user/SFF_Wheel_Library/CLAUDE.md
+Apps Script backend:  /home/user/SFF_Wheel_Library/apps-script-backend.js
+Apps Script deploy:   /home/user/SFF_Wheel_Library/APPS_SCRIPT_DEPLOYMENT.md
 ```
 
 ### Key URLs
@@ -1104,6 +1144,6 @@ Material (purple):    urethane, vanathane, fiberglass, wood, clay, other
 
 ---
 
-**Last Updated**: 2026-01-23
-**Version**: 1.0
+**Last Updated**: 2026-01-28
+**Version**: 1.1
 **Claude Session**: session_015pArBe6Yyeb3pdyvePzfBb
