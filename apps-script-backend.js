@@ -8,8 +8,8 @@
  * 4. Member validation against Members sheet
  *
  * Deploy as: Web app
- * Execute as: User accessing the web app
- * Who has access: Anyone
+ * Execute as: Me
+ * Who has access: Anyone with a Google account
  */
 
 // ============================================

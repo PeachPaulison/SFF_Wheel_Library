@@ -102,7 +102,7 @@ The script needs an **onEdit** trigger to auto-generate wheel IDs.
 4. Configure the deployment:
    - Description: "SFF Wheel Library Backend - v2 (Member validation + bearings)"
    - Execute as: **Me** (your Google account)
-   - Who has access: **Anyone**
+   - Who has access: **Anyone with a Google account**
 5. Click **Deploy**
 6. **Copy the Web App URL** (you'll need this for the frontend)
 

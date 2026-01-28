@@ -584,8 +584,8 @@ Grep({
 **Deployment**:
 - Deployed as web app with public access
 - Version: Latest (auto-updates)
-- Execute as: User accessing the web app
-- Who has access: Anyone
+- Execute as: Me
+- Who has access: Anyone with a Google account
 
 #### Backend Implementation (Updated)
 
