@@ -587,91 +587,40 @@ Grep({
 - Execute as: User accessing the web app
 - Who has access: Anyone
 
-#### Known Issues with Apps Script Backend
+#### Backend Implementation (Updated)
 
-**⚠️ IMPORTANT**: The Google Apps Script backend has several known issues that need to be addressed before production deployment. These issues affect both the "Add Wheels" form (doPost) and the inventory management (onEdit).
+**✅ UPDATED**: An updated Google Apps Script backend has been provided in this repository.
 
-**Strengths**:
-1. ✅ Good error handling with try-catch blocks
-2. ✅ Member verification against the Members sheet (security feature)
-3. ✅ Auto-generated wheel IDs to maintain consistency
-4. ✅ Privacy protection by excluding phone numbers from public review data
-5. ✅ Clear JSON responses for the frontend to parse
+**Location**: `/home/user/SFF_Wheel_Library/apps-script-backend.js`
 
-**Issues to Fix**:
+**Deployment Guide**: See `APPS_SCRIPT_DEPLOYMENT.md` for step-by-step instructions.
 
-**1. Wheel ID Format Inconsistency**
-```javascript
-// In doPost() - uses 3 digits (W001)
-const newWheelId = 'W' + String(maxId + 1).padStart(3, '0');
+**Features**:
+1. ✅ Member verification against the Members sheet (security feature)
+2. ✅ Auto-generated wheel IDs with 3-digit format (W001, W002, W003)
+3. ✅ Dynamic column mapping (resilient to column reordering)
+4. ✅ Phone number normalization (handles various formats)
+5. ✅ Bearing fields support (bearings_included, bearing_size, bearing_material)
+6. ✅ Privacy protection (excludes phone numbers from public review data)
+7. ✅ Proper JSON responses with success/error messages
+8. ✅ Error handling with try-catch blocks
+9. ✅ Removed num_sets field (no longer used)
+10. ✅ Sheet name consistency ("Inventory" in both doPost and onEdit)
 
-// In onEdit() - uses 4 digits (W0001)
-wheelIdCell.setValue('W' + String(nextNum).padStart(4, '0'));
-```
-**Fix**: Both should use 3 digits to match CLAUDE.md documentation (W001, W002, W003...).
-```javascript
-// Change onEdit() line to:
-wheelIdCell.setValue('W' + String(nextNum).padStart(3, '0'));
-```
+**Required Sheets**:
+1. **Inventory** - Stores wheel data
+2. **Reviews** - Stores review submissions
+3. **Members** - Validates member phone numbers (NEW - REQUIRED)
 
-**2. Column Order Verification Needed**
-The hardcoded `appendRow()` assumes a specific column order. Before deploying, you should verify the actual sheet structure matches the expected order.
-
-**Recommendation**: Add dynamic column mapping like `onEdit()` does - this makes it resilient to column reordering:
-```javascript
-// Instead of hardcoded appendRow, use:
-const headers = inventorySheet.getRange(1, 1, 1, inventorySheet.getLastColumn()).getValues()[0];
-const rowData = new Array(headers.length).fill('');
-rowData[headers.indexOf('wheel_id')] = newWheelId;
-rowData[headers.indexOf('wheel_name')] = data.wheel_name;
-// ... etc for all fields
-inventorySheet.appendRow(rowData);
-```
-
-**3. Sheet Name Mismatch**
-```javascript
-// In doPost() - correctly uses:
-const inventorySheet = sheet.getSheetByName('Inventory');
-
-// In onEdit() - checks for wrong name:
-if (sheet.getName() !== 'Wheels') return;
-```
-**Fix**: Based on CLAUDE.md, it should be "Inventory". Make sure `onEdit()` checks for the correct sheet name:
-```javascript
-if (sheet.getName() !== 'Inventory') return;
-```
-
-**4. best_for Field Format**
-The form might send `best_for` as an array `["rhythm", "jam"]` or comma-separated string `"rhythm, jam"`. Ensure consistency:
-```javascript
-// In doPost(), normalize it:
-const bestFor = Array.isArray(data.best_for)
-  ? data.best_for.join(', ')
-  : String(data.best_for);
-
-// Then use in appendRow:
-bestFor,  // best_for (comma-separated string)
-```
-
-**Testing Checklist**
-
-Before deploying the Apps Script, test:
+**Testing Checklist**:
 - [ ] Submit form with valid member phone → should succeed
 - [ ] Submit form with invalid phone → should fail with error message
 - [ ] Check wheel ID increments correctly (W001, W002, W003...)
 - [ ] Verify all fields appear in correct columns in Inventory sheet
+- [ ] Test bearing fields (with and without bearings)
 - [ ] Confirm status is set to "available" for new wheels
-- [ ] Test `doGet()` returns reviews without phone numbers
-
-**Recommendations**:
-
-**Option 1: Quick Fix (Keep Hardcoded)**
-1. Fix wheel ID format to 3 digits in both functions
-2. Verify column order matches your actual sheet
-3. Fix sheet name in `onEdit()` to "Inventory"
-
-**Option 2: Robust Solution (Dynamic Mapping)**
-Rewrite `doPost()` to use dynamic column mapping like `onEdit()` does - this makes it resilient to column reordering.
+- [ ] Test doGet() returns reviews without phone numbers
+- [ ] Test dynamic column mapping by reordering columns
 
 ---
 
@@ -1121,10 +1070,13 @@ Based on README.md goals:
 
 ### File Locations
 ```
-Main app:           /home/user/SFF_Wheel_Library/index.html
-Service worker:     /home/user/SFF_Wheel_Library/service-worker.js
-PWA manifest:       /home/user/SFF_Wheel_Library/manifest.json
-Documentation:      /home/user/SFF_Wheel_Library/README.md
+Main app:             /home/user/SFF_Wheel_Library/index.html
+Service worker:       /home/user/SFF_Wheel_Library/service-worker.js
+PWA manifest:         /home/user/SFF_Wheel_Library/manifest.json
+User documentation:   /home/user/SFF_Wheel_Library/README.md
+AI guide:             /home/user/SFF_Wheel_Library/CLAUDE.md
+Apps Script backend:  /home/user/SFF_Wheel_Library/apps-script-backend.js
+Apps Script deploy:   /home/user/SFF_Wheel_Library/APPS_SCRIPT_DEPLOYMENT.md
 ```
 
 ### Key URLs
@@ -1192,6 +1144,6 @@ Material (purple):    urethane, vanathane, fiberglass, wood, clay, other
 
 ---
 
-**Last Updated**: 2026-01-23
-**Version**: 1.0
+**Last Updated**: 2026-01-28
+**Version**: 1.1
 **Claude Session**: session_015pArBe6Yyeb3pdyvePzfBb
