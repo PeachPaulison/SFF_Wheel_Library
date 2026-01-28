@@ -1488,9 +1488,8 @@ h1{
           material: obj.wheel_material,
           duroRange: obj.durometer_category,
           bestFor: obj.best_for ? obj.best_for.split(",").map((s) => s.trim()) : [],
-          totalSets: 1,
-          onLoanSets:
-            obj.status && String(obj.status).toLowerCase() !== "available" ? 1 : 0,
+          status: obj.status ? String(obj.status).toLowerCase() : "available",
+          lenderId: obj.lender_id || "",
         };
       });
 
@@ -1585,8 +1584,7 @@ h1{
       }
 
       const matches = inventory.filter((wheel) => {
-        const availableSets = wheel.totalSets - wheel.onLoanSets;
-        if (availableSets <= 0) return false;
+        if (wheel.status !== "available") return false;
         if (environment && !wheel.bestFor.includes(environment)) return false;
         if (size && wheel.size !== size) return false;
         if (duro && wheel.duroRange !== duro) return false;
@@ -1612,26 +1610,47 @@ h1{
         return;
       }
 
-      let html = "";
+      // Group wheels by name
+      const groupedWheels = {};
       matches.forEach((wheel) => {
-        const availableSets = wheel.totalSets - wheel.onLoanSets;
+        if (!groupedWheels[wheel.name]) {
+          groupedWheels[wheel.name] = {
+            name: wheel.name,
+            brand: wheel.brand,
+            size: wheel.size,
+            duroRange: wheel.duroRange,
+            material: wheel.material,
+            bestFor: wheel.bestFor,
+            sets: []
+          };
+        }
+        groupedWheels[wheel.name].sets.push({
+          id: wheel.id,
+          lenderId: wheel.lenderId
+        });
+      });
+
+      let html = "";
+      Object.values(groupedWheels).forEach((group) => {
+        const lenders = group.sets.map(s => s.lenderId || "Unknown").join(", ");
+        const firstSetId = group.sets[0].id;
         html += `
           <div class="wheel-card">
             <div class="wheel-header">
-              <div class="wheel-name">${wheel.name}</div>
-              <div class="wheel-availability${availableSets <= 0 ? " none" : ""}">
-                ${availableSets} set${availableSets !== 1 ? "s" : ""} available
+              <div class="wheel-name">${group.name}</div>
+              <div class="wheel-availability">
+                Available from: ${lenders}
               </div>
             </div>
             <div class="tag-row">
-              <span class="tag"><span class="tag-dot"></span>${wheel.brand}</span>
-              <span class="tag"><span class="tag-dot"></span>${wheel.size}</span>
-              <span class="tag"><span class="tag-dot"></span>${wheel.duroRange}</span>
-              <span class="tag"><span class="tag-dot"></span>${wheel.material}</span>
+              <span class="tag"><span class="tag-dot"></span>${group.brand}</span>
+              <span class="tag"><span class="tag-dot"></span>${group.size}</span>
+              <span class="tag"><span class="tag-dot"></span>${group.duroRange}</span>
+              <span class="tag"><span class="tag-dot"></span>${group.material}</span>
             </div>
             <div class="wheel-footer">
-              <span>Best for: ${wheel.bestFor.join(", ")}</span>
-              <button class="borrow-btn" data-wheel-id="${wheel.id}">Borrow this set</button>
+              <span>Best for: ${group.bestFor.join(", ")}</span>
+              <button class="borrow-btn" data-wheel-id="${firstSetId}">Borrow this set</button>
             </div>
           </div>
         `;
@@ -1651,9 +1670,8 @@ h1{
       const wheel = inventory.find((w) => w.id === wheelId);
       if (!wheel) return;
 
-      const availableSets = wheel.totalSets - wheel.onLoanSets;
-      if (availableSets <= 0) {
-        alert("All sets of this wheel are already out on loan.");
+      if (wheel.status !== "available") {
+        alert("This wheel is already out on loan.");
         return;
       }
 
@@ -1664,7 +1682,7 @@ h1{
       const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       const note = `Checked out around ${timeStr}.`;
 
-      wheel.onLoanSets += 1;
+      wheel.status = "checked out";
 
       loans.unshift({
         id: "loan-" + now.getTime(),

@@ -330,17 +330,18 @@ Each filter category has a unique neon color:
 ### Data Structures
 
 #### Inventory Object
+**Note**: Each object represents ONE physical set from ONE lender.
 ```javascript
 {
-  id: "W001",                    // Unique identifier
+  id: "W001",                    // Unique identifier (primary key)
   name: "Radar Energy 57",       // Display name
   brand: "Radar",                // Manufacturer
   size: "57mm",                  // Diameter
   material: "urethane",          // Construction material
   duroRange: "78A",              // Hardness rating
   bestFor: ["rhythm", "jam"],    // Array of environments
-  totalSets: 3,                  // Total sets available
-  onLoanSets: 1                  // Currently checked out
+  status: "available",           // available / checked out / returned
+  lenderId: "V123"               // Member ID of lender
 }
 ```
 
@@ -521,18 +522,19 @@ Grep({
 **Sheet Structure**:
 
 **Inventory Sheet (gid=0)**:
+**Data Model**: Each row represents ONE physical set of wheels from ONE lender. If multiple members lend the same wheel type (e.g., "Radar Energy 57"), they appear as separate rows with unique wheel_ids.
+
 | Column | Type | Example | Notes |
 |--------|------|---------|-------|
-| wheel_id | String | W001 | Unique identifier, auto-generated |
+| wheel_id | String | W001 | Unique identifier (primary key), auto-generated |
 | wheel_name | String | Radar Energy 57 | Display name |
 | brand | String | Radar | Manufacturer |
 | wheel_size | String | 57mm | Diameter with unit |
 | wheel_material | String | urethane | Material type |
 | durometer_category | String | soft (88A-92A) | Hardness range |
 | best_for | String | rhythm, jam | Comma-separated |
-| total_sets | Number | 3 | Total inventory |
-| on_loan_sets | Number | 1 | Currently borrowed |
-| status | String | available | Operational status |
+| status | String | available | available / checked out / returned |
+| lender_id | String | V123 | Member ID of the lender |
 
 **Reviews Sheet (gid=1)**:
 | Column | Type | Example | Notes |
@@ -612,47 +614,7 @@ wheelIdCell.setValue('W' + String(nextNum).padStart(4, '0'));
 wheelIdCell.setValue('W' + String(nextNum).padStart(3, '0'));
 ```
 
-**2. Missing total_sets Field**
-The "Add Wheels" form collects `num_sets`, but the `appendRow()` in doPost() doesn't include it. Looking at the Inventory sheet structure from CLAUDE.md:
-```javascript
-// ❌ MISSING total_sets and on_loan_sets in appendRow()!
-inventorySheet.appendRow([
-  newWheelId,           // wheel_id
-  data.wheel_name,      // wheel_name
-  data.brand,           // brand
-  '',                   // durometer_range (empty placeholder)
-  data.durometer,       // durometer_category
-  data.wheel_size,      // wheel_size
-  '',                   // wheel_color (empty placeholder)
-  data.material,        // wheel_material
-  '',                   // wheel_features (empty placeholder)
-  '',                   // wheel_description (empty placeholder)
-  data.best_for,        // best_for
-  '',                   // bearing_size (empty placeholder)
-  '',                   // bearing_material (empty placeholder)
-  '',                   // bearing_abec (empty placeholder)
-  '',                   // bearings_included (empty placeholder)
-  '',                   // image_url (empty placeholder)
-  '',                   // notes (empty placeholder)
-  'available',          // status
-  data.timestamp,       // timestamp
-  '',                   // _current_holder (empty placeholder)
-  data.lender_phone,    // lender_member_phone
-  // ❌ MISSING total_sets and on_loan_sets!
-]);
-```
-
-**Fix**: Add (verify actual sheet structure first):
-```javascript
-inventorySheet.appendRow([
-  // ... all the above fields ...
-  data.lender_phone,              // lender_member_phone
-  parseInt(data.num_sets) || 0,   // total_sets
-  0                               // on_loan_sets (starts at 0)
-]);
-```
-
-**3. Column Order Verification Needed**
+**2. Column Order Verification Needed**
 The hardcoded `appendRow()` assumes a specific column order. Before deploying, you should verify the actual sheet structure matches the expected order.
 
 **Recommendation**: Add dynamic column mapping like `onEdit()` does - this makes it resilient to column reordering:
@@ -666,7 +628,7 @@ rowData[headers.indexOf('wheel_name')] = data.wheel_name;
 inventorySheet.appendRow(rowData);
 ```
 
-**4. Sheet Name Mismatch**
+**3. Sheet Name Mismatch**
 ```javascript
 // In doPost() - correctly uses:
 const inventorySheet = sheet.getSheetByName('Inventory');
@@ -679,7 +641,7 @@ if (sheet.getName() !== 'Wheels') return;
 if (sheet.getName() !== 'Inventory') return;
 ```
 
-**5. best_for Field Format**
+**4. best_for Field Format**
 The form might send `best_for` as an array `["rhythm", "jam"]` or comma-separated string `"rhythm, jam"`. Ensure consistency:
 ```javascript
 // In doPost(), normalize it:
@@ -691,17 +653,6 @@ const bestFor = Array.isArray(data.best_for)
 bestFor,  // best_for (comma-separated string)
 ```
 
-**6. Missing Validation for num_sets**
-```javascript
-// Add validation:
-if (!data.num_sets || parseInt(data.num_sets) < 1) {
-  return ContentService.createTextOutput(JSON.stringify({
-    success: false,
-    error: 'Number of sets must be at least 1'
-  })).setMimeType(ContentService.MimeType.JSON);
-}
-```
-
 **Testing Checklist**
 
 Before deploying the Apps Script, test:
@@ -709,17 +660,15 @@ Before deploying the Apps Script, test:
 - [ ] Submit form with invalid phone → should fail with error message
 - [ ] Check wheel ID increments correctly (W001, W002, W003...)
 - [ ] Verify all fields appear in correct columns in Inventory sheet
-- [ ] Confirm `total_sets` is set to the number entered in form
-- [ ] Confirm `on_loan_sets` starts at 0
+- [ ] Confirm status is set to "available" for new wheels
 - [ ] Test `doGet()` returns reviews without phone numbers
 
 **Recommendations**:
 
 **Option 1: Quick Fix (Keep Hardcoded)**
 1. Fix wheel ID format to 3 digits in both functions
-2. Add `total_sets` and `on_loan_sets` to the `appendRow()`
-3. Verify column order matches your actual sheet
-4. Fix sheet name in `onEdit()` to "Inventory"
+2. Verify column order matches your actual sheet
+3. Fix sheet name in `onEdit()` to "Inventory"
 
 **Option 2: Robust Solution (Dynamic Mapping)**
 Rewrite `doPost()` to use dynamic column mapping like `onEdit()` does - this makes it resilient to column reordering.
