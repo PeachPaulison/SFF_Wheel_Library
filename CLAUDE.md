@@ -585,6 +585,145 @@ Grep({
 - Execute as: User accessing the web app
 - Who has access: Anyone
 
+#### Known Issues with Apps Script Backend
+
+**⚠️ IMPORTANT**: The Google Apps Script backend has several known issues that need to be addressed before production deployment. These issues affect both the "Add Wheels" form (doPost) and the inventory management (onEdit).
+
+**Strengths**:
+1. ✅ Good error handling with try-catch blocks
+2. ✅ Member verification against the Members sheet (security feature)
+3. ✅ Auto-generated wheel IDs to maintain consistency
+4. ✅ Privacy protection by excluding phone numbers from public review data
+5. ✅ Clear JSON responses for the frontend to parse
+
+**Issues to Fix**:
+
+**1. Wheel ID Format Inconsistency**
+```javascript
+// In doPost() - uses 3 digits (W001)
+const newWheelId = 'W' + String(maxId + 1).padStart(3, '0');
+
+// In onEdit() - uses 4 digits (W0001)
+wheelIdCell.setValue('W' + String(nextNum).padStart(4, '0'));
+```
+**Fix**: Both should use 3 digits to match CLAUDE.md documentation (W001, W002, W003...).
+```javascript
+// Change onEdit() line to:
+wheelIdCell.setValue('W' + String(nextNum).padStart(3, '0'));
+```
+
+**2. Missing total_sets Field**
+The "Add Wheels" form collects `num_sets`, but the `appendRow()` in doPost() doesn't include it. Looking at the Inventory sheet structure from CLAUDE.md:
+```javascript
+// ❌ MISSING total_sets and on_loan_sets in appendRow()!
+inventorySheet.appendRow([
+  newWheelId,           // wheel_id
+  data.wheel_name,      // wheel_name
+  data.brand,           // brand
+  '',                   // durometer_range (empty placeholder)
+  data.durometer,       // durometer_category
+  data.wheel_size,      // wheel_size
+  '',                   // wheel_color (empty placeholder)
+  data.material,        // wheel_material
+  '',                   // wheel_features (empty placeholder)
+  '',                   // wheel_description (empty placeholder)
+  data.best_for,        // best_for
+  '',                   // bearing_size (empty placeholder)
+  '',                   // bearing_material (empty placeholder)
+  '',                   // bearing_abec (empty placeholder)
+  '',                   // bearings_included (empty placeholder)
+  '',                   // image_url (empty placeholder)
+  '',                   // notes (empty placeholder)
+  'available',          // status
+  data.timestamp,       // timestamp
+  '',                   // _current_holder (empty placeholder)
+  data.lender_phone,    // lender_member_phone
+  // ❌ MISSING total_sets and on_loan_sets!
+]);
+```
+
+**Fix**: Add (verify actual sheet structure first):
+```javascript
+inventorySheet.appendRow([
+  // ... all the above fields ...
+  data.lender_phone,              // lender_member_phone
+  parseInt(data.num_sets) || 0,   // total_sets
+  0                               // on_loan_sets (starts at 0)
+]);
+```
+
+**3. Column Order Verification Needed**
+The hardcoded `appendRow()` assumes a specific column order. Before deploying, you should verify the actual sheet structure matches the expected order.
+
+**Recommendation**: Add dynamic column mapping like `onEdit()` does - this makes it resilient to column reordering:
+```javascript
+// Instead of hardcoded appendRow, use:
+const headers = inventorySheet.getRange(1, 1, 1, inventorySheet.getLastColumn()).getValues()[0];
+const rowData = new Array(headers.length).fill('');
+rowData[headers.indexOf('wheel_id')] = newWheelId;
+rowData[headers.indexOf('wheel_name')] = data.wheel_name;
+// ... etc for all fields
+inventorySheet.appendRow(rowData);
+```
+
+**4. Sheet Name Mismatch**
+```javascript
+// In doPost() - correctly uses:
+const inventorySheet = sheet.getSheetByName('Inventory');
+
+// In onEdit() - checks for wrong name:
+if (sheet.getName() !== 'Wheels') return;
+```
+**Fix**: Based on CLAUDE.md, it should be "Inventory". Make sure `onEdit()` checks for the correct sheet name:
+```javascript
+if (sheet.getName() !== 'Inventory') return;
+```
+
+**5. best_for Field Format**
+The form might send `best_for` as an array `["rhythm", "jam"]` or comma-separated string `"rhythm, jam"`. Ensure consistency:
+```javascript
+// In doPost(), normalize it:
+const bestFor = Array.isArray(data.best_for)
+  ? data.best_for.join(', ')
+  : String(data.best_for);
+
+// Then use in appendRow:
+bestFor,  // best_for (comma-separated string)
+```
+
+**6. Missing Validation for num_sets**
+```javascript
+// Add validation:
+if (!data.num_sets || parseInt(data.num_sets) < 1) {
+  return ContentService.createTextOutput(JSON.stringify({
+    success: false,
+    error: 'Number of sets must be at least 1'
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+```
+
+**Testing Checklist**
+
+Before deploying the Apps Script, test:
+- [ ] Submit form with valid member phone → should succeed
+- [ ] Submit form with invalid phone → should fail with error message
+- [ ] Check wheel ID increments correctly (W001, W002, W003...)
+- [ ] Verify all fields appear in correct columns in Inventory sheet
+- [ ] Confirm `total_sets` is set to the number entered in form
+- [ ] Confirm `on_loan_sets` starts at 0
+- [ ] Test `doGet()` returns reviews without phone numbers
+
+**Recommendations**:
+
+**Option 1: Quick Fix (Keep Hardcoded)**
+1. Fix wheel ID format to 3 digits in both functions
+2. Add `total_sets` and `on_loan_sets` to the `appendRow()`
+3. Verify column order matches your actual sheet
+4. Fix sheet name in `onEdit()` to "Inventory"
+
+**Option 2: Robust Solution (Dynamic Mapping)**
+Rewrite `doPost()` to use dynamic column mapping like `onEdit()` does - this makes it resilient to column reordering.
+
 ---
 
 ## Deployment & Release
