@@ -1286,7 +1286,7 @@ h1{
           </div>
 
           <div class="privacy-notice">
-            <strong>Note:</strong> All loans are at the discretion of the lender. Your phone number will be used to verify SFF membership.
+            <strong>Note:</strong> Your phone number will be verified against the SFF member list. Only verified members can add wheels to the library. All loans are at the discretion of the lender.
           </div>
 
           <form id="addWheelsForm">
@@ -1375,8 +1375,33 @@ h1{
             </div>
 
             <div class="form-group">
-              <label for="numSets">Number of Sets Available *</label>
-              <input type="number" id="numSets" name="num_sets" min="1" placeholder="e.g., 1, 2, 3" required>
+              <label class="checkbox-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="bearingsIncluded" name="bearings_included">
+                <span>Bearings Included</span>
+              </label>
+            </div>
+
+            <div id="bearingFields" style="display: none;">
+              <div class="form-group">
+                <label for="bearingSize">Bearing Size *</label>
+                <select id="bearingSize" name="bearing_size">
+                  <option value="">-- Select size --</option>
+                  <option value="608">608 (standard)</option>
+                  <option value="627">627 (micro)</option>
+                  <option value="688">688 (mini)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="bearingMaterial">Bearing Material *</label>
+                <select id="bearingMaterial" name="bearing_material">
+                  <option value="">-- Select material --</option>
+                  <option value="Steel">Steel</option>
+                  <option value="Ceramic">Ceramic</option>
+                  <option value="Titanium">Titanium</option>
+                  <option value="Chrome Steel">Chrome Steel</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-actions">
@@ -1981,6 +2006,26 @@ addWheelsModal.onclick = function(e) {
   }
 };
 
+// Bearings conditional fields toggle
+const bearingsCheckbox = document.getElementById('bearingsIncluded');
+const bearingFields = document.getElementById('bearingFields');
+const bearingSize = document.getElementById('bearingSize');
+const bearingMaterial = document.getElementById('bearingMaterial');
+
+bearingsCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    bearingFields.style.display = 'block';
+    bearingSize.required = true;
+    bearingMaterial.required = true;
+  } else {
+    bearingFields.style.display = 'none';
+    bearingSize.required = false;
+    bearingMaterial.required = false;
+    bearingSize.value = '';
+    bearingMaterial.value = '';
+  }
+});
+
 // Form submission (placeholder - will connect to Apps Script later)
 addWheelsForm.onsubmit = async function(e) {
   e.preventDefault();
@@ -1991,6 +2036,7 @@ addWheelsForm.onsubmit = async function(e) {
 
   try {
     // Collect form data
+    const bearingsIncluded = document.getElementById('bearingsIncluded').checked;
     const formData = {
       lender_phone: document.getElementById('lenderPhone').value,
       lender_display_name: document.getElementById('lenderDisplayName').value,
@@ -2000,28 +2046,54 @@ addWheelsForm.onsubmit = async function(e) {
       durometer: document.getElementById('durometer').value,
       material: document.getElementById('material').value,
       best_for: Array.from(document.querySelectorAll('input[name="best_for"]:checked')).map(cb => cb.value).join(', '),
-      num_sets: document.getElementById('numSets').value,
+      bearings_included: bearingsIncluded ? 'Yes' : 'No',
+      bearing_size: bearingsIncluded ? document.getElementById('bearingSize').value : '',
+      bearing_material: bearingsIncluded ? document.getElementById('bearingMaterial').value : '',
       timestamp: new Date().toISOString()
     };
 
     console.log('Add Wheels form data:', formData);
 
-    // TODO: Send to Google Apps Script endpoint
-    // For now, just show success message
-    addWheelsMessage.className = 'form-message success';
-    addWheelsMessage.textContent = '✅ Wheel added successfully! (Backend connection coming soon)';
-    addWheelsMessage.style.display = 'block';
+    // Send to Google Apps Script endpoint
+    // Note: Phone number will be validated against Members sheet on backend
+    const response = await fetch(REVIEW_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
 
-    setTimeout(function() {
-      addWheelsModal.classList.remove('active');
-      addWheelsForm.reset();
-      addWheelsMessage.style.display = 'none';
-    }, 2000);
+    const result = await response.json();
+
+    if (result.success) {
+      addWheelsMessage.className = 'form-message success';
+      addWheelsMessage.textContent = '✅ Wheel added successfully! Refreshing inventory...';
+      addWheelsMessage.style.display = 'block';
+
+      // Reload inventory data
+      setTimeout(async function() {
+        await loadInventoryFromSheet();
+        addWheelsModal.classList.remove('active');
+        addWheelsForm.reset();
+        addWheelsMessage.style.display = 'none';
+        bearingFields.style.display = 'none';
+      }, 2000);
+    } else {
+      throw new Error(result.error || 'Submission failed');
+    }
 
   } catch (error) {
     console.error('Add wheels error:', error);
     addWheelsMessage.className = 'form-message error';
-    addWheelsMessage.textContent = '❌ Failed to add wheels. Please try again.';
+
+    // Check for specific error messages
+    const errorMsg = error.message || '';
+    if (errorMsg.includes('member') || errorMsg.includes('verified') || errorMsg.includes('phone')) {
+      addWheelsMessage.textContent = '❌ ' + errorMsg + ' Please ensure you\'re using the phone number registered with SFF.';
+    } else {
+      addWheelsMessage.textContent = '❌ Failed to add wheels. ' + (errorMsg || 'Please try again.');
+    }
     addWheelsMessage.style.display = 'block';
   } finally {
     submitBtn.disabled = false;
