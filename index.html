@@ -1500,11 +1500,6 @@ h1{
             </div>
 
             <div class="form-group">
-              <label for="signUpEmail">Email (optional)</label>
-              <input type="email" id="signUpEmail" name="email" placeholder="your.email@example.com">
-            </div>
-
-            <div class="form-group">
               <label for="signUpExperience">Skating Experience *</label>
               <select id="signUpExperience" name="experience_level" required>
                 <option value="">-- Select experience level --</option>
@@ -1526,18 +1521,6 @@ h1{
                 <option value="Park/Street">Park/Street</option>
                 <option value="Trail/Outdoor">Trail/Outdoor</option>
                 <option value="Multiple/All">Multiple/All styles</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="signUpReferral">How did you hear about us? (optional)</label>
-              <select id="signUpReferral" name="referral_source">
-                <option value="">-- Select source --</option>
-                <option value="WhatsApp group">WhatsApp group</option>
-                <option value="Friend/Skater">Friend/Skater</option>
-                <option value="Instagram">Instagram</option>
-                <option value="At the rink">At the rink</option>
-                <option value="Other">Other</option>
               </select>
             </div>
 
@@ -2321,10 +2304,8 @@ signUpForm.onsubmit = async function(e) {
       action: 'signup',
       phone_number: document.getElementById('signUpPhone').value,
       display_name: document.getElementById('signUpDisplayName').value,
-      email: document.getElementById('signUpEmail').value,
       experience_level: document.getElementById('signUpExperience').value,
       primary_style: document.getElementById('signUpEnvironment').value,
-      referral_source: document.getElementById('signUpReferral').value,
       agree_terms: document.getElementById('signUpAgree').checked,
       timestamp: new Date().toISOString()
     };
