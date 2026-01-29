@@ -758,6 +758,16 @@ h1{
   text-align: center;
 }
 
+.action-btn-signup {
+  background: linear-gradient(135deg, var(--neon-orange), var(--neon-yellow));
+  color: #0d0d0d;
+}
+
+.action-btn-signup:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,111,0,.6), 0 0 30px rgba(255,111,0,.3);
+}
+
 .action-btn-review {
   background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
   color: #0d0d0d;
@@ -1156,6 +1166,7 @@ h1{
 
           <!-- Action Buttons -->
           <div class="action-buttons">
+            <button class="action-btn action-btn-signup" id="signUpBtn">Sign Up</button>
             <button class="action-btn action-btn-review" id="reviewBtn">Add Review</button>
             <button class="action-btn action-btn-wheels" id="addWheelsBtn">Add Wheels</button>
           </div>
@@ -1311,6 +1322,12 @@ h1{
             </div>
 
             <div class="form-group">
+              <label for="imageUrl">Image URL (optional)</label>
+              <input type="url" id="imageUrl" name="image_url" placeholder="https://example.com/wheel-photo.jpg">
+              <small style="color: rgba(0,0,0,0.6); font-size: 0.85rem;">Link to a photo of the wheels (e.g., from Google Drive, Imgur, etc.)</small>
+            </div>
+
+            <div class="form-group">
               <label for="wheelSize">Wheel Size *</label>
               <select id="wheelSize" name="wheel_size" required>
                 <option value="">-- Select size --</option>
@@ -1413,6 +1430,134 @@ h1{
         </div>
       </div>
 
+      <!-- Checkout Modal -->
+      <div class="review-modal" id="checkoutModal">
+        <div class="review-modal-content">
+          <div class="review-modal-header">
+            <h2 id="checkoutModalTitle">🛼 Borrow Wheels</h2>
+            <button class="review-close" id="closeCheckoutModal">&times;</button>
+          </div>
+
+          <div class="privacy-notice">
+            <strong>Member Verification:</strong> Your phone number will be verified against the SFF member list. Only verified members can borrow wheels.
+          </div>
+
+          <form id="checkoutForm">
+            <input type="hidden" id="checkoutWheelId" name="wheel_id">
+            <input type="hidden" id="checkoutWheelName" name="wheel_name">
+
+            <div class="form-group">
+              <label for="checkoutPhone">Phone Number *</label>
+              <input type="tel" id="checkoutPhone" name="phone_number" placeholder="(555) 123-4567" required>
+            </div>
+
+            <div class="form-group">
+              <label for="checkoutDisplayName">Display Name (from WhatsApp group) *</label>
+              <input type="text" id="checkoutDisplayName" name="display_name" placeholder="Your name as it appears in SFF group" required>
+            </div>
+
+            <div class="form-group">
+              <label for="checkoutReturnDate">Expected Return Date (optional)</label>
+              <input type="date" id="checkoutReturnDate" name="return_date">
+            </div>
+
+            <div class="form-group">
+              <label for="checkoutNotes">Notes (optional)</label>
+              <textarea id="checkoutNotes" name="notes" rows="3" placeholder="E.g., Purple helmet, skating at MSW tonight..."></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" id="cancelCheckoutBtn">Cancel</button>
+              <button type="submit" class="btn-primary">Confirm Checkout</button>
+            </div>
+          </form>
+
+          <div id="checkoutMessage" class="form-message"></div>
+        </div>
+      </div>
+
+      <!-- Sign Up Modal -->
+      <div class="review-modal" id="signUpModal">
+        <div class="review-modal-content">
+          <div class="review-modal-header">
+            <h2>✨ Join the SFF Wheel Library</h2>
+            <button class="review-close" id="closeSignUpModal">&times;</button>
+          </div>
+
+          <div class="privacy-notice">
+            <strong>Welcome!</strong> Sign up to browse and borrow wheels from our community library. Your phone number will be verified against the SFF member list and kept private.
+          </div>
+
+          <form id="signUpForm">
+            <div class="form-group">
+              <label for="signUpPhone">Phone Number *</label>
+              <input type="tel" id="signUpPhone" name="phone_number" placeholder="(555) 123-4567" required>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpDisplayName">Display Name (from WhatsApp group) *</label>
+              <input type="text" id="signUpDisplayName" name="display_name" placeholder="Your name as it appears in SFF group" required>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpEmail">Email (optional)</label>
+              <input type="email" id="signUpEmail" name="email" placeholder="your.email@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="signUpExperience">Skating Experience *</label>
+              <select id="signUpExperience" name="experience_level" required>
+                <option value="">-- Select experience level --</option>
+                <option value="Beginner (less than 1 year)">Beginner (less than 1 year)</option>
+                <option value="Intermediate (1-3 years)">Intermediate (1-3 years)</option>
+                <option value="Advanced (3-5 years)">Advanced (3-5 years)</option>
+                <option value="Expert (5+ years)">Expert (5+ years)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpEnvironment">Primary Skating Style *</label>
+              <select id="signUpEnvironment" name="primary_style" required>
+                <option value="">-- Select your primary style --</option>
+                <option value="Rhythm">Rhythm</option>
+                <option value="Jam">Jam</option>
+                <option value="Artistic">Artistic</option>
+                <option value="Derby">Derby</option>
+                <option value="Park/Street">Park/Street</option>
+                <option value="Trail/Outdoor">Trail/Outdoor</option>
+                <option value="Multiple/All">Multiple/All styles</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="signUpReferral">How did you hear about us? (optional)</label>
+              <select id="signUpReferral" name="referral_source">
+                <option value="">-- Select source --</option>
+                <option value="WhatsApp group">WhatsApp group</option>
+                <option value="Friend/Skater">Friend/Skater</option>
+                <option value="Instagram">Instagram</option>
+                <option value="At the rink">At the rink</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-label" style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="signUpAgree" name="agree_terms" required>
+                <span>I agree to treat borrowed wheels with care and return them in good condition *</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" id="cancelSignUpBtn">Cancel</button>
+              <button type="submit" class="btn-primary">Sign Up</button>
+            </div>
+          </form>
+
+          <div id="signUpMessage" class="form-message"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1508,6 +1653,7 @@ h1{
           id: obj.wheel_id,
           name: obj.wheel_name,
           brand: obj.brand,
+          imageUrl: obj.image_url || "",
           size: obj.wheel_size,
           material: obj.wheel_material,
           duroRange: obj.durometer_category,
@@ -1641,6 +1787,7 @@ h1{
           groupedWheels[wheel.name] = {
             name: wheel.name,
             brand: wheel.brand,
+            imageUrl: wheel.imageUrl || "",
             size: wheel.size,
             duroRange: wheel.duroRange,
             material: wheel.material,
@@ -1658,8 +1805,15 @@ h1{
       Object.values(groupedWheels).forEach((group) => {
         const lenders = group.sets.map(s => s.lenderId || "Unknown").join(", ");
         const firstSetId = group.sets[0].id;
+        const imageHtml = group.imageUrl ? `
+          <div class="wheel-image" style="margin-bottom: 8px;">
+            <img src="${group.imageUrl}" alt="${group.name}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px;" onerror="this.parentElement.style.display='none'">
+          </div>
+        ` : '';
+
         html += `
           <div class="wheel-card">
+            ${imageHtml}
             <div class="wheel-header">
               <div class="wheel-name">${group.name}</div>
               <div class="wheel-availability">
@@ -1699,8 +1853,18 @@ h1{
         return;
       }
 
-      const name = prompt("Skater name (or description)?\nExample: Jess – purple helmet");
-      if (!name) return;
+      // Open checkout modal with wheel info
+      document.getElementById('checkoutWheelId').value = wheel.id;
+      document.getElementById('checkoutWheelName').value = wheel.name;
+      document.getElementById('checkoutModalTitle').textContent = `🛼 Borrow ${wheel.name}`;
+
+      const checkoutModal = document.getElementById('checkoutModal');
+      checkoutModal.classList.add('active');
+    }
+
+    function completeBorrow(wheelId, borrowerName, borrowerPhone) {
+      const wheel = inventory.find((w) => w.id === wheelId);
+      if (!wheel) return;
 
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -1711,7 +1875,8 @@ h1{
       loans.unshift({
         id: "loan-" + now.getTime(),
         wheelName: wheel.name,
-        borrower: name.trim(),
+        borrower: borrowerName.trim(),
+        borrowerPhone: borrowerPhone,
         time: timeStr,
         note,
       });
@@ -2041,6 +2206,7 @@ addWheelsForm.onsubmit = async function(e) {
       lender_display_name: document.getElementById('lenderDisplayName').value,
       wheel_name: document.getElementById('wheelName').value,
       brand: document.getElementById('brand').value,
+      image_url: document.getElementById('imageUrl').value,
       wheel_size: document.getElementById('wheelSize').value,
       durometer: document.getElementById('durometer').value,
       material: document.getElementById('material').value,
@@ -2101,6 +2267,222 @@ addWheelsForm.onsubmit = async function(e) {
 };
 
 console.log('Add Wheels form initialized');
+
+// ====== SIGN UP MODAL ======
+const signUpBtn = document.getElementById('signUpBtn');
+const signUpModal = document.getElementById('signUpModal');
+const closeSignUpModal = document.getElementById('closeSignUpModal');
+const cancelSignUpBtn = document.getElementById('cancelSignUpBtn');
+const signUpForm = document.getElementById('signUpForm');
+const signUpMessage = document.getElementById('signUpMessage');
+
+// Open modal
+setTimeout(function() {
+  signUpBtn.onclick = function() {
+    console.log('Sign Up button clicked!');
+    signUpModal.classList.add('active');
+  };
+  console.log('Sign Up button click handler attached');
+}, 100);
+
+// Close modal handlers
+closeSignUpModal.onclick = function() {
+  signUpModal.classList.remove('active');
+  signUpForm.reset();
+  signUpMessage.style.display = 'none';
+};
+
+cancelSignUpBtn.onclick = function() {
+  signUpModal.classList.remove('active');
+  signUpForm.reset();
+  signUpMessage.style.display = 'none';
+};
+
+// Close on outside click
+signUpModal.onclick = function(e) {
+  if (e.target === signUpModal) {
+    signUpModal.classList.remove('active');
+    signUpForm.reset();
+    signUpMessage.style.display = 'none';
+  }
+};
+
+// Form submission
+signUpForm.onsubmit = async function(e) {
+  e.preventDefault();
+
+  const submitBtn = signUpForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Signing up...';
+
+  try {
+    // Collect form data
+    const formData = {
+      action: 'signup',
+      phone_number: document.getElementById('signUpPhone').value,
+      display_name: document.getElementById('signUpDisplayName').value,
+      email: document.getElementById('signUpEmail').value,
+      experience_level: document.getElementById('signUpExperience').value,
+      primary_style: document.getElementById('signUpEnvironment').value,
+      referral_source: document.getElementById('signUpReferral').value,
+      agree_terms: document.getElementById('signUpAgree').checked,
+      timestamp: new Date().toISOString()
+    };
+
+    console.log('Sign up form data:', formData);
+
+    // Send to Google Apps Script endpoint
+    // Note: Phone number will be validated against Members sheet on backend
+    const response = await fetch(REVIEW_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      signUpMessage.className = 'form-message success';
+      signUpMessage.textContent = '✅ Welcome to SFF Wheel Library! You can now browse and borrow wheels.';
+      signUpMessage.style.display = 'block';
+
+      // Close modal after delay
+      setTimeout(function() {
+        signUpModal.classList.remove('active');
+        signUpForm.reset();
+        signUpMessage.style.display = 'none';
+      }, 2500);
+    } else {
+      throw new Error(result.error || 'Signup failed');
+    }
+
+  } catch (error) {
+    console.error('Sign up error:', error);
+    signUpMessage.className = 'form-message error';
+
+    // Check for specific error messages
+    const errorMsg = error.message || '';
+    if (errorMsg.includes('member') || errorMsg.includes('verified') || errorMsg.includes('phone')) {
+      signUpMessage.textContent = '❌ ' + errorMsg + ' Please ensure you\'re a verified SFF member and using your registered phone number.';
+    } else {
+      signUpMessage.textContent = '❌ Failed to sign up. ' + (errorMsg || 'Please try again.');
+    }
+    signUpMessage.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Sign Up';
+  }
+};
+
+console.log('Sign Up form initialized');
+
+// ====== CHECKOUT MODAL ======
+const checkoutModal = document.getElementById('checkoutModal');
+const closeCheckoutModal = document.getElementById('closeCheckoutModal');
+const cancelCheckoutBtn = document.getElementById('cancelCheckoutBtn');
+const checkoutForm = document.getElementById('checkoutForm');
+const checkoutMessage = document.getElementById('checkoutMessage');
+
+// Close modal handlers
+closeCheckoutModal.onclick = function() {
+  checkoutModal.classList.remove('active');
+  checkoutForm.reset();
+  checkoutMessage.style.display = 'none';
+};
+
+cancelCheckoutBtn.onclick = function() {
+  checkoutModal.classList.remove('active');
+  checkoutForm.reset();
+  checkoutMessage.style.display = 'none';
+};
+
+// Close on outside click
+checkoutModal.onclick = function(e) {
+  if (e.target === checkoutModal) {
+    checkoutModal.classList.remove('active');
+    checkoutForm.reset();
+    checkoutMessage.style.display = 'none';
+  }
+};
+
+// Form submission
+checkoutForm.onsubmit = async function(e) {
+  e.preventDefault();
+
+  const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Verifying...';
+
+  try {
+    const wheelId = document.getElementById('checkoutWheelId').value;
+    const wheelName = document.getElementById('checkoutWheelName').value;
+    const phoneNumber = document.getElementById('checkoutPhone').value;
+    const displayName = document.getElementById('checkoutDisplayName').value;
+    const returnDate = document.getElementById('checkoutReturnDate').value;
+    const notes = document.getElementById('checkoutNotes').value;
+
+    // Collect form data for verification
+    const formData = {
+      action: 'checkout',
+      phone_number: phoneNumber,
+      display_name: displayName,
+      wheel_id: wheelId,
+      wheel_name: wheelName,
+      return_date: returnDate,
+      notes: notes,
+      timestamp: new Date().toISOString()
+    };
+
+    console.log('Checkout form data:', formData);
+
+    // Send to Google Apps Script endpoint for member verification
+    const response = await fetch(REVIEW_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      checkoutMessage.className = 'form-message success';
+      checkoutMessage.textContent = '✅ Member verified! Processing checkout...';
+      checkoutMessage.style.display = 'block';
+
+      // Complete the borrow process locally
+      setTimeout(function() {
+        completeBorrow(wheelId, displayName, phoneNumber);
+        checkoutModal.classList.remove('active');
+        checkoutForm.reset();
+        checkoutMessage.style.display = 'none';
+      }, 1000);
+    } else {
+      throw new Error(result.error || 'Verification failed');
+    }
+
+  } catch (error) {
+    console.error('Checkout error:', error);
+    checkoutMessage.className = 'form-message error';
+
+    // Check for specific error messages
+    const errorMsg = error.message || '';
+    if (errorMsg.includes('member') || errorMsg.includes('verified') || errorMsg.includes('phone')) {
+      checkoutMessage.textContent = '❌ ' + errorMsg + ' Only verified SFF members can borrow wheels. Please use your registered phone number.';
+    } else {
+      checkoutMessage.textContent = '❌ Checkout failed. ' + (errorMsg || 'Please try again.');
+    }
+    checkoutMessage.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Confirm Checkout';
+  }
+};
+
+console.log('Checkout form initialized');
 
       </script>
 
