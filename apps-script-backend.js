@@ -13,6 +13,13 @@
  */
 
 // ============================================
+// CONFIGURATION
+// ============================================
+
+// System accounts that bypass phone verification
+const SYSTEM_ACCOUNTS = ['MAINTENANCE', 'LIBRARY', 'ADMIN'];
+
+// ============================================
 // HANDLE POST REQUESTS (FORMS)
 // ============================================
 
@@ -51,16 +58,24 @@ function doPost(e) {
 function handleReviewSubmission(sheet, data) {
   try {
     // Validate required fields
-    const requiredFields = ['phone_number', 'display_name', 'wheel_id', 'rating'];
+    const requiredFields = ['display_name', 'wheel_id', 'rating'];
     for (const field of requiredFields) {
       if (!data[field]) {
         throw new Error(`Missing required field: ${field}`);
       }
     }
 
-    // Verify member exists
-    if (!verifyMember(sheet, data.phone_number)) {
-      throw new Error('Phone number not found in member list. Please ensure you are a registered SFF member.');
+    // Check if this is a system account
+    const isSystemAccount = SYSTEM_ACCOUNTS.includes(data.display_name.toUpperCase());
+
+    // Verify member exists (skip for system accounts)
+    if (!isSystemAccount) {
+      if (!data.phone_number) {
+        throw new Error('Missing required field: phone_number');
+      }
+      if (!verifyMember(sheet, data.phone_number)) {
+        throw new Error('Phone number not found in member list. Please ensure you are a registered SFF member.');
+      }
     }
 
     // Get Reviews sheet
@@ -74,7 +89,7 @@ function handleReviewSubmission(sheet, data) {
     const rowData = new Array(headers.length).fill('');
 
     // Map data to columns
-    rowData[headers.indexOf('phone_number')] = data.phone_number;
+    rowData[headers.indexOf('phone_number')] = data.phone_number || '';
     rowData[headers.indexOf('display_name')] = data.display_name;
     rowData[headers.indexOf('wheel_id')] = data.wheel_id;
     rowData[headers.indexOf('wheel_name')] = data.wheel_name || '';
@@ -108,16 +123,24 @@ function handleReviewSubmission(sheet, data) {
 function handleAddWheelSubmission(sheet, data) {
   try {
     // Validate required fields
-    const requiredFields = ['lender_phone', 'lender_display_name', 'wheel_name', 'brand', 'wheel_size', 'durometer', 'material'];
+    const requiredFields = ['lender_display_name', 'wheel_name', 'brand', 'wheel_size', 'durometer', 'material'];
     for (const field of requiredFields) {
       if (!data[field]) {
         throw new Error(`Missing required field: ${field}`);
       }
     }
 
-    // Verify member exists
-    if (!verifyMember(sheet, data.lender_phone)) {
-      throw new Error('Phone number not found in member list. Please ensure you are a registered SFF member.');
+    // Check if this is a system account
+    const isSystemAccount = SYSTEM_ACCOUNTS.includes(data.lender_display_name.toUpperCase());
+
+    // Verify member exists (skip for system accounts)
+    if (!isSystemAccount) {
+      if (!data.lender_phone) {
+        throw new Error('Missing required field: lender_phone');
+      }
+      if (!verifyMember(sheet, data.lender_phone)) {
+        throw new Error('Phone number not found in member list. Please ensure you are a registered SFF member.');
+      }
     }
 
     // Get Inventory sheet
@@ -129,8 +152,8 @@ function handleAddWheelSubmission(sheet, data) {
     // Generate new wheel ID (W001, W002, W003...)
     const newWheelId = generateNextWheelId(inventorySheet);
 
-    // Get member ID from Members sheet
-    const lenderId = getMemberId(sheet, data.lender_phone);
+    // Get member ID from Members sheet (empty for system accounts)
+    const lenderId = isSystemAccount ? '' : getMemberId(sheet, data.lender_phone);
 
     // Normalize best_for field
     let bestFor = '';

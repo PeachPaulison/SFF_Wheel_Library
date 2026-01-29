@@ -8,12 +8,13 @@ This guide will help you deploy the updated backend code to Google Apps Script.
 
 ### Features Added:
 1. ✅ **Member validation** - Phone numbers verified against Members sheet
-2. ✅ **Bearing fields support** - Handles bearings_included, bearing_size, bearing_material
-3. ✅ **Removed num_sets** - No longer processing number of sets
-4. ✅ **Dynamic column mapping** - Resilient to column reordering
-5. ✅ **Proper JSON responses** - Returns success/error messages
-6. ✅ **Fixed wheel ID format** - Uses 3 digits (W001, W002, W003)
-7. ✅ **Phone number normalization** - Handles different phone formats
+2. ✅ **System accounts** - MAINTENANCE, LIBRARY, ADMIN bypass phone verification
+3. ✅ **Bearing fields support** - Handles bearings_included, bearing_size, bearing_material
+4. ✅ **Removed num_sets** - No longer processing number of sets
+5. ✅ **Dynamic column mapping** - Resilient to column reordering
+6. ✅ **Proper JSON responses** - Returns success/error messages
+7. ✅ **Fixed wheel ID format** - Uses 3 digits (W001, W002, W003)
+8. ✅ **Phone number normalization** - Handles different phone formats
 
 ### Issues Fixed:
 1. ✅ Wheel ID format consistency (both doPost and onEdit use 3 digits)
@@ -64,6 +65,17 @@ Required columns:
 - join_date (optional)
 
 **IMPORTANT**: The Members sheet is used to validate that only registered SFF members can add wheels or submit reviews. If this sheet doesn't exist, the script will log a warning but allow submissions (fail-open behavior).
+
+### 4. **System Accounts** (Special Handling)
+
+The following display names are treated as **system accounts** and do NOT require phone verification:
+- **MAINTENANCE** - Used when wheels are checked out for inspection/cleaning
+- **LIBRARY** - Reserved for library operations
+- **ADMIN** - Administrative actions
+
+**Use Case Example**: When a member returns wheels, they're checked out to MAINTENANCE for inspection. Once inspected, they're marked as available again.
+
+**No Members sheet entry needed** - These accounts bypass phone verification entirely.
 
 ## Deployment Steps
 
@@ -129,6 +141,8 @@ const REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_NEW_DEPLOYMEN
    - Should succeed
 2. Try submitting with an **invalid** phone number
    - Should fail with error: "Phone number not found in member list"
+3. Try submitting with display_name "MAINTENANCE" and no phone number
+   - Should succeed (system account bypasses verification)
 
 #### Test 2: Wheel ID Generation
 1. Submit the Add Wheels form successfully
@@ -251,6 +265,6 @@ If you encounter issues:
 
 ---
 
-**Version**: 2.0
-**Last Updated**: 2026-01-28
+**Version**: 2.1
+**Last Updated**: 2026-01-29
 **Session**: session_015pArBe6Yyeb3pdyvePzfBb
