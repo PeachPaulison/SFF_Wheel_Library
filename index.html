@@ -152,23 +152,6 @@
       min-width: 150px;
     }
 
-    .reset-btn {
-      border-radius: 999px;
-      border: 2px solid var(--brown);
-      padding: 6px 12px;
-      background: var(--cream);
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--brown);
-      box-shadow: 0 3px 0 rgba(91,59,46,0.35);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s;
-    }
-
-    .reset-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 rgba(91,59,46,0.35);
-    }
 
     .pill-indicator {
       padding: 4px 10px;
@@ -492,7 +475,7 @@
       .subtitle { font-size: 0.95rem; line-height: 1.25; }
       main { grid-template-columns: 1fr !important; gap: 12px; }
       .panel { padding: 14px; }
-      .chip, .reset-btn, .borrow-btn {
+      .chip, .borrow-btn {
         padding: 10px 14px;
         font-size: 0.95rem;
       }
@@ -623,16 +606,6 @@ h1{
   box-shadow: 0 0 0 2px rgba(255,215,0,.40), 0 0 16px rgba(255,215,0,.25);
 }
 
-.reset-btn{
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.28);
-  color: rgba(255,255,255,.95);
-  box-shadow: 0 3px 0 rgba(0,0,0,.40);
-}
-
-.reset-btn:active{
-  box-shadow: 0 1px 0 rgba(0,0,0,.40);
-}
 
 .pill-indicator{
   background: rgba(255,255,255,.10);
@@ -786,6 +759,18 @@ h1{
 .action-btn-wheels:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(191,255,0,.6), 0 0 30px rgba(191,255,0,.3);
+}
+
+.action-btn-reset {
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.95);
+  border-color: rgba(255,255,255,.3);
+}
+
+.action-btn-reset:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.18);
+  box-shadow: 0 6px 20px rgba(255,255,255,.2), 0 0 30px rgba(255,255,255,.1);
 }
 
 .action-btn:active {
@@ -1103,10 +1088,7 @@ h1{
       <main>
         <!-- LEFT: Filters & notes -->
         <section class="panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h2 style="margin: 0;">Choose your session</h2>
-          <button class="btn-reset" id="resetBtn">Reset filters</button>
-        </div>
+          <h2>Choose your session</h2>
 
 
           <div class="group" data-group="environment">
@@ -1169,6 +1151,7 @@ h1{
             <button class="action-btn action-btn-signup" id="signUpBtn">Sign Up</button>
             <button class="action-btn action-btn-review" id="reviewBtn">Add Review</button>
             <button class="action-btn action-btn-wheels" id="addWheelsBtn">Add Wheels</button>
+            <button class="action-btn action-btn-reset" id="resetBtn">Reset Filters</button>
           </div>
         </section>
 
