@@ -1086,7 +1086,7 @@ h1{
       <main>
         <!-- LEFT: Filters & notes -->
         <section class="panel">
-          <h2>Choose your session</h2>
+          <h2>Choose your session. Tap a few chips to set the vibe.</h2>
 
 
           <div class="group" data-group="environment">
@@ -1136,7 +1136,6 @@ h1{
           </div>
 
           <div id="output">
-            <strong>Tap a few chips to set the vibe.</strong>
             <p>Your picks will show here with quick notes on what usually works.</p>
           </div>
 
@@ -1147,9 +1146,9 @@ h1{
           <!-- Action Buttons -->
           <div class="action-buttons">
             <button class="action-btn action-btn-signup" id="signUpBtn">Sign Up</button>
-            <button class="action-btn action-btn-review" id="reviewBtn">Add Review</button>
-            <button class="action-btn action-btn-wheels" id="addWheelsBtn">Add Wheels</button>
             <button class="action-btn action-btn-reset" id="resetBtn">Reset Filters</button>
+            <button class="action-btn action-btn-wheels" id="addWheelsBtn">Add Wheels</button>
+            <button class="action-btn action-btn-review" id="reviewBtn">Add Review</button>
           </div>
         </section>
 
@@ -1658,7 +1657,6 @@ h1{
 
       if (!environment && !size && !duro && !material) {
         output.innerHTML = `
-          <strong>Tap a few chips to set the vibe.</strong>
           <p>Your picks will show here with quick notes on what usually works.</p>
         `;
         updateMatches();
