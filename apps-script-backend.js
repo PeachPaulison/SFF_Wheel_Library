@@ -296,8 +296,20 @@ function getMemberId(sheet, phoneNumber) {
 }
 
 function normalizePhoneNumber(phone) {
-  // Remove all non-numeric characters
-  return String(phone).replace(/\D/g, '');
+  if (!phone) return '';
+
+  // Remove all non-digit characters except +
+  let normalized = String(phone).replace(/[^\d+]/g, '');
+
+  // Remove leading +1 (US country code)
+  if (normalized.startsWith('+1')) {
+    normalized = normalized.substring(2);
+  } else if (normalized.startsWith('1') && normalized.length === 11) {
+    normalized = normalized.substring(1);
+  }
+
+  // Return 10-digit format
+  return normalized.substring(0, 10);
 }
 
 // ============================================
@@ -437,4 +449,337 @@ function doGet(e) {
       error: error.message
     })).setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// ============================================
+// MEMBER SYNC & REGISTRATION
+// ============================================
+
+/**
+ * AUTO-SYNC: Triggered when Google Form submits new registration
+ * Set up trigger: Edit > Current project's triggers > Add Trigger
+ * Choose: onFormSubmit, From spreadsheet, On form submit
+ */
+function onFormSubmit(e) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const formSheet = ss.getSheetByName('Member Registrations'); // Form responses
+    const membersSheet = ss.getSheetByName('Members');
+
+    if (!formSheet || !membersSheet) {
+      Logger.log('Warning: Member Registrations or Members sheet not found');
+      return;
+    }
+
+    // Get the submitted data (last row from form)
+    const lastRow = formSheet.getLastRow();
+    const data = formSheet.getRange(lastRow, 1, 1, formSheet.getLastColumn()).getValues()[0];
+
+    // Assuming form columns: [Timestamp, Phone Number, Display Name, Email]
+    const timestamp = data[0];
+    const phoneRaw = data[1];
+    const displayName = data[2];
+    const email = data[3] || '';
+
+    // Normalize phone number
+    const phone = normalizePhoneNumber(phoneRaw);
+
+    // Validate phone format
+    if (!phone || phone.length !== 10) {
+      Logger.log('Invalid phone number format: ' + phoneRaw);
+      return;
+    }
+
+    // Check if already exists in Members sheet
+    const membersData = membersSheet.getDataRange().getValues();
+    const headers = membersData[0];
+    const phoneColIndex = headers.indexOf('phone_number');
+
+    if (phoneColIndex === -1) {
+      Logger.log('Error: phone_number column not found in Members sheet');
+      return;
+    }
+
+    let exists = false;
+    for (let i = 1; i < membersData.length; i++) {
+      if (normalizePhoneNumber(String(membersData[i][phoneColIndex])) === phone) {
+        exists = true;
+        break;
+      }
+    }
+
+    // Add to Members sheet if new
+    if (!exists) {
+      // Build row based on Members sheet structure
+      const memberRow = new Array(headers.length).fill('');
+      memberRow[headers.indexOf('phone_number')] = phone;
+      memberRow[headers.indexOf('display_name')] = displayName;
+
+      const emailColIndex = headers.indexOf('email');
+      if (emailColIndex !== -1) {
+        memberRow[emailColIndex] = email;
+      }
+
+      const timestampColIndex = headers.indexOf('registered_date');
+      if (timestampColIndex !== -1) {
+        memberRow[timestampColIndex] = timestamp;
+      }
+
+      // Generate member_id if column exists
+      const memberIdColIndex = headers.indexOf('member_id');
+      if (memberIdColIndex !== -1) {
+        memberRow[memberIdColIndex] = generateMemberId(membersSheet);
+      }
+
+      membersSheet.appendRow(memberRow);
+      Logger.log('✅ Added new member: ' + displayName + ' (' + phone + ')');
+    } else {
+      Logger.log('ℹ️ Member already exists: ' + phone);
+    }
+
+  } catch (error) {
+    Logger.log('❌ Error in onFormSubmit: ' + error.toString());
+  }
+}
+
+/**
+ * MANUAL SYNC: Call this function to sync form responses to Members sheet
+ * Useful for initial import or when form responses get out of sync
+ * Run: Extensions > Apps Script > Select function > Run
+ */
+function manualSyncFormToMembers() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const formSheet = ss.getSheetByName('Member Registrations');
+  const membersSheet = ss.getSheetByName('Members');
+
+  if (!formSheet) {
+    Logger.log('Error: Member Registrations sheet not found');
+    return { added: 0, skipped: 0, error: 'Sheet not found' };
+  }
+
+  if (!membersSheet) {
+    Logger.log('Error: Members sheet not found');
+    return { added: 0, skipped: 0, error: 'Sheet not found' };
+  }
+
+  // Get all form responses (skip header row)
+  const formData = formSheet.getDataRange().getValues();
+  const formHeaders = formData[0];
+
+  let added = 0;
+  let skipped = 0;
+
+  // Get existing members
+  const membersData = membersSheet.getDataRange().getValues();
+  const membersHeaders = membersData[0];
+  const phoneColIndex = membersHeaders.indexOf('phone_number');
+
+  const existingPhones = new Set();
+  for (let i = 1; i < membersData.length; i++) {
+    existingPhones.add(normalizePhoneNumber(String(membersData[i][phoneColIndex])));
+  }
+
+  // Process each form submission
+  for (let i = 1; i < formData.length; i++) {
+    const row = formData[i];
+    const timestamp = row[0];
+    const phoneRaw = row[1];
+    const displayName = row[2];
+    const email = row[3] || '';
+
+    const phone = normalizePhoneNumber(phoneRaw);
+
+    // Validate phone format
+    if (!phone || phone.length !== 10) {
+      Logger.log('Skipping invalid phone: ' + phoneRaw);
+      skipped++;
+      continue;
+    }
+
+    // Skip if already exists
+    if (existingPhones.has(phone)) {
+      skipped++;
+      continue;
+    }
+
+    // Build row based on Members sheet structure
+    const memberRow = new Array(membersHeaders.length).fill('');
+    memberRow[membersHeaders.indexOf('phone_number')] = phone;
+    memberRow[membersHeaders.indexOf('display_name')] = displayName;
+
+    const emailColIndex = membersHeaders.indexOf('email');
+    if (emailColIndex !== -1) {
+      memberRow[emailColIndex] = email;
+    }
+
+    const timestampColIndex = membersHeaders.indexOf('registered_date');
+    if (timestampColIndex !== -1) {
+      memberRow[timestampColIndex] = timestamp;
+    }
+
+    // Generate member_id if column exists
+    const memberIdColIndex = membersHeaders.indexOf('member_id');
+    if (memberIdColIndex !== -1) {
+      memberRow[memberIdColIndex] = generateMemberId(membersSheet);
+    }
+
+    // Add to Members sheet
+    membersSheet.appendRow(memberRow);
+    existingPhones.add(phone);
+    added++;
+  }
+
+  Logger.log('✅ Sync complete: ' + added + ' added, ' + skipped + ' skipped');
+  return { added, skipped };
+}
+
+/**
+ * Generate unique member ID (M001, M002, M003...)
+ */
+function generateMemberId(membersSheet) {
+  const headers = membersSheet.getRange(1, 1, 1, membersSheet.getLastColumn()).getValues()[0];
+  const memberIdColIndex = headers.indexOf('member_id');
+
+  if (memberIdColIndex === -1) {
+    return ''; // Column doesn't exist
+  }
+
+  const lastRow = membersSheet.getLastRow();
+  if (lastRow <= 1) {
+    return 'M001'; // First member
+  }
+
+  const memberIds = membersSheet.getRange(2, memberIdColIndex + 1, lastRow - 1, 1).getValues();
+
+  // Find the highest member ID number
+  let maxId = 0;
+  for (let i = 0; i < memberIds.length; i++) {
+    const memberId = String(memberIds[i][0]);
+    if (memberId && memberId.startsWith('M')) {
+      const idNum = parseInt(memberId.substring(1));
+      if (!isNaN(idNum) && idNum > maxId) {
+        maxId = idNum;
+      }
+    }
+  }
+
+  // Generate next ID with 3 digits (M001, M002, M003...)
+  const nextId = maxId + 1;
+  return 'M' + String(nextId).padStart(3, '0');
+}
+
+/**
+ * BULK IMPORT: Import members from CSV sheet
+ * 1. Create a sheet named "CSV Import"
+ * 2. Paste CSV data with columns: phone_number, display_name
+ * 3. Run this function
+ */
+function importMembersFromCSV() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const membersSheet = ss.getSheetByName('Members');
+  const csvSheet = ss.getSheetByName('CSV Import');
+
+  if (!csvSheet) {
+    Logger.log('Error: CSV Import sheet not found. Create a sheet named "CSV Import" with phone_number, display_name columns.');
+    return { added: 0, error: 'CSV Import sheet not found' };
+  }
+
+  if (!membersSheet) {
+    Logger.log('Error: Members sheet not found');
+    return { added: 0, error: 'Members sheet not found' };
+  }
+
+  const csvData = csvSheet.getDataRange().getValues();
+  let added = 0;
+
+  // Get existing members
+  const membersData = membersSheet.getDataRange().getValues();
+  const membersHeaders = membersData[0];
+  const phoneColIndex = membersHeaders.indexOf('phone_number');
+
+  const existingPhones = new Set();
+  for (let i = 1; i < membersData.length; i++) {
+    existingPhones.add(normalizePhoneNumber(String(membersData[i][phoneColIndex])));
+  }
+
+  // Skip header, process each row
+  for (let i = 1; i < csvData.length; i++) {
+    const phoneRaw = csvData[i][0];
+    const displayName = csvData[i][1] || 'Unknown';
+
+    const phone = normalizePhoneNumber(phoneRaw);
+
+    // Validate phone format
+    if (!phone || phone.length !== 10) {
+      Logger.log('Skipping invalid phone: ' + phoneRaw);
+      continue;
+    }
+
+    if (!existingPhones.has(phone)) {
+      const memberRow = new Array(membersHeaders.length).fill('');
+      memberRow[membersHeaders.indexOf('phone_number')] = phone;
+      memberRow[membersHeaders.indexOf('display_name')] = displayName;
+
+      const timestampColIndex = membersHeaders.indexOf('registered_date');
+      if (timestampColIndex !== -1) {
+        memberRow[timestampColIndex] = new Date();
+      }
+
+      const memberIdColIndex = membersHeaders.indexOf('member_id');
+      if (memberIdColIndex !== -1) {
+        memberRow[memberIdColIndex] = generateMemberId(membersSheet);
+      }
+
+      membersSheet.appendRow(memberRow);
+      existingPhones.add(phone);
+      added++;
+    }
+  }
+
+  Logger.log('✅ Imported ' + added + ' members from CSV');
+  return { added };
+}
+
+/**
+ * DEACTIVATE MEMBER: Mark member as inactive (for audit trail)
+ * Usage: deactivateMember('5551234567')
+ * Note: Requires 'active' column in Members sheet
+ */
+function deactivateMember(phone) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const membersSheet = ss.getSheetByName('Members');
+
+  if (!membersSheet) {
+    Logger.log('Error: Members sheet not found');
+    return false;
+  }
+
+  const data = membersSheet.getDataRange().getValues();
+  const headers = data[0];
+  const phoneColIndex = headers.indexOf('phone_number');
+  const activeColIndex = headers.indexOf('active');
+
+  if (phoneColIndex === -1) {
+    Logger.log('Error: phone_number column not found');
+    return false;
+  }
+
+  if (activeColIndex === -1) {
+    Logger.log('Warning: active column not found. Add an "active" column to Members sheet.');
+    return false;
+  }
+
+  const normalizedPhone = normalizePhoneNumber(phone);
+
+  for (let i = 1; i < data.length; i++) {
+    if (normalizePhoneNumber(String(data[i][phoneColIndex])) === normalizedPhone) {
+      // Set "active" column to FALSE
+      membersSheet.getRange(i + 1, activeColIndex + 1).setValue(false);
+      Logger.log('✅ Deactivated member: ' + data[i][headers.indexOf('display_name')] + ' (' + phone + ')');
+      return true;
+    }
+  }
+
+  Logger.log('❌ Member not found: ' + phone);
+  return false;
 }
