@@ -597,24 +597,33 @@ Grep({
 
 **Features**:
 1. ✅ Member verification against the Members sheet (security feature)
-2. ✅ Auto-generated wheel IDs with 3-digit format (W001, W002, W003)
-3. ✅ Dynamic column mapping (resilient to column reordering)
-4. ✅ Phone number normalization (handles various formats)
-5. ✅ Bearing fields support (bearings_included, bearing_size, bearing_material)
-6. ✅ Privacy protection (excludes phone numbers from public review data)
-7. ✅ Proper JSON responses with success/error messages
-8. ✅ Error handling with try-catch blocks
-9. ✅ Removed num_sets field (no longer used)
-10. ✅ Sheet name consistency ("Inventory" in both doPost and onEdit)
+2. ✅ System accounts bypass (MAINTENANCE, LIBRARY, ADMIN skip phone verification)
+3. ✅ Auto-generated wheel IDs with 3-digit format (W001, W002, W003)
+4. ✅ Dynamic column mapping (resilient to column reordering)
+5. ✅ Phone number normalization (handles various formats)
+6. ✅ Bearing fields support (bearings_included, bearing_size, bearing_material)
+7. ✅ Privacy protection (excludes phone numbers from public review data)
+8. ✅ Proper JSON responses with success/error messages
+9. ✅ Error handling with try-catch blocks
+10. ✅ Removed num_sets field (no longer used)
+11. ✅ Sheet name consistency ("Inventory" in both doPost and onEdit)
 
 **Required Sheets**:
 1. **Inventory** - Stores wheel data
 2. **Reviews** - Stores review submissions
 3. **Members** - Validates member phone numbers (NEW - REQUIRED)
 
+**System Accounts** (Special Handling):
+- **MAINTENANCE** - Used when wheels are checked out for inspection/cleaning after returns
+- **LIBRARY** - Reserved for library operations
+- **ADMIN** - Administrative actions
+- These accounts bypass phone verification and do NOT need entries in the Members sheet
+- Use case: When members return wheels, they're checked out to MAINTENANCE for inspection before returning to available status
+
 **Testing Checklist**:
 - [ ] Submit form with valid member phone → should succeed
 - [ ] Submit form with invalid phone → should fail with error message
+- [ ] Submit with display_name "MAINTENANCE" (no phone) → should succeed
 - [ ] Check wheel ID increments correctly (W001, W002, W003...)
 - [ ] Verify all fields appear in correct columns in Inventory sheet
 - [ ] Test bearing fields (with and without bearings)
@@ -1144,6 +1153,6 @@ Material (purple):    urethane, vanathane, fiberglass, wood, clay, other
 
 ---
 
-**Last Updated**: 2026-01-28
-**Version**: 1.1
+**Last Updated**: 2026-01-29
+**Version**: 1.2
 **Claude Session**: session_015pArBe6Yyeb3pdyvePzfBb
