@@ -172,7 +172,7 @@ https://script.google.com/macros/s/AKfycbxXkVjkTFlAOXeSKVxYH1givBV_-vx8_5KCJwGU-
 - **System accounts** (MAINTENANCE, LIBRARY, ADMIN) bypass phone verification for operational use
 - Phone number normalization handles different formats: (555) 123-4567, 555-123-4567, or 5551234567
 - Prevents unauthorized additions to the inventory
-- Phone numbers are stored but never displayed publicly
+- Phone numbers are stored to verify membership, but never displayed publicly
 
 **System Accounts:**
 Special accounts that bypass member verification:
@@ -183,7 +183,7 @@ Special accounts that bypass member verification:
 **Inventory Data Structure:**
 - Sheet: "Inventory" in SFF_Wheel_Library workbook
 - Each row represents ONE physical set of wheels from ONE lender
-- Columns include: wheel_id, wheel_name, brand, wheel_size, wheel_material, durometer_category, best_for, status, lender_id, image_url, bearings_included, bearing_size, bearing_material, timestamp
+- Columns include: wheel_id, wheel_name, brand, wheel_size, wheel_material, durometer_category, best_for, status, lender_id, image_url, bearings_included/not includeds, bearing_size, bearing_material, timestamp
 
 **Review Data Structure:**
 - Sheet: "Reviews" in SFF_Wheel_Library workbook
