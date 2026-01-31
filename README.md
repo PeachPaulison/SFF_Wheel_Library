@@ -36,7 +36,7 @@ If something looks weird after reinstalling, that's a **bug**, not user error �
 </p>
 
 # 🛼 WHEEL LIBRARY (Beta… like REALLY beta)
-### *A groovy little experiment for skaters who want to try wheels without marrying them.*
+### *A groovy little experiment for skaters who want to try the wheels before they buy the wheels.*
 
 ---
 
@@ -61,9 +61,9 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 - Functions as a **PWA**, so you can add it to your phone like a real app
   *(because fake it till you make it)*
 - **NEW!** Contribute your own wheels to the library with the sign-up form
-- **NEW!** Member verification system (must be in Members list to contribute)
-- **NEW!** Add wheel images via URL
-- **NEW!** Track bearing information (size, material, included/not included)
+- **NEW!** Member verification system (must be in Members list to contribute or borrow)
+- **NEW!** Add wheel images via URL (still testing)
+- **NEW!** Track bearing information (size, material, included/not included in loan)
 - **NEW!** Authentic MSW carpet neon colors - hot pink, electric blue, lime green, purple on dark background
 - **NEW!** Color-coded filter sections for easy navigation
 
@@ -113,12 +113,12 @@ Message in the **SFF WhatsApp group** with:
 - Bugs
 - Confusing parts
 - Missing features
-- Weird behavior
+- Weird behavior (the apps, not mine)
 - Ideas
 - Vibes
 
-If something is just not right, let me know. You won't hurt my feelings — but it is **NOT baby deer hunting season** either.
-This whole thing is made of duct tape, unicorn kisses, and vibes.
+If something is just not right, or can be done better, let me know. You won't hurt my feelings — but it is **NOT baby deer hunting season** either.
+This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum, and vibes.
 
 ---
 
