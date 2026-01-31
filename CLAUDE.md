@@ -940,7 +940,7 @@ git push -u origin <branch> || sleep 2 && git push -u origin <branch>
 - Value visual design and aesthetics
 
 **Community Context**: SFF Wheel Warehouse
-- Active Facebook group
+- Active WhatsApp group
 - Supportive, enthusiastic community
 - Tolerant of beta bugs (but communicate clearly)
 - Willing to provide feedback
@@ -1141,9 +1141,9 @@ Material (purple):    urethane, vanathane, fiberglass, wood, clay, other
 ## Support & Resources
 
 ### Community
-- **Facebook Group**: SFF Wheel Warehouse
+- **WhatsApp Group**: SFF WhatsApp group
 - **Creator**: @PeachPaulison (GitHub)
-- **Feedback**: GitHub Issues or Facebook group
+- **Feedback**: WhatsApp group (users should NOT use GitHub issues)
 
 ### Technical Resources
 - [PWA Documentation](https://web.dev/progressive-web-apps/)
