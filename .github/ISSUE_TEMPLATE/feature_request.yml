@@ -1,0 +1,123 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for the SFF Wheel Library app
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! We love hearing ideas from the community. Please fill out the form below to help us understand your request.
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature are you requesting?
+      options:
+        - New filter option
+        - New wheel information field
+        - UI/UX improvement
+        - Performance improvement
+        - Review system enhancement
+        - Borrowing system enhancement
+        - PWA/Installation improvement
+        - Data management
+        - Accessibility improvement
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What pain point are you experiencing?
+      placeholder: |
+        Example: "When I'm looking for wheels for artistic skating, I need to know if they have a specific hub material, but there's no filter for that currently."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How do you think this feature should work? Be as detailed as possible.
+      placeholder: |
+        Example: "Add a new filter category called 'Hub Material' with options like 'nylon', 'aluminum', 'none', etc. This would appear alongside the existing filters and work the same way - click to select, click again to deselect."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: "I currently work around this by reading each wheel's description, but it's time-consuming."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Critical (I can't use the app without this)
+        - High (This would significantly improve my experience)
+        - Medium (Nice to have, would make things easier)
+        - Low (Small enhancement, not urgent)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-group
+    attributes:
+      label: Who Would Benefit?
+      description: Who would benefit from this feature?
+      options:
+        - Just me
+        - A few specific users
+        - Most users in my skating discipline
+        - All users
+        - Library administrators
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: mockup
+    attributes:
+      label: Mockups or Examples
+      description: Do you have any mockups, screenshots from other apps, or visual examples? You can drag and drop images here.
+      placeholder: "Drag and drop images here, or click to upload."
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Describe 2-3 specific scenarios where this feature would be helpful.
+      placeholder: |
+        1. When I'm at the rink and need to find wheels quickly for rhythm skating
+        2. When I'm comparing similar wheels and need to see hub material differences
+        3. When I'm lending wheels and want to know what hub type the borrower prefers
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, links, or information about the feature request here.
+      placeholder: |
+        - Related to issue #XX
+        - Similar feature in other app: [link]
+        - Community discussion: [link]
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm the following before submitting.
+      options:
+        - label: I have searched existing issues and feature requests to avoid duplicates
+          required: true
+        - label: I have clearly described the problem this feature would solve
+          required: true
+        - label: I understand this is a community project and the feature may take time to implement
+          required: true
