@@ -36,7 +36,7 @@ A PWA is a website that works like a native app. You can:
 
 ### Is this app still in beta?
 
-Yes! We're actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues on our [GitHub Issues page](https://github.com/PeachPaulison/SFF_Wheel_Library/issues).
+Yes! We're actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues in the SFF WhatsApp group.
 
 ---
 
@@ -225,7 +225,7 @@ Technically yes, but we encourage honest reviews based on actual experience. If 
 
 ### Can I edit or delete my review after submitting?
 
-Not yet. This feature is planned for the future. If you need to correct or remove a review, please contact the library administrators or open a GitHub issue.
+Not yet. This feature is planned for the future. If you need to correct or remove a review, please message in the SFF WhatsApp group.
 
 ### Where can I see reviews from other members?
 
@@ -257,7 +257,7 @@ Try these steps:
 4. Uninstall and reinstall the app
 5. Try a different browser
 
-If the problem persists, [report a bug](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose).
+If the problem persists, message in the SFF WhatsApp group.
 
 ### The filters aren't working
 
@@ -266,7 +266,7 @@ Common issues:
 - **Wrong results**: Check that you've selected the correct filter values
 - **Filters stuck**: Try refreshing the page
 
-If filters are genuinely broken, please [report a bug](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose) with:
+If filters are genuinely broken, message in the SFF WhatsApp group with:
 - Which filters you selected
 - What results you expected
 - What results you actually got
@@ -280,11 +280,11 @@ Possible reasons:
 - Phone number format issue (try with/without dashes)
 - Temporary backend issue
 
-Try again in a few minutes. If it keeps failing, [report a bug](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose).
+Try again in a few minutes. If it keeps failing, message in the SFF WhatsApp group.
 
 ### The app looks broken on my device
 
-Please [report a bug](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose) and include:
+Please message in the SFF WhatsApp group and include:
 - Device type and model
 - Browser and version
 - Screenshots showing the issue
@@ -294,8 +294,7 @@ Please [report a bug](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/
 
 The inventory data comes from our Google Sheets database. To report incorrect information:
 1. Note the wheel ID (e.g., "W001")
-2. Contact the library administrators via Facebook
-3. Or open a GitHub issue with the correction
+2. Message in the SFF WhatsApp group with the correction
 
 ### The app is slow or laggy
 
@@ -306,7 +305,7 @@ Performance tips:
 - Clear your browser cache
 - Restart your device
 
-If the app is consistently slow, please [report a bug](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose).
+If the app is consistently slow, please message in the SFF WhatsApp group.
 
 ### I see a floating debug console (Eruda)
 
@@ -335,7 +334,7 @@ The app collects:
 
 ### Can I delete my data?
 
-Yes. To delete your reviews or personal data, contact the library administrators via the SFF Wheel Warehouse Facebook group or open a GitHub issue.
+Yes. To delete your reviews or personal data, message in the SFF WhatsApp group.
 
 ### Does the app use cookies?
 
@@ -365,21 +364,19 @@ No third-party tracking cookies are used.
 ### How can I contribute to the project?
 
 We welcome contributions! You can:
-- **Report bugs**: [Open an issue](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose)
-- **Suggest features**: [Open a feature request](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose)
-- **Submit code**: Fork the repo, make changes, and submit a pull request
-- **Improve documentation**: Help update README, FAQ, or comments in code
-- **Test new features**: Try beta features and provide feedback
+- **Report bugs**: Message in the SFF WhatsApp group
+- **Suggest features**: Message in the SFF WhatsApp group
+- **Test new features**: Try beta features and provide feedback in the WhatsApp group
+- **Write reviews**: Share your experience with wheels you've tried
 
 ### I'm not a developer. Can I still help?
 
 Absolutely! You can help by:
-- Testing the app and reporting bugs
+- Testing the app and reporting bugs in the WhatsApp group
 - Suggesting new features or improvements
 - Writing helpful reviews for wheels you've tried
 - Sharing the app with other skaters
 - Providing feedback on UI/UX design
-- Contributing to documentation
 
 ### Where is the source code?
 
@@ -432,7 +429,7 @@ Planned features include:
 - Photo uploads for wheel reviews
 - Favorite wheels feature
 
-See the [GitHub Issues](https://github.com/PeachPaulison/SFF_Wheel_Library/issues) page for specific planned work.
+Feature requests and priorities are discussed in the SFF WhatsApp group.
 
 ### How are decisions made about new features?
 
@@ -442,7 +439,7 @@ Feature priority is based on:
 3. Development complexity
 4. Alignment with project goals
 
-We encourage community discussion on GitHub Issues and the Facebook group.
+We encourage community discussion in the SFF WhatsApp group.
 
 ### Who maintains this project?
 
@@ -452,10 +449,10 @@ The project is currently maintained by @PeachPaulison with support from the SFF 
 
 ## Still Have Questions?
 
-- **Community support**: Join the [SFF Wheel Warehouse Facebook group](https://www.facebook.com/groups/sffwheelwarehouse)
-- **Bug reports**: [Open an issue on GitHub](https://github.com/PeachPaulison/SFF_Wheel_Library/issues/new/choose)
-- **General discussion**: [GitHub Discussions](https://github.com/PeachPaulison/SFF_Wheel_Library/discussions)
-- **Documentation**: See [README.md](README.md) for user guide and [CLAUDE.md](CLAUDE.md) for technical documentation
+- **Community support**: Message in the SFF WhatsApp group
+- **Bug reports**: Message in the SFF WhatsApp group
+- **Feature requests**: Message in the SFF WhatsApp group
+- **General questions**: Message in the SFF WhatsApp group
 
 ---
 

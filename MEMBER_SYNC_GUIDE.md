@@ -479,7 +479,7 @@ if (checkDuplicateByName(displayName)) {
 6. **Test** with a few members
 7. **Monitor** for any issues
 
-**Questions?** Post in GitHub Issues or SFF Wheel Warehouse group!
+**Questions?** Message in the SFF WhatsApp group!
 
 ---
 

@@ -46,7 +46,7 @@ Nothing here is polished, official, complete, or FDA-approved.
 
 This is a *proof-of-concept*, a *prototype*, and maybe even a *fever dream*.
 
-If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies —  come find me in the **SFF Wheel Warehouse**.
+If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies — message in the **SFF WhatsApp group**.
 
 ---
 
@@ -109,7 +109,7 @@ Just don't lick anything or you'll need a shot.
 - Add wheel images via URL
 - Check out the bearing tracking fields
 
-Message me in the **SFF Wheel Warehouse** with:
+Message in the **SFF WhatsApp group** with:
 - Bugs
 - Confusing parts
 - Missing features
@@ -211,7 +211,7 @@ This app includes **Eruda** for on-device debugging:
 ---
 
 ## 💌 Contact
-Find me in **SFF Wheel Warehouse**  
+Message in the **SFF WhatsApp group**
 Or telepathically (results may vary)
 
 ---
