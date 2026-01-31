@@ -156,26 +156,44 @@ This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum,
 The app uses Google Apps Script as a backend for both wheel contributions and review submissions.
 
 **Web App URL:**
-https://script.google.com/macros/s/AKfycbynqdoLigNVyALncipI-FaDVl7mUjxgBqgD0cCn730ONoVGlc_IYHsFF06SlDQih8sP/exec
+https://script.google.com/macros/s/AKfycbxXkVjkTFlAOXeSKVxYH1givBV_-vx8_5KCJwGU-Cknjm21BfWFgaPAPvZnTOqz3Awg/exec
 
 **Script Functions:**
 - `doPost()` - Handles both wheel contributions and review submissions from PWA
 - `doGet()` - Retrieves reviews for display
-- `onEdit()` - Auto-generates wheel IDs (W001, W002, W003...) and manages durometer categories
+- `onEdit()` - Auto-generates wheel IDs (W001, W002, W003...) when manually editing the Inventory sheet
+- `onFormSubmit()` - Auto-syncs new member registrations from Google Form to Members sheet
+- `manualSyncFormToMembers()` - Manually sync form responses to Members sheet (for initial import)
+- `importMembersFromCSV()` - Bulk import members from CSV data
+- `generateMemberId()` - Auto-generates member IDs (M001, M002, M003...)
 
 **Member Verification:**
 - All contributions require phone number verification against the "Members" sheet
+- **System accounts** (MAINTENANCE, LIBRARY, ADMIN) bypass phone verification for operational use
+- Phone number normalization handles different formats: (555) 123-4567, 555-123-4567, or 5551234567
 - Prevents unauthorized additions to the inventory
 - Phone numbers are stored but never displayed publicly
+
+**System Accounts:**
+Special accounts that bypass member verification:
+- **MAINTENANCE** - For wheels checked out for inspection/cleaning after returns
+- **LIBRARY** - For library operations
+- **ADMIN** - For administrative actions
 
 **Inventory Data Structure:**
 - Sheet: "Inventory" in SFF_Wheel_Library workbook
 - Each row represents ONE physical set of wheels from ONE lender
-- Columns include: wheel_id, wheel_name, brand, wheel_size, wheel_material, durometer_category, best_for, status, lender_id, image_url, bearings_included, bearing_size, bearing_material
+- Columns include: wheel_id, wheel_name, brand, wheel_size, wheel_material, durometer_category, best_for, status, lender_id, image_url, bearings_included, bearing_size, bearing_material, timestamp
 
 **Review Data Structure:**
 - Sheet: "Reviews" in SFF_Wheel_Library workbook
 - Columns: phone_number, display_name, wheel_id, wheel_name, experience_level, hours_on_wheels, rating, review_text, environment, timestamp
+
+**Members Data Structure:**
+- Sheet: "Members" in SFF_Wheel_Library workbook
+- Columns: member_id, phone_number, display_name, email, registered_date
+- Auto-populated from registration form submissions
+- Used for verification when adding wheels or reviews
 
 **Privacy:** Phone numbers are stored for member verification but never displayed publicly.
 
