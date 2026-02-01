@@ -38,6 +38,24 @@ A PWA is a website that works like a native app. You can:
 
 Yes! We're actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues in the SFF WhatsApp group.
 
+### How do I sign up or become a member?
+
+The SFF Wheel Library app is designed for members of the SFF Wheel Warehouse community. To become a member:
+
+1. **Join the SFF WhatsApp group** - This is the primary community space where members connect, share, and coordinate
+2. **Introduce yourself** - Let the community know you're interested in joining the wheel library
+3. **Get verified** - Your phone number will be added to the Members list for app verification
+
+Once you're a verified member, you can:
+- Browse and borrow wheels from the library
+- Submit reviews for wheels you've tried
+- Contribute wheels to the shared library
+- Participate in community discussions
+
+**Note:** The app itself doesn't have a traditional "sign up" button. Membership is managed through the WhatsApp community group. When you submit a review or borrow wheels, the app verifies your phone number against the member list.
+
+**Questions about membership?** Ask in the SFF WhatsApp group.
+
 ---
 
 ## Installation & Setup
