@@ -16,7 +16,7 @@
 
 ### What is SFF Wheel Library?
 
-SFF Wheel Library is a Progressive Web App (PWA) designed for the SFF Wheel Warehouse community. It helps skaters browse, filter, and borrow wheels from a shared community library. The app works on iOS, Android, and desktop devices.
+SFF Wheel Library is a Progressive Web App (PWA) designed for the Skate Flow Fam WhatsApp community. It helps skaters browse, filter, borrow, and learn about wheels from a shared community library. The app works on iOS, Android, and desktop devices.
 
 ### Is this app free to use?
 
@@ -463,13 +463,15 @@ The project is currently maintained by @PeachPaulison with support from the SFF 
 
 ## Still Have Questions?
 
-- **Community support**: Message in the Wheel Warehouse in SFF WhatsApp group
-- **Bug reports**: Message in the Wheel Warehouse in SFF WhatsApp group
-- **Feature requests**: Message in the Wheel Warehouse in SFF WhatsApp group
-- **General questions**: Message in the Wheel Warehouse in SFF WhatsApp group
+Message in the Wheel Warehouse in SFF WhatsApp group for:
+
+- **Community support**
+- **Bug reports**
+- **Feature requests**
+- **General questions**
 
 ---
 
-**Last Updated**: 2026-01-31
+**Last Updated**: 2026-02-1
 **App Version**: Beta 1.0.2
-**Maintained by**: SFF Community
+**Maintained by**: PeachyP of Skate Flow Fam WhatsApp Community
