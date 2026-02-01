@@ -100,7 +100,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 ⚠️ **If you previously installed the app and something seems off, try following the directions at the top of this page for deleting and reinstalling — PWAs are sneaky like that.**
 
 I'd *LOVE* testers!  I **need** testers.  Wash your hands. Push the buttons, check out the notes on the bottom of the app.
-Just don't lick anything or you'll need a shot.
+Just don't lick anything or it's likely you'll need a shot.
 
 ### Things to Try:
 - Test the sign-up form
