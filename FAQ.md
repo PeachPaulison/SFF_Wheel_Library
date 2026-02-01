@@ -36,7 +36,7 @@ A PWA is a website that works like a native app. You can:
 
 ### Is this app still in beta?
 
-Yes! I'm actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues in the Wheel Warehouse in SFF WhatsApp group.
+Yes! I'm actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues in the Wheel Warehouse in the SFF WhatsApp group.
 
 ### How do I sign up or become a member?
 
@@ -52,7 +52,7 @@ Once you're a verified member, you can:
 - Contribute wheels to the shared library
 - Participate in community discussions
 
-**Note:** The app itself doesn't have a traditional "sign up" button. Membership is managed through the WhatsApp community group. When you submit a review or borrow wheels, the app verifies your phone number against the member list.
+**Note:** The app itself doesn't have a traditional "sign up" since membership is managed through the WhatsApp community group. When you sign up for the Wheel Library, you can submit a review or borrow wheels after the app verifies your information against the member list.
 
 **Questions about membership?** Ask in the SFF WhatsApp group.
 
