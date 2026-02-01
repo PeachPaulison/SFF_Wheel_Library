@@ -7,14 +7,16 @@ This guide will help you deploy the updated backend code to Google Apps Script.
 ## What's New in This Version
 
 ### Features Added:
-1. ✅ **Member validation** - Phone numbers verified against Members sheet
-2. ✅ **System accounts** - MAINTENANCE, LIBRARY, ADMIN bypass phone verification
-3. ✅ **Bearing fields support** - Handles bearings_included, bearing_size, bearing_material
-4. ✅ **Removed num_sets** - No longer processing number of sets
-5. ✅ **Dynamic column mapping** - Resilient to column reordering
-6. ✅ **Proper JSON responses** - Returns success/error messages
-7. ✅ **Fixed wheel ID format** - Uses 3 digits (W001, W002, W003)
-8. ✅ **Phone number normalization** - Handles different phone formats
+1. ✅ **Signup form handler** - NEW! Handles member signup/login submissions
+2. ✅ **Member validation** - Phone numbers verified against Members sheet
+3. ✅ **System accounts** - MAINTENANCE, LIBRARY, ADMIN bypass phone verification
+4. ✅ **Bearing fields support** - Handles bearings_included, bearing_size, bearing_material
+5. ✅ **Removed num_sets** - No longer processing number of sets
+6. ✅ **Dynamic column mapping** - Resilient to column reordering
+7. ✅ **Proper JSON responses** - Returns success/error messages
+8. ✅ **Fixed wheel ID format** - Uses 3 digits (W001, W002, W003)
+9. ✅ **Phone number normalization** - Handles different phone formats
+10. ✅ **Member registration sync** - Auto-sync from Google Forms to Members sheet
 
 ### Issues Fixed:
 1. ✅ Wheel ID format consistency (both doPost and onEdit use 3 digits)
@@ -64,9 +66,19 @@ Required columns:
 - email (optional)
 - join_date (optional)
 
-**IMPORTANT**: The Members sheet is used to validate that only registered SFF members can add wheels or submit reviews. If this sheet doesn't exist, the script will log a warning but allow submissions (fail-open behavior).
+**IMPORTANT**: The Members sheet is used to validate that only registered SFF members can sign up, add wheels, or submit reviews. If this sheet doesn't exist, the script will log a warning but allow submissions (fail-open behavior).
 
-### 4. **System Accounts** (Special Handling)
+### 4. **Signups Sheet** (OPTIONAL)
+Optional columns:
+- phone_number
+- display_name
+- experience_level
+- primary_style
+- timestamp
+
+**Purpose**: If this sheet exists, the backend will record each signup attempt. This is useful for tracking who has signed up to use the library. If the sheet doesn't exist, signups will still work but won't be recorded.
+
+### 5. **System Accounts** (Special Handling)
 
 The following display names are treated as **system accounts** and do NOT require phone verification:
 - **MAINTENANCE** - Used when wheels are checked out for inspection/cleaning
@@ -135,6 +147,20 @@ const REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_NEW_DEPLOYMEN
 **NOTE**: If you redeploy the same script, you can use the same URL - you don't need to update the frontend each time.
 
 ### Step 6: Test the Deployment
+
+#### Test 0: Signup Form (NEW)
+1. Open the app and click the **"Sign Up"** button
+2. Fill out the signup form with a **valid** member phone number (one that exists in Members sheet)
+   - Phone: Use format like `(347) 581-4805` or `3475814805` (both should work)
+   - Display Name: Your name from WhatsApp group
+   - Experience Level: Select one
+   - Primary Style: Select one
+   - Check the agreement box
+3. Click **"Sign Up"**
+   - Should succeed with message: "Welcome to SFF Wheel Library!"
+4. Try again with an **invalid** phone number (not in Members sheet)
+   - Should fail with error: "Phone number not found in member list"
+5. Check Apps Script logs to verify the signup was processed
 
 #### Test 1: Member Validation
 1. Try submitting the Add Wheels form with a **valid** member phone number
@@ -265,6 +291,6 @@ If you encounter issues:
 
 ---
 
-**Version**: 2.1
-**Last Updated**: 2026-01-29
+**Version**: 2.2
+**Last Updated**: 2026-02-01
 **Session**: session_015pArBe6Yyeb3pdyvePzfBb

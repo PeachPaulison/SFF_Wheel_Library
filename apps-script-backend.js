@@ -2,10 +2,12 @@
  * SFF Wheel Library - Google Apps Script Backend
  *
  * This script handles:
- * 1. Review submissions (doPost for reviews)
- * 2. Add Wheels form submissions (doPost for inventory)
- * 3. Auto-generation of wheel IDs (onEdit trigger)
- * 4. Member validation against Members sheet
+ * 1. Signup submissions (doPost for member signup/login)
+ * 2. Review submissions (doPost for reviews)
+ * 3. Add Wheels form submissions (doPost for inventory)
+ * 4. Auto-generation of wheel IDs (onEdit trigger)
+ * 5. Member validation against Members sheet
+ * 6. Member registration sync (onFormSubmit trigger)
  *
  * Deploy as: Web app
  * Execute as: Me
@@ -30,11 +32,14 @@ function doPost(e) {
 
     Logger.log('Received POST data: ' + JSON.stringify(data));
 
-    // Determine if this is a review submission or add wheels submission
-    // Reviews have: rating, review_text, experience_level
-    // Add Wheels has: brand, wheel_name, wheel_size
+    // Determine submission type:
+    // Signup: action === 'signup'
+    // Reviews: rating, review_text, experience_level
+    // Add Wheels: brand, wheel_name, wheel_size
 
-    if (data.rating !== undefined || data.review_text !== undefined) {
+    if (data.action === 'signup') {
+      return handleSignupSubmission(sheet, data);
+    } else if (data.rating !== undefined || data.review_text !== undefined) {
       return handleReviewSubmission(sheet, data);
     } else if (data.wheel_name !== undefined && data.brand !== undefined) {
       return handleAddWheelSubmission(sheet, data);
@@ -48,6 +53,65 @@ function doPost(e) {
       success: false,
       error: error.message
     })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ============================================
+// HANDLE SIGNUP SUBMISSIONS
+// ============================================
+
+function handleSignupSubmission(sheet, data) {
+  try {
+    // Validate required fields
+    const requiredFields = ['phone_number', 'display_name', 'experience_level', 'primary_style'];
+    for (const field of requiredFields) {
+      if (!data[field]) {
+        throw new Error(`Missing required field: ${field}`);
+      }
+    }
+
+    // Verify member exists in Members sheet
+    if (!verifyMember(sheet, data.phone_number)) {
+      throw new Error('Phone number not found in member list. Please ensure you are a registered SFF member.');
+    }
+
+    // Optional: Record signup in a tracking sheet (if "Signups" sheet exists)
+    const signupsSheet = sheet.getSheetByName('Signups');
+    if (signupsSheet) {
+      const headers = signupsSheet.getRange(1, 1, 1, signupsSheet.getLastColumn()).getValues()[0];
+      const rowData = new Array(headers.length).fill('');
+
+      // Map data to columns
+      if (headers.indexOf('phone_number') !== -1) {
+        rowData[headers.indexOf('phone_number')] = data.phone_number;
+      }
+      if (headers.indexOf('display_name') !== -1) {
+        rowData[headers.indexOf('display_name')] = data.display_name;
+      }
+      if (headers.indexOf('experience_level') !== -1) {
+        rowData[headers.indexOf('experience_level')] = data.experience_level;
+      }
+      if (headers.indexOf('primary_style') !== -1) {
+        rowData[headers.indexOf('primary_style')] = data.primary_style;
+      }
+      if (headers.indexOf('timestamp') !== -1) {
+        rowData[headers.indexOf('timestamp')] = new Date();
+      }
+
+      signupsSheet.appendRow(rowData);
+      Logger.log('Signup recorded in Signups sheet');
+    }
+
+    Logger.log('Signup successful for: ' + data.display_name);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      message: 'Successfully signed up! Welcome to SFF Wheel Library.'
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    Logger.log('Error in handleSignupSubmission: ' + error.message);
+    throw error;
   }
 }
 
