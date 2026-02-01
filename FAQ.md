@@ -334,7 +334,7 @@ The app collects:
 
 ### Can I delete my data?
 
-Yes. To delete your reviews or personal data, message in the SFF WhatsApp group.
+Yes. To delete your reviews or personal data, message in the Wheel Warehouse in SFF WhatsApp group.
 
 ### Does the app use cookies?
 
@@ -372,7 +372,7 @@ I welcome contributions! You can:
 ### I'm not a developer. Can I still help?
 
 Absolutely! You can help by:
-- Testing the app and reporting bugs in the Wheel Warehouse in WhatsApp group
+- Testing the app and reporting bugs in the Wheel Warehouse in the SFF WhatsApp group
 - Suggesting new features or improvements
 - Writing helpful reviews for wheels you've tried
 - Sharing the app with other skaters in the SFF WhatsApp group
@@ -392,7 +392,7 @@ The app is open-source and available under the MIT License.
 - **Hosting**: GitHub Pages
 - **No build tools**: Direct deployment (no webpack, Vite, etc.)
 
-### How do I set up a local development environment?
+### How do I set up a local development environment? 
 
 1. Clone the repository:
    ```bash
