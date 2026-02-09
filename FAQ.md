@@ -4,6 +4,7 @@
 - [General Questions](#general-questions)
 - [Installation & Setup](#installation--setup)
 - [Using the App](#using-the-app)
+- [Contributing Wheels](#contributing-wheels)
 - [Borrowing & Returns](#borrowing--returns)
 - [Reviews](#reviews)
 - [Troubleshooting](#troubleshooting)
@@ -170,6 +171,150 @@ This means the app couldn't connect to the Google Sheets inventory. Possible rea
 - Network issues (slow or intermittent connection)
 
 The app will continue working with cached data from your last online session.
+
+---
+
+## Contributing Wheels
+
+### How do I add my wheels to the library?
+
+To contribute wheels to the library:
+
+1. **Verify you're a member** - Your phone number must be in the Members list (ask in the SFF WhatsApp group to get added)
+2. **Click the "Add Wheels" button** in the app (if available), or use the contribution form
+3. **Fill out the wheel details**:
+   - Wheel name and brand
+   - Size, material, durometer
+   - What discipline/environment they're best for
+   - Bearing information (if included)
+   - Your phone number for verification
+   - **Optional: Add a photo URL** (see below)
+4. **Submit the form**
+
+Your wheels will be added to the library inventory and available for others to borrow!
+
+### How do I add a photo of my wheels?
+
+Adding photos helps other members see exactly what the wheels look like! Here's how:
+
+**Step 1: Take a good photo**
+- Take a clear, well-lit photo of your wheels
+- Show the wheel from the side (so members can see the profile)
+- Include the brand/model name visible if possible
+- Avoid blurry or dark photos
+
+**Step 2: Upload to an image host**
+
+You have several options for hosting your image:
+
+#### Option A: Google Drive (Recommended for SFF members)
+
+1. Upload your photo to Google Drive
+2. Right-click the image and select "Get link" or "Share"
+3. Change permissions to "Anyone with the link" can view
+4. Copy the sharing link
+5. **Important**: Convert the link format
+   - Original format: `https://drive.google.com/file/d/FILE_ID/view?usp=sharing`
+   - Change to: `https://drive.google.com/uc?export=view&id=FILE_ID`
+   - Replace `FILE_ID` with your actual file ID from the original link
+
+**Example:**
+- Original: `https://drive.google.com/file/d/1ABC123xyz/view?usp=sharing`
+- Use this: `https://drive.google.com/uc?export=view&id=1ABC123xyz`
+
+#### Option B: Imgur (Simple and free)
+
+1. Go to [imgur.com](https://imgur.com)
+2. Click "New post" (no account needed)
+3. Upload your photo
+4. Right-click the uploaded image and select "Copy image address"
+5. Paste that URL in the form
+
+#### Option C: Other image hosts
+
+You can use any public image hosting service:
+- Dropbox (with public sharing enabled)
+- Flickr (with public sharing)
+- Your own website (if you have one)
+
+**Just make sure the URL:**
+- Points directly to the image file (ends in .jpg, .png, etc.)
+- Is publicly accessible (no login required)
+- Uses HTTPS (secure connection)
+
+**Step 3: Add the URL to the contribution form**
+
+1. In the "Add Wheels" form, find the **"Image URL (optional)"** field
+2. Paste your image URL
+3. The placeholder shows: `https://example.com/wheel-photo.jpg`
+4. Submit the form as usual
+
+### What if my wheel photo isn't showing up?
+
+If your image doesn't appear in the app:
+
+**Check your URL:**
+- Is it a direct link to the image file?
+- Does it end in `.jpg`, `.png`, or `.gif`?
+- Can you paste it in a browser address bar and see the image?
+
+**Check permissions:**
+- Google Drive: Is the file set to "Anyone with the link"?
+- Is it using the correct format (`uc?export=view&id=FILE_ID`)?
+
+**Check the image itself:**
+- Is the file too large? (Try keeping images under 2MB)
+- Is the image format supported? (JPG and PNG work best)
+
+**Still not working?**
+- Message in the SFF WhatsApp group with your wheel ID and image URL
+- We can help troubleshoot or fix it manually in the inventory sheet
+
+### Do I have to add a photo?
+
+No! The image URL field is **optional**. Wheels without photos will still display perfectly fine in the app - they just won't have a visual preview. You can always add a photo later by messaging in the SFF WhatsApp group.
+
+### Can I change or update the photo later?
+
+Yes! If you want to update the image for wheels you've already added:
+1. Get your new image URL (following the steps above)
+2. Message in the SFF WhatsApp group with:
+   - Your wheel ID (e.g., "W042")
+   - The new image URL
+   - Optionally: why you're updating it
+
+A library administrator will update the inventory sheet for you.
+
+### What makes a good wheel photo?
+
+**Good photos:**
+- Clear and well-lit
+- Show the wheel profile (side view)
+- Brand/model name visible
+- In focus, not blurry
+- Show the actual color accurately
+
+**Tips:**
+- Natural daylight works best for lighting
+- Use a plain background (white paper, wood floor, etc.)
+- Show all 4 wheels arranged in a row or square
+- Include a familiar object for size reference (optional)
+- Take from slightly above, not straight-on
+
+**Avoid:**
+- Blurry or out-of-focus images
+- Dark or poorly lit photos
+- Photos where wheels are barely visible
+- Photos with distracting backgrounds
+- Heavily filtered or edited photos that change colors
+
+### Are there size or format requirements for images?
+
+**Format:** JPG or PNG (most common)
+**Size:** Keep images under 2MB if possible (most phone photos are fine)
+**Dimensions:** No strict requirement, but 800-1200px wide is ideal
+
+The app automatically resizes images to fit the display area (max 200px height), so you don't need to crop or resize before uploading.
 
 ---
 
