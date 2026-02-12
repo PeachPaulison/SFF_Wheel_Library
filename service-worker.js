@@ -1,4 +1,4 @@
-const CACHE_NAME = "wheel-library-v1.0.9";
+const CACHE_NAME = "wheel-library-v1.0.10";
 const ASSETS = [
   "./",
   "./index.html",
@@ -45,13 +45,29 @@ self.addEventListener("fetch", (event) => {
 
   // Never cache these URLs - always go to network
   if (NEVER_CACHE.some((pattern) => url.includes(pattern))) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+      fetch(event.request).catch((err) => {
+        console.error("[SW] Fetch failed:", url, err);
+        return new Response(JSON.stringify({ error: "Network request failed" }), {
+          status: 503,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
     return;
   }
 
   // Don't cache POST/PUT/DELETE requests - only GET
   if (method !== 'GET') {
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+      fetch(event.request).catch((err) => {
+        console.error("[SW] Fetch failed:", url, err);
+        return new Response(JSON.stringify({ error: "Network request failed" }), {
+          status: 503,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
     return;
   }
 
