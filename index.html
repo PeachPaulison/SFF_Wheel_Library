@@ -2043,20 +2043,31 @@ reviewForm.onsubmit = async function(e) {
       environment: document.getElementById('environment').value || ''
     };
     
-   const response = await fetch(REVIEW_SCRIPT_URL, {
+    const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData)
     });
 
-    
-    // With no-cors can't read the response, so assume success if no error thrown?
-    const result = { success: true };
+    // Check if response is ok
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status} ${response.statusText}`);
+    }
 
-    
+    // Try to parse as JSON
+    let result;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      // Response is not JSON (likely HTML error page)
+      const text = await response.text();
+      console.error('Non-JSON response received:', text);
+      throw new Error('Server returned an unexpected response. Please ensure the Google Apps Script is properly deployed.');
+    }
+
     if (result.success) {
       formMessage.className = 'form-message success';
       formMessage.textContent = '✅ Review submitted successfully! Thank you for sharing your experience.';
@@ -2191,7 +2202,22 @@ addWheelsForm.onsubmit = async function(e) {
       body: JSON.stringify(formData)
     });
 
-    const result = await response.json();
+    // Check if response is ok
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status} ${response.statusText}`);
+    }
+
+    // Try to parse as JSON
+    let result;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      // Response is not JSON (likely HTML error page)
+      const text = await response.text();
+      console.error('Non-JSON response received:', text);
+      throw new Error('Server returned an unexpected response. Please ensure the Google Apps Script is properly deployed.');
+    }
 
     if (result.success) {
       addWheelsMessage.className = 'form-message success';
@@ -2301,7 +2327,22 @@ signUpForm.onsubmit = async function(e) {
       body: JSON.stringify(formData)
     });
 
-    const result = await response.json();
+    // Check if response is ok
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status} ${response.statusText}`);
+    }
+
+    // Try to parse as JSON
+    let result;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      // Response is not JSON (likely HTML error page)
+      const text = await response.text();
+      console.error('Non-JSON response received:', text);
+      throw new Error('Server returned an unexpected response. Please ensure the Google Apps Script is properly deployed.');
+    }
 
     if (result.success) {
       signUpMessage.className = 'form-message success';
@@ -2406,7 +2447,22 @@ checkoutForm.onsubmit = async function(e) {
       body: JSON.stringify(formData)
     });
 
-    const result = await response.json();
+    // Check if response is ok
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status} ${response.statusText}`);
+    }
+
+    // Try to parse as JSON
+    let result;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      // Response is not JSON (likely HTML error page)
+      const text = await response.text();
+      console.error('Non-JSON response received:', text);
+      throw new Error('Server returned an unexpected response. Please ensure the Google Apps Script is properly deployed.');
+    }
 
     if (result.success) {
       checkoutMessage.className = 'form-message success';
