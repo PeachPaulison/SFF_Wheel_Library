@@ -1,4 +1,4 @@
-const CACHE_NAME = "wheel-library-v1.0.7";
+const CACHE_NAME = "wheel-library-v1.0.8";
 const ASSETS = [
   "./",
   "./index.html",
@@ -9,6 +9,7 @@ const ASSETS = [
 // Don't cache these URLs - always fetch fresh
 const NEVER_CACHE = [
   "https://docs.google.com/spreadsheets", // Your Google Sheets data
+  "https://script.google.com", // Google Apps Script endpoints
   "chrome-extension://", // Browser extensions
   "jsdelivr.net" // Let CDN scripts load directly, bypass service worker
 ];
@@ -40,6 +41,7 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
+  const method = event.request.method;
 
   // Never cache these URLs - always go to network
   if (NEVER_CACHE.some((pattern) => url.includes(pattern))) {
@@ -47,7 +49,13 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Network-first strategy for everything else
+  // Don't cache POST/PUT/DELETE requests - only GET
+  if (method !== 'GET') {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Network-first strategy for GET requests
   event.respondWith(
     fetch(event.request)
       .then((res) => {
