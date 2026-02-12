@@ -41,12 +41,12 @@ If something looks weird after reinstalling, that's a **bug**, not user error �
 ---
 
 ## 🚨 IMPORTANT! THIS IS NOT A FINISHED APP 🚨
-This is **just the beginning**, not the middle, and definitely not the end.  
-Nothing here is polished, official, complete, or FDA-approved.  
+This is more than the beginning, probably the middle, but definitely not the end.  
+Nothing here is official, complete, or FDA-approved.  
 
 This is a *proof-of-concept*, a *prototype*, and maybe even a *fever dream*.
 
-If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies — message in the **SFF WhatsApp group**.
+If you have thoughts, ideas, questions, concerns, compliments, complaints, or cookies — message me in the **Wheel Warehousre in the SFF WhatsApp group**.
 
 ---
 
@@ -58,7 +58,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
   - Durometer (color-coded: hot pink outlines)
   - Material (color-coded: purple outlines)
 - Helps you match a "vibe" (and isn't that the whole point anyway?)
-- Functions as a **PWA**, so you can add it to your phone like a real app
+- Functions as a **PWA** (Progressive Web App) so you can add it to your phone like a real app
   *(because fake it till you make it)*
 - **NEW!** Contribute your own wheels to the library with the sign-up form
 - **NEW!** Member verification system (must be in Members list to contribute or borrow)
@@ -81,7 +81,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 - Notes, saved favorites, wheel comparisons
 - Display wheel photos in the browse interface
 - A full mobile loaner program interface for SFF
-- What the heck, maybe even a snack bar
+- **What the heck, maybe even a snack bar**
 
 ---
 
@@ -99,17 +99,17 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 ## 🧪 Want to Help Me Test?
 ⚠️ **If you previously installed the app and something seems off, try following the directions at the top of this page for deleting and reinstalling — PWAs are sneaky like that.**
 
-I'd *LOVE* testers! Push the buttons, check out the notes on the bottom.
-Just don't lick anything or you'll need a shot.
+I'd *LOVE* testers!  I **need** testers.  Wash your hands. Push the buttons, check out the notes on the bottom of the app.
+Just don't lick anything or it's likely you'll need a shot.
 
 ### Things to Try:
+- Test the sign-up form
 - Browse and filter wheels
-- **Try contributing your own wheels!** (Must be in the Members list)
-- Test the sign-up form with different wheel configurations
+- **Try contributing your own wheels!** (Must sign up first and be in the Members list)
 - Add wheel images via URL
 - Check out the bearing tracking fields
 
-Message in the **SFF WhatsApp group** with:
+Message in the **Wheel Warehouse in the SFF WhatsApp group** with:
 - Bugs
 - Confusing parts
 - Missing features
@@ -172,7 +172,7 @@ https://script.google.com/macros/s/AKfycbxXkVjkTFlAOXeSKVxYH1givBV_-vx8_5KCJwGU-
 - **System accounts** (MAINTENANCE, LIBRARY, ADMIN) bypass phone verification for operational use
 - Phone number normalization handles different formats: (555) 123-4567, 555-123-4567, or 5551234567
 - Prevents unauthorized additions to the inventory
-- Phone numbers are stored but never displayed publicly
+- Phone numbers are stored to verify membership, but never displayed publicly
 
 **System Accounts:**
 Special accounts that bypass member verification:
@@ -183,7 +183,7 @@ Special accounts that bypass member verification:
 **Inventory Data Structure:**
 - Sheet: "Inventory" in SFF_Wheel_Library workbook
 - Each row represents ONE physical set of wheels from ONE lender
-- Columns include: wheel_id, wheel_name, brand, wheel_size, wheel_material, durometer_category, best_for, status, lender_id, image_url, bearings_included, bearing_size, bearing_material, timestamp
+- Columns include: wheel_id, wheel_name, brand, wheel_size, wheel_material, durometer_category, best_for, status, lender_id, image_url, bearings_included/not includeds, bearing_size, bearing_material, timestamp
 
 **Review Data Structure:**
 - Sheet: "Reviews" in SFF_Wheel_Library workbook

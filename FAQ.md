@@ -17,15 +17,15 @@
 
 ### What is SFF Wheel Library?
 
-SFF Wheel Library is a Progressive Web App (PWA) designed for the SFF Wheel Warehouse community. It helps skaters browse, filter, and borrow wheels from a shared community library. The app works on iOS, Android, and desktop devices.
+SFF Wheel Library is a Progressive Web App (PWA) designed for the Skate Flow Fam WhatsApp community. It helps skaters browse, filter, borrow, and learn about wheels from a shared community library. The app works on iOS, Android, and desktop devices.
 
 ### Is this app free to use?
 
-Yes! The SFF Wheel Library app is completely free and open-source. It's built by the community, for the community.
+Yes! The SFF Wheel Library app is completely free and open-source. It's built by a baby deer, for the community.
 
 ### Is this app affiliated with any wheel manufacturer?
 
-No, this is an independent community project created by and for the SFF Wheel Warehouse skating community. We are not affiliated with any wheel manufacturers or retailers.
+No, this is an independent community project created for the SFF Wheel Warehouse skating community. This is not affiliated with any wheel manufacturers or retailers.
 
 ### What makes this a "Progressive Web App" (PWA)?
 
@@ -37,7 +37,7 @@ A PWA is a website that works like a native app. You can:
 
 ### Is this app still in beta?
 
-Yes! We're actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues in the SFF WhatsApp group.
+Yes! I'm actively developing and improving the app based on community feedback. You may encounter bugs or incomplete features. Please report issues in the Wheel Warehouse in the SFF WhatsApp group.
 
 ### How do I sign up or become a member?
 
@@ -53,7 +53,7 @@ Once you're a verified member, you can:
 - Contribute wheels to the shared library
 - Participate in community discussions
 
-**Note:** The app itself doesn't have a traditional "sign up" button. Membership is managed through the WhatsApp community group. When you submit a review or borrow wheels, the app verifies your phone number against the member list.
+**Note:** The app itself doesn't have a traditional "sign up" since membership is managed through the WhatsApp community group. When you sign up for the Wheel Library, you can submit a review or borrow wheels after the app verifies your information against the member list.
 
 **Questions about membership?** Ask in the SFF WhatsApp group.
 
@@ -388,7 +388,7 @@ Technically yes, but we encourage honest reviews based on actual experience. If 
 
 ### Can I edit or delete my review after submitting?
 
-Not yet. This feature is planned for the future. If you need to correct or remove a review, please message in the SFF WhatsApp group.
+Not yet. This feature is planned for the future. If you need to correct or remove a review, please message in the wheel Warehouse in SFF WhatsApp group.
 
 ### Where can I see reviews from other members?
 
@@ -427,9 +427,9 @@ If the problem persists, message in the SFF WhatsApp group.
 Common issues:
 - **No results**: Try removing some filters to broaden your search
 - **Wrong results**: Check that you've selected the correct filter values
-- **Filters stuck**: Try refreshing the page
+- **Filters stuck**: Try the Reset Filters button or refreshing the page
 
-If filters are genuinely broken, message in the SFF WhatsApp group with:
+If filters are genuinely broken, message in the Wheel Warehouse in SFF WhatsApp group with:
 - Which filters you selected
 - What results you expected
 - What results you actually got
@@ -443,11 +443,11 @@ Possible reasons:
 - Phone number format issue (try with/without dashes)
 - Temporary backend issue
 
-Try again in a few minutes. If it keeps failing, message in the SFF WhatsApp group.
+Try again in a few minutes. If it keeps failing, message in the Wheel Warehouse in SFF WhatsApp group.
 
 ### The app looks broken on my device
 
-Please message in the SFF WhatsApp group and include:
+Please message in the Wheel Warehouse in SFF WhatsApp group and include:
 - Device type and model
 - Browser and version
 - Screenshots showing the issue
@@ -455,9 +455,9 @@ Please message in the SFF WhatsApp group and include:
 
 ### I found a wheel with incorrect information
 
-The inventory data comes from our Google Sheets database. To report incorrect information:
+The inventory data comes from the community entering information that is stored in our Google Sheets database. To report incorrect information:
 1. Note the wheel ID (e.g., "W001")
-2. Message in the SFF WhatsApp group with the correction
+2. Message in the Wheel Warehouse in SFF WhatsApp group with the correction
 
 ### The app is slow or laggy
 
@@ -468,11 +468,11 @@ Performance tips:
 - Clear your browser cache
 - Restart your device
 
-If the app is consistently slow, please message in the SFF WhatsApp group.
+If the app is consistently slow, please message in the Wheel Warehouse in SFF WhatsApp group.
 
-### I see a floating debug console (Eruda)
+### I see a weird floating shadow icon or debug console (Eruda)
 
-This is intentional during the beta phase to help us troubleshoot issues. It will be removed before the official launch. You can minimize it by tapping the floating button and closing the panel.
+This is intentional during the beta phase to help me troubleshoot issues. It will be removed before the official launch. You can minimize it by tapping the floating button and closing the panel.
 
 ---
 
@@ -497,7 +497,7 @@ The app collects:
 
 ### Can I delete my data?
 
-Yes. To delete your reviews or personal data, message in the SFF WhatsApp group.
+Yes. To delete your reviews or personal data, message in the Wheel Warehouse in SFF WhatsApp group.
 
 ### Does the app use cookies?
 
@@ -526,19 +526,19 @@ No third-party tracking cookies are used.
 
 ### How can I contribute to the project?
 
-We welcome contributions! You can:
-- **Report bugs**: Message in the SFF WhatsApp group
-- **Suggest features**: Message in the SFF WhatsApp group
-- **Test new features**: Try beta features and provide feedback in the WhatsApp group
+I welcome contributions! You can:
+- **Report bugs**: Message in the Wheel Warehouse in SFF WhatsApp group
+- **Suggest features**: Message in the Wheel Warehouse in SFF WhatsApp group
+- **Test new features**: Try beta features and provide feedback in the Wheel Warehouse in SFF WhatsApp group
 - **Write reviews**: Share your experience with wheels you've tried
 
 ### I'm not a developer. Can I still help?
 
 Absolutely! You can help by:
-- Testing the app and reporting bugs in the WhatsApp group
+- Testing the app and reporting bugs in the Wheel Warehouse in the SFF WhatsApp group
 - Suggesting new features or improvements
 - Writing helpful reviews for wheels you've tried
-- Sharing the app with other skaters
+- Sharing the app with other skaters in the SFF WhatsApp group
 - Providing feedback on UI/UX design
 
 ### Where is the source code?
@@ -549,15 +549,13 @@ The app is open-source and available under the MIT License.
 
 ### What technologies does the app use?
 
-- **Frontend**: Pure HTML, CSS, JavaScript (no frameworks)
+- **Frontend**: Pure HTML, CSS, vanilla JavaScript (no frameworks)
 - **PWA**: Service Worker API for offline functionality
 - **Backend**: Google Apps Script + Google Sheets
 - **Hosting**: GitHub Pages
 - **No build tools**: Direct deployment (no webpack, Vite, etc.)
 
-See `CLAUDE.md` for detailed technical documentation.
-
-### How do I set up a local development environment?
+### How do I set up a local development environment? 
 
 1. Clone the repository:
    ```bash
@@ -577,8 +575,6 @@ See `CLAUDE.md` for detailed technical documentation.
 
 5. Submit a pull request
 
-See `CLAUDE.md` for detailed development workflows.
-
 ### What's the roadmap for future features?
 
 Planned features include:
@@ -592,7 +588,7 @@ Planned features include:
 - Photo uploads for wheel reviews
 - Favorite wheels feature
 
-Feature requests and priorities are discussed in the SFF WhatsApp group.
+Feature requests and priorities are discussed in the Wheel Warehouse in SFF WhatsApp group.
 
 ### How are decisions made about new features?
 
@@ -606,19 +602,21 @@ We encourage community discussion in the SFF WhatsApp group.
 
 ### Who maintains this project?
 
-The project is currently maintained by @PeachPaulison with support from the SFF Wheel Warehouse community. We welcome additional maintainers and contributors!
+The project is currently maintained by @PeachPaulison with support from the SFF Wheel Warehouse community. I welcome additional maintainers and contributors!
 
 ---
 
 ## Still Have Questions?
 
-- **Community support**: Message in the SFF WhatsApp group
-- **Bug reports**: Message in the SFF WhatsApp group
-- **Feature requests**: Message in the SFF WhatsApp group
-- **General questions**: Message in the SFF WhatsApp group
+Message in the Wheel Warehouse in SFF WhatsApp group for:
+
+- **Community support**
+- **Bug reports**
+- **Feature requests**
+- **General questions**
 
 ---
 
-**Last Updated**: 2026-01-31
+**Last Updated**: 2026-02-1
 **App Version**: Beta 1.0.2
-**Maintained by**: SFF Wheel Warehouse Community
+**Maintained by**: PeachyP of Skate Flow Fam WhatsApp Community
