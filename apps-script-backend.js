@@ -39,6 +39,8 @@ function doPost(e) {
 
     if (data.action === 'signup') {
       return handleSignupSubmission(sheet, data);
+    } else if (data.action === 'checkout') {
+      return handleCheckoutSubmission(sheet, data);
     } else if (data.rating !== undefined || data.review_text !== undefined) {
       return handleReviewSubmission(sheet, data);
     } else if (data.wheel_name !== undefined && data.brand !== undefined) {
@@ -269,6 +271,75 @@ function handleAddWheelSubmission(sheet, data) {
 
   } catch (error) {
     Logger.log('Error in handleAddWheelSubmission: ' + error.message);
+    throw error;
+  }
+}
+
+// ============================================
+// HANDLE CHECKOUT SUBMISSIONS
+// ============================================
+
+function handleCheckoutSubmission(sheet, data) {
+  try {
+    // Validate required fields
+    const requiredFields = ['phone_number', 'display_name', 'wheel_id'];
+    for (const field of requiredFields) {
+      if (!data[field]) {
+        throw new Error(`Missing required field: ${field}`);
+      }
+    }
+
+    // Check if this is a system account
+    const isSystemAccount = SYSTEM_ACCOUNTS.includes(data.display_name.toUpperCase());
+
+    // Verify member exists (skip for system accounts)
+    if (!isSystemAccount) {
+      if (!verifyMember(sheet, data.phone_number)) {
+        throw new Error('Phone number not found in member list. Only verified SFF members can borrow wheels.');
+      }
+    }
+
+    // Update wheel status in Inventory sheet
+    const inventorySheet = sheet.getSheetByName('Inventory');
+    if (!inventorySheet) {
+      throw new Error('Inventory sheet not found');
+    }
+
+    const headers = inventorySheet.getRange(1, 1, 1, inventorySheet.getLastColumn()).getValues()[0];
+    const wheelIdColIndex = headers.indexOf('wheel_id');
+    const statusColIndex = headers.indexOf('status');
+
+    if (wheelIdColIndex === -1 || statusColIndex === -1) {
+      throw new Error('Required columns not found in Inventory sheet');
+    }
+
+    const lastRow = inventorySheet.getLastRow();
+    const wheelIds = inventorySheet.getRange(2, wheelIdColIndex + 1, lastRow - 1, 1).getValues();
+
+    let wheelRow = -1;
+    for (let i = 0; i < wheelIds.length; i++) {
+      if (String(wheelIds[i][0]) === String(data.wheel_id)) {
+        wheelRow = i + 2; // +2 for 0-index and header row
+        break;
+      }
+    }
+
+    if (wheelRow === -1) {
+      throw new Error('Wheel not found in inventory');
+    }
+
+    // Update status to checked out
+    inventorySheet.getRange(wheelRow, statusColIndex + 1).setValue('checked out');
+
+    Logger.log('Checkout successful: ' + data.wheel_id + ' by ' + data.display_name);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      message: 'Checkout verified successfully'
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    Logger.log('Error in handleCheckoutSubmission: ' + error.message);
     throw error;
   }
 }
