@@ -72,60 +72,20 @@ function handleSignupSubmission(sheet, data) {
       }
     }
 
-    // Normalize phone number
-    const normalizedPhone = normalizePhoneNumber(data.phone_number);
-    if (!normalizedPhone || normalizedPhone.length !== 10) {
-      throw new Error('Invalid phone number format. Please enter a valid 10-digit US phone number.');
+    // Verify member exists in Members sheet
+    if (!verifyMember(sheet, data.phone_number)) {
+      throw new Error('Phone number not found in member list. Please ensure you are a registered SFF member.');
     }
 
-    // Check if member already exists (prevent duplicate signups)
-    if (verifyMember(sheet, data.phone_number)) {
-      return ContentService.createTextOutput(JSON.stringify({
-        success: true,
-        message: 'Welcome back! You are already a member of SFF Wheel Library.'
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-
-    // Add new member to Members sheet
-    const membersSheet = sheet.getSheetByName('Members');
-    if (membersSheet) {
-      const headers = membersSheet.getRange(1, 1, 1, membersSheet.getLastColumn()).getValues()[0];
-      const memberRow = new Array(headers.length).fill('');
-
-      if (headers.indexOf('phone_number') !== -1) {
-        memberRow[headers.indexOf('phone_number')] = normalizedPhone;
-      }
-      if (headers.indexOf('display_name') !== -1) {
-        memberRow[headers.indexOf('display_name')] = data.display_name;
-      }
-      if (headers.indexOf('experience_level') !== -1) {
-        memberRow[headers.indexOf('experience_level')] = data.experience_level;
-      }
-      if (headers.indexOf('primary_style') !== -1) {
-        memberRow[headers.indexOf('primary_style')] = data.primary_style;
-      }
-      if (headers.indexOf('registered_date') !== -1) {
-        memberRow[headers.indexOf('registered_date')] = new Date();
-      }
-
-      // Generate member ID if column exists
-      const memberIdColIndex = headers.indexOf('member_id');
-      if (memberIdColIndex !== -1) {
-        memberRow[memberIdColIndex] = generateMemberId(membersSheet);
-      }
-
-      membersSheet.appendRow(memberRow);
-      Logger.log('New member added to Members sheet: ' + data.display_name);
-    }
-
-    // Also record in Signups sheet if it exists (for tracking)
+    // Optional: Record signup in a tracking sheet (if "Signups" sheet exists)
     const signupsSheet = sheet.getSheetByName('Signups');
     if (signupsSheet) {
       const headers = signupsSheet.getRange(1, 1, 1, signupsSheet.getLastColumn()).getValues()[0];
       const rowData = new Array(headers.length).fill('');
 
+      // Map data to columns
       if (headers.indexOf('phone_number') !== -1) {
-        rowData[headers.indexOf('phone_number')] = normalizedPhone;
+        rowData[headers.indexOf('phone_number')] = data.phone_number;
       }
       if (headers.indexOf('display_name') !== -1) {
         rowData[headers.indexOf('display_name')] = data.display_name;
