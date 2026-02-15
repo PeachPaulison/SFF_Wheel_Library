@@ -80,7 +80,7 @@
 
 2. **Google Apps Script (Write endpoint)**
    ```javascript
-   REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynqdoLigNVyALncipI-FaDVl7mUjxgBqgD0cCn730ONoVGlc_IYHsFF06SlDQih8sP/exec"
+   REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxi6hK6R9e1Q9F0z93q2aBTroefytf3Sofc0if1A0FJPc76H18aZYAnYawq51MyrjDQ/exec"
    ```
    - Handles review form submissions
    - POST endpoint with JSON payload
@@ -1093,7 +1093,7 @@ Apps Script deploy:   /home/user/SFF_Wheel_Library/APPS_SCRIPT_DEPLOYMENT.md
 Production:         https://peachpaulison.github.io/SFF_Wheel_Library
 GitHub Repo:        https://github.com/PeachPaulison/SFF_Wheel_Library
 Google Sheets CSV:  https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv
-Apps Script:        https://script.google.com/macros/s/AKfycbynqdoLigNVyALncipI-FaDVl7mUjxgBqgD0cCn730ONoVGlc_IYHsFF06SlDQih8sP/exec
+Apps Script:        https://script.google.com/macros/s/AKfycbxi6hK6R9e1Q9F0z93q2aBTroefytf3Sofc0if1A0FJPc76H18aZYAnYawq51MyrjDQ/exec
 ```
 
 ### Common Commands
