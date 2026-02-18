@@ -93,10 +93,26 @@ This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum,
 
 *These will all get fixed as we go. Rome wasn't debugged in a day.*
 
+## Tests you can try
+	Member Validation Tests						
+.		Valid member phone: Submit Add Wheels form with registered member phone → Should succeed 					
+∙		Invalid phone: Submit with fake phone number → Should fail with error message 					
+∙		System account: Use display_name “MAINTENANCE” with NO phone → Should succeed 					
+							
+	Wheel ID Generation						
+∙		Submit Add Wheels form successfully					
+∙		Check Inventory sheet					
+.   Verify wheel_id is W001, W002, W003 format (3 digits)					
+							
+	Bearing Fields						
+∙		Submit wheel with bearings: Check “Bearings Included”, select size (7mm/8mm) and material					
+∙		Ask me to verify in Inventory sheet: bearings_included = “Yes”, bearing_size and bearing_material populated					
+∙		Submit wheel without bearings: Leave unchecked					
+∙		Ask me to verify in Inventory sheet: bearings_included = “No”, other fields empty					
 ---
 
 ## 🛠️ Nerd Stuff (If You Care)
-- Built as a static HTML/CSS/JS PWA — no frameworks, no build tools
+- Built as a static HTML/CSS/JS PWA — no frameworks, no build tools (I need a PC)
 - Deployed via **GitHub Pages** (auto-deploys from `main`)
 - Service worker for offline caching
 - **Live inventory** synced from Google Sheets (read-only CSV endpoint)
