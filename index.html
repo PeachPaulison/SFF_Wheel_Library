@@ -1307,12 +1307,15 @@ h1{
 
             <div class="form-group">
               <label for="wheelName">Wheel Name *</label>
-              <input type="text" id="wheelName" name="wheel_name" placeholder="e.g., Radar Energy 57" required>
+              <input type="text" id="wheelName" name="wheel_name" placeholder="e.g., Radar Energy 57" list="wheelNameList" autocomplete="off" required>
+              <datalist id="wheelNameList"></datalist>
             </div>
 
             <div class="form-group">
               <label for="brand">Brand *</label>
-              <input type="text" id="brand" name="brand" placeholder="e.g., Radar, Moxi, Sure-Grip" required>
+              <select id="brand" name="brand" required>
+                <option value="">-- Select brand --</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -1930,6 +1933,7 @@ h1{
           updateOutput();
           renderLoans();
           updateMatches();
+          populateAddWheelsDropdowns();
           console.log('✅ Inventory loaded successfully:', inv.length, 'wheels');
         } else {
           setDataStatus("offline", "NO LIVE DATA");
@@ -2119,6 +2123,36 @@ console.log('Review form initialized');
 // ADD WHEELS FORM SETUP
 // =========================
 
+// Populate Brand dropdown and Wheel Name datalist from loaded inventory
+function populateAddWheelsDropdowns() {
+  // Wheel Name datalist — unique names, sorted
+  const datalist = document.getElementById('wheelNameList');
+  datalist.innerHTML = '';
+  const uniqueNames = [...new Set(inventory.map(w => w.name).filter(Boolean))].sort();
+  uniqueNames.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    datalist.appendChild(option);
+  });
+
+  // Brand select — unique brands from inventory, sorted, with Other at the end
+  const brandSelect = document.getElementById('brand');
+  const current = brandSelect.value;
+  brandSelect.innerHTML = '<option value="">-- Select brand --</option>';
+  const uniqueBrands = [...new Set(inventory.map(w => w.brand).filter(Boolean))].sort();
+  uniqueBrands.forEach(brand => {
+    const option = document.createElement('option');
+    option.value = brand;
+    option.textContent = brand;
+    brandSelect.appendChild(option);
+  });
+  const other = document.createElement('option');
+  other.value = 'Other';
+  other.textContent = 'Other';
+  brandSelect.appendChild(other);
+  if (current) brandSelect.value = current;
+}
+
 // Get DOM elements
 const addWheelsBtn = document.getElementById('addWheelsBtn');
 const addWheelsModal = document.getElementById('addWheelsModal');
@@ -2242,7 +2276,8 @@ addWheelsForm.onsubmit = async function(e) {
 
       // Reload inventory data
       setTimeout(async function() {
-        await loadInventoryFromSheet();
+        const refreshed = await loadInventoryFromSheet();
+        if (refreshed && refreshed.length) { inventory = refreshed; populateAddWheelsDropdowns(); }
         addWheelsModal.classList.remove('active');
         addWheelsForm.reset();
         addWheelsMessage.style.display = 'none';
