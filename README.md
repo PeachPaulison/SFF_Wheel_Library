@@ -64,7 +64,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 I'd *LOVE* testers! I **need** testers. Wash your hands. Push the buttons.
 
 ### Things to Try:
-- **Sign up** as a member (you'll need to be added to the Members list first — message me!)
+- **Sign up** as a member (you need to be in the Members list first — if you're having an issuemessage me!)
 - **Browse and filter** wheels
 - **Check out a wheel** — does the status update? Does it feel right?
 - **Contribute wheels** to the library (brand dropdown + name suggestions are new!)
@@ -89,7 +89,7 @@ This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum,
 - Google Sheets data might take a second to load on first visit
 - Wheel images are tracked but not yet displayed inline in the browse interface
 - That floating button in the corner? That's **Eruda** — my mobile debugging tool. It'll vanish before the real launch.
-- To contribute or borrow, you must be in the Members sheet — message me to get added!
+- To contribute or borrow, you must be in the Members sheet — message me to get added if you couldn't sign up!
 
 *These will all get fixed as we go. Rome wasn't debugged in a day.*
 
