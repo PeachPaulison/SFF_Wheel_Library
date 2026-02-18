@@ -2047,7 +2047,7 @@ reviewForm.onsubmit = async function(e) {
     const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       cache: 'no-store',
       body: JSON.stringify(formData)
@@ -2199,7 +2199,7 @@ addWheelsForm.onsubmit = async function(e) {
     const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       cache: 'no-store',
       body: JSON.stringify(formData)
@@ -2325,7 +2325,7 @@ signUpForm.onsubmit = async function(e) {
     const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       cache: 'no-store',
       body: JSON.stringify(formData)
@@ -2446,7 +2446,7 @@ checkoutForm.onsubmit = async function(e) {
     const response = await fetch(REVIEW_SCRIPT_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       cache: 'no-store',
       body: JSON.stringify(formData)
