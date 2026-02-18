@@ -1086,6 +1086,14 @@ h1{
       <main>
         <!-- LEFT: Filters & notes -->
         <section class="panel">
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="action-btn action-btn-signup" id="signUpBtn">Sign Up</button>
+            <button class="action-btn action-btn-reset" id="resetBtn">Reset Filters</button>
+            <button class="action-btn action-btn-wheels" id="addWheelsBtn">Add Wheels</button>
+            <button class="action-btn action-btn-review" id="reviewBtn">Add Review</button>
+          </div>
+
           <h2>Choose your session. Tap a few chips to set the vibe.</h2>
 
 
@@ -1143,13 +1151,6 @@ h1{
             Choose as many or as few filters as you like. The panel only shows wheels that are actually free to borrow.
           </div>
 
-          <!-- Action Buttons -->
-          <div class="action-buttons">
-            <button class="action-btn action-btn-signup" id="signUpBtn">Sign Up</button>
-            <button class="action-btn action-btn-reset" id="resetBtn">Reset Filters</button>
-            <button class="action-btn action-btn-wheels" id="addWheelsBtn">Add Wheels</button>
-            <button class="action-btn action-btn-review" id="reviewBtn">Add Review</button>
-          </div>
         </section>
 
         <!-- RIGHT: Matching wheels + borrower mockup -->
@@ -1532,7 +1533,7 @@ h1{
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTX7hy9M2WFiK5F_idUtMvnvfDZnz6-PdqeLP660gPQJI50eBQygHbWdhd3pvYF4H307QqK-0nIFero/pub?gid=0&single=true&output=csv";
     
     // Review form Apps Script URL
-    const REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxACa4B1KLcCdkiGIkA4W176XbhVgawFWFokYU6oS1_5q4IlS6GA1-J4oHpiyw-y8bu/exec";
+    const REVIEW_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxi6hK6R9e1Q9F0z93q2aBTroefytf3Sofc0if1A0FJPc76H18aZYAnYawq51MyrjDQ/exec";
     function parseCSV(text) {
       const rows = [];
       let row = [];
