@@ -741,6 +741,19 @@ h1{
   box-shadow: 0 6px 20px rgba(255,111,0,.6), 0 0 30px rgba(255,111,0,.3);
 }
 
+.action-btn-signup.signed-up {
+  background: #444;
+  color: #888;
+  cursor: default;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.action-btn-signup.signed-up:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 .action-btn-review {
   background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
   color: #0d0d0d;
@@ -2353,11 +2366,14 @@ signUpForm.onsubmit = async function(e) {
       signUpMessage.textContent = '✅ Welcome to SFF Wheel Library! You can now browse and borrow wheels.';
       signUpMessage.style.display = 'block';
 
-      // Close modal after delay
+      // Close modal after delay and mark Sign Up button as done
       setTimeout(function() {
         signUpModal.classList.remove('active');
         signUpForm.reset();
         signUpMessage.style.display = 'none';
+        signUpBtn.classList.add('signed-up');
+        signUpBtn.textContent = 'Signed Up ✓';
+        signUpBtn.disabled = true;
       }, 2500);
     } else {
       throw new Error(result.error || 'Signup failed');
