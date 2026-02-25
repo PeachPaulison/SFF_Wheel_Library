@@ -45,8 +45,8 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 - **Sign up as a member** to contribute or borrow wheels
 - **Contribute your own wheels** to the library
 - **Submit wheel reviews** with ratings and experience notes
-- Browse wheel photos, bearing info, and lender details
-- Works as a **PWA** — add it to your home screen like a real app
+- **Browse wheel photos**, bearing info, and lender details
+- **Works as a PWA** — add it to your home screen like a real app
 
 ---
 
@@ -61,7 +61,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 
 ## 🧪 Want to Help Me Test?
 
-I'd *LOVE* testers! I **need** testers. Wash your hands. Push the buttons.
+I'd *LOVE* testers! I **need** testers. Wash your hands. Push the buttons. Don't lick anything.
 
 ### Things to Try:
 - **Sign up** as a member (you need to be in the Members list first — if you're having an issuemessage me!)
@@ -79,7 +79,7 @@ I'd *LOVE* testers! I **need** testers. Wash your hands. Push the buttons.
 - Ideas
 - Vibes
 
-If something is just not right, or can be done better, let me know. You won't hurt my feelings — but it is **NOT baby deer hunting season** either.
+If something is just not right, or can be done better, let me know. You won't hurt my feelings.
 This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum, and vibes.
 
 ---
@@ -96,15 +96,15 @@ This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum,
 ---
 
 ## 🛠️ Nerd Stuff (If You Care)
-- Built as a static HTML/CSS/JS PWA — no frameworks, no build tools
-- Deployed via **GitHub Pages** (auto-deploys from `main`)
-- Service worker for offline caching
+- **Built as a static HTML/CSS/JS PWA** — no frameworks, no build tools (I need a laptop)
+- **Deployed via GitHub Pages** (auto-deploys from `main`)
+- **Service worker** for offline caching
 - **Live inventory** synced from Google Sheets (read-only CSV endpoint)
 - **Apps Script backend** handles checkouts, contributions, sign-ups, and reviews
 - **Member verification** against the Members sheet — phone normalization handles multiple formats
 - **System accounts** (MAINTENANCE, LIBRARY, ADMIN) bypass member verification for ops use
-- Dynamic wheel ID generation: W001, W002, W003...
-- Designed on an iPhone with Koder like a complete gremlin *(ancient laptop, ancient editors)*
+- **Dynamic wheel ID generation:** W001, W002, W003...
+- **Designed on an iPhone/iPad with Koder** like a complete gremlin *(ancient laptop, ancient editors)*
 
 ---
 
@@ -136,7 +136,7 @@ This app includes **Eruda** for on-device debugging:
 - That floating button in the bottom-right corner? That's it.
 - Tap it to access Console, Network, and Storage tabs
 - Great for catching errors on mobile
-- **Temporary** — gone before the official community launch
+- **Temporary** — gone when I'm done working on the app
 
 *(If you're seeing weird errors, screenshot them and send them my way! Extra credit if you draw a little smiley face on the screenshot.)*
 
@@ -144,7 +144,7 @@ This app includes **Eruda** for on-device debugging:
 
 ## 💌 Contact
 Message in the **SFF WhatsApp group**
-Or telepathically (results may vary)
+Or **telepathically** (results may vary)
 
 ---
 
