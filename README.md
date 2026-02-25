@@ -16,7 +16,7 @@ This is a **Progressive Web App (PWA)** — install it fresh from the link below
 ---
 
 <p align="center">
-  <img src="wheel_library_banner.gif" alt="Wheel Library Banner" width="100%">
+  <img src="wheel_library_banner.svg" alt="Wheel Library Banner" width="100%">
 </p>
 
 # 🛼 WHEEL LIBRARY (Beta… like REALLY beta)
