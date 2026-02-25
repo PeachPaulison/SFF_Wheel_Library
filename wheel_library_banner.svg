@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" overflow="hidden">
+  <defs>
+
+    <!-- Neon glow filters -->
+    <filter id="fp" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="fb" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="fl" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="fpu" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="fo" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Subtle dot grid -->
+    <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="0.8" fill="#9b30ff" opacity="0.2"/>
+    </pattern>
+
+    <!-- Clip to viewport so rolling wheel is hidden at edges -->
+    <clipPath id="vp">
+      <rect width="600" height="380"/>
+    </clipPath>
+
+    <style>
+      /* Neon flicker on WHEEL text */
+      @keyframes flicker {
+        0%,19%,21%,23%,25%,54%,56%,100% { opacity: 1; }
+        20%,24%,55% { opacity: 0.25; }
+      }
+      /* Glow pulse animations per color */
+      @keyframes gpink {
+        0%,100% { filter: url(#fp); }
+        50%      { filter: url(#fp) drop-shadow(0 0 18px #ff1493); }
+      }
+      @keyframes gblue {
+        0%,100% { filter: url(#fb); }
+        50%      { filter: url(#fb) drop-shadow(0 0 18px #00bfff); }
+      }
+      @keyframes glime {
+        0%,100% { filter: url(#fl); }
+        50%      { filter: url(#fl) drop-shadow(0 0 14px #bfff00); }
+      }
+      /* Border breathe */
+      @keyframes bpulse {
+        0%,100% { opacity: 0.5; }
+        50%      { opacity: 1; }
+      }
+      /* Wheel rolls left to right */
+      @keyframes roll {
+        0%   { transform: translateX(-75px); }
+        100% { transform: translateX(675px); }
+      }
+      /* Spokes spin */
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      /* Stars twinkle in/out */
+      @keyframes twinkle {
+        0%,100% { opacity: 0;   transform: scale(0.3); }
+        50%      { opacity: 1;   transform: scale(1);   }
+      }
+
+      .tw { animation: gpink 2.5s ease-in-out infinite,
+                        flicker 6s infinite; }
+      .tl { animation: gblue 2.5s ease-in-out 0.4s infinite; }
+      .tb { animation: glime 2s ease-in-out infinite; }
+      .br { animation: bpulse 3s ease-in-out infinite; }
+      .wg { animation: roll 3.5s linear infinite; }
+      .sp { animation: spin 0.65s linear infinite;
+            transform-box: fill-box;
+            transform-origin: center; }
+      .s1 { animation: twinkle 1.8s ease-in-out infinite; }
+      .s2 { animation: twinkle 2.3s ease-in-out 0.6s infinite; }
+      .s3 { animation: twinkle 1.5s ease-in-out 1.1s infinite; }
+      .s4 { animation: twinkle 2.0s ease-in-out 0.3s infinite; }
+      .s5 { animation: twinkle 2.6s ease-in-out 0.9s infinite; }
+    </style>
+  </defs>
+
+  <!-- ── Background ── -->
+  <rect width="600" height="380" fill="#0d0d0d"/>
+  <rect width="600" height="380" fill="url(#dots)"/>
+
+  <!-- ── Pulsing neon border ── -->
+  <rect class="br" x="6" y="6" width="588" height="368" rx="10"
+        fill="none" stroke="#9b30ff" stroke-width="2" filter="url(#fpu)"/>
+
+  <!-- ── Corner brackets (neon pink) ── -->
+  <polyline points="6,48 6,6 48,6"   fill="none" stroke="#ff1493" stroke-width="3" filter="url(#fp)"/>
+  <polyline points="552,6 594,6 594,48"   fill="none" stroke="#ff1493" stroke-width="3" filter="url(#fp)"/>
+  <polyline points="6,332 6,374 48,374"   fill="none" stroke="#ff1493" stroke-width="3" filter="url(#fp)"/>
+  <polyline points="552,374 594,374 594,332" fill="none" stroke="#ff1493" stroke-width="3" filter="url(#fp)"/>
+
+  <!-- ── Scattered sparkle stars ── -->
+  <text class="s1" x="62"  y="72"  font-size="16" fill="#ffd700" text-anchor="middle">✦</text>
+  <text class="s2" x="536" y="84"  font-size="12" fill="#00bfff" text-anchor="middle">✦</text>
+  <text class="s3" x="80"  y="298" font-size="10" fill="#bfff00" text-anchor="middle">✦</text>
+  <text class="s4" x="522" y="282" font-size="14" fill="#ff1493" text-anchor="middle">✦</text>
+  <text class="s5" x="300" y="44"  font-size="9"  fill="#9b30ff" text-anchor="middle">✦</text>
+
+  <!-- ── WHEEL — neon pink, flickers ── -->
+  <text class="tw"
+        x="300" y="150"
+        text-anchor="middle"
+        font-family="Impact, 'Arial Black', sans-serif"
+        font-size="110" letter-spacing="10"
+        fill="#ff1493">WHEEL</text>
+
+  <!-- ── LIBRARY — neon blue, pulses ── -->
+  <text class="tl"
+        x="300" y="238"
+        text-anchor="middle"
+        font-family="Impact, 'Arial Black', sans-serif"
+        font-size="90" letter-spacing="6"
+        fill="#00bfff">LIBRARY</text>
+
+  <!-- ── ( BETA AF ) — neon lime ── -->
+  <text class="tb"
+        x="300" y="277"
+        text-anchor="middle"
+        font-family="'Arial Black', Impact, sans-serif"
+        font-size="23" letter-spacing="5"
+        fill="#bfff00">( BETA AF )</text>
+
+  <!-- ── Divider ── -->
+  <line x1="50" y1="295" x2="550" y2="295"
+        stroke="#9b30ff" stroke-width="1" opacity="0.5" filter="url(#fpu)"/>
+
+  <!-- ── Tagline ── -->
+  <text x="300" y="318"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12" letter-spacing="2.5"
+        fill="#ffd700">A BABY APP THAT&#39;S STILL LEARNING TO ROLL</text>
+
+  <!-- ── Rolling wheel (clipped to viewport) ── -->
+  <g clip-path="url(#vp)">
+    <g class="wg">
+      <!-- Rim -->
+      <circle cx="35" cy="356" r="20"
+              fill="none" stroke="#ff6f00" stroke-width="3" filter="url(#fo)"/>
+      <!-- Spinning spokes -->
+      <g class="sp">
+        <line x1="35"  y1="336" x2="35"  y2="376" stroke="#ff6f00" stroke-width="2.5"/>
+        <line x1="15"  y1="356" x2="55"  y2="356" stroke="#ff6f00" stroke-width="2.5"/>
+        <line x1="20.9" y1="341.9" x2="49.1" y2="370.1" stroke="#ff6f00" stroke-width="2"/>
+        <line x1="49.1" y1="341.9" x2="20.9" y2="370.1" stroke="#ff6f00" stroke-width="2"/>
+      </g>
+      <!-- Hub -->
+      <circle cx="35" cy="356" r="4" fill="#ff6f00" filter="url(#fo)"/>
+    </g>
+  </g>
+
+</svg>
