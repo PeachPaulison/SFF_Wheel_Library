@@ -643,6 +643,13 @@ h1{
   color: rgba(255,255,255,.80);
 }
 
+.matches-empty--no-results{
+  background: rgba(255,20,147,.12);
+  border-color: rgba(255,20,147,.55);
+  color: #ff69b4;
+  text-shadow: 0 0 8px rgba(255,20,147,.6);
+}
+
 .wheel-card{
   background: rgba(255,255,255,.08);
   border-color: rgba(255,255,255,.16);
@@ -1752,7 +1759,7 @@ h1{
 
       if (matches.length === 0) {
         matchesDiv.innerHTML = `
-          <div class="matches-empty">
+          <div class="matches-empty matches-empty--no-results">
             No wheels match that combo and are free to borrow right now. Try relaxing one of the filters.
           </div>
         `;
