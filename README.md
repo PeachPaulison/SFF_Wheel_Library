@@ -88,7 +88,7 @@ This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum,
 - Cache can be sticky (hence the "delete and reinstall" dance for older installs)
 - Google Sheets data might take a second to load on first visit
 - Wheel images are tracked but not yet displayed inline in the browse interface
-- That floating button in the corner? That's **Eruda** — my mobile debugging tool. It'll vanish before the real launch.
+- That floating button in the corner? That's **Eruda** — my mobile debugging tool. If you want to check out the console, you can try it. It'll vanish before the real launch.
 - To contribute or borrow, you must be in the Members sheet — message me to get added if you couldn't sign up!
 
 *These will all get fixed as we go. Rome wasn't debugged in a day.*
@@ -104,7 +104,7 @@ This whole thing is made of duct tape, unicorn kisses, expired Fruit Stripe gum,
 - **Member verification** against the Members sheet — phone normalization handles multiple formats
 - **System accounts** (MAINTENANCE, LIBRARY, ADMIN) bypass member verification for ops use
 - **Dynamic wheel ID generation:** W001, W002, W003...
-- **Designed on an iPhone/iPad with Koder** like a complete gremlin *(ancient laptop, ancient editors)*
+- **Designed on an iPhone/iPad with Koder** like a complete gremlin *(Completed on iOS!)*
 
 ---
 
