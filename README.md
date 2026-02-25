@@ -64,7 +64,7 @@ If you have thoughts, ideas, questions, concerns, compliments, complaints, or co
 I'd *LOVE* testers! I **need** testers. Wash your hands. Push the buttons. Don't lick anything.
 
 ### Things to Try:
-- **Sign up** as a member (you need to be in the Members list first — if you're having an issuemessage me!)
+- **Sign up** as a member (you need to be in the Members list first — if you're having an issue message me!)
 - **Browse and filter** wheels
 - **Check out a wheel** — does the status update? Does it feel right?
 - **Contribute wheels** to the library (brand dropdown + name suggestions are new!)
