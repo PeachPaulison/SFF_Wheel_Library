@@ -1343,12 +1343,17 @@ h1{
             </div>
 
             <div class="form-group">
-              <label for="durometer">Durometer (Hardness) *</label>
-              <select id="durometer" name="durometer" required>
-                <option value="">-- Select hardness --</option>
-                <option value="88A-92A (softer)">88A-92A (softer)</option>
-                <option value="93A-96A (mid)">93A-96A (mid)</option>
-                <option value="97A-103A (hard)">97A-103A (hard)</option>
+              <label for="duroNumber">Durometer Number (e.g. 97A) *</label>
+              <input type="text" id="duroNumber" name="durometer_number" placeholder="e.g. 97A" required>
+            </div>
+
+            <div class="form-group">
+              <label for="durometer">Durometer Category *</label>
+              <select id="durometer" name="durometer_category" required>
+                <option value="">-- Select category --</option>
+                <option value="88A–92A">Soft (88A–92A)</option>
+                <option value="93A–96A">Mid (93A–96A)</option>
+                <option value="97A–103A">Hard (97A–103A)</option>
               </select>
             </div>
 
@@ -2237,7 +2242,8 @@ addWheelsForm.onsubmit = async function(e) {
       brand: document.getElementById('brand').value,
       image_url: document.getElementById('imageUrl').value,
       wheel_size: document.getElementById('wheelSize').value,
-      durometer: document.getElementById('durometer').value,
+      durometer_number: document.getElementById('duroNumber').value,
+      durometer_category: document.getElementById('durometer').value,
       material: document.getElementById('material').value,
       best_for: Array.from(document.querySelectorAll('input[name="best_for"]:checked')).map(cb => cb.value).join(', '),
       bearings_included: bearingsIncluded ? 'Yes' : 'No',
