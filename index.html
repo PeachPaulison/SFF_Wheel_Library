@@ -1343,8 +1343,32 @@ h1{
             </div>
 
             <div class="form-group">
-              <label for="duroNumber">Durometer Number (e.g. 97A) *</label>
-              <input type="text" id="duroNumber" name="durometer_number" placeholder="e.g. 97A" required>
+              <label for="duroNumber">Durometer Number *</label>
+              <select id="duroNumber" name="durometer_number" required>
+                <option value="">-- Select hardness --</option>
+                <optgroup label="Soft (88A–92A)">
+                  <option value="88A">88A</option>
+                  <option value="89A">89A</option>
+                  <option value="90A">90A</option>
+                  <option value="91A">91A</option>
+                  <option value="92A">92A</option>
+                </optgroup>
+                <optgroup label="Mid (93A–96A)">
+                  <option value="93A">93A</option>
+                  <option value="94A">94A</option>
+                  <option value="95A">95A</option>
+                  <option value="96A">96A</option>
+                </optgroup>
+                <optgroup label="Hard (97A–103A)">
+                  <option value="97A">97A</option>
+                  <option value="98A">98A</option>
+                  <option value="99A">99A</option>
+                  <option value="100A">100A</option>
+                  <option value="101A">101A</option>
+                  <option value="102A">102A</option>
+                  <option value="103A">103A</option>
+                </optgroup>
+              </select>
             </div>
 
             <div class="form-group">
@@ -1641,6 +1665,14 @@ h1{
         const obj = {};
         headers.forEach((h, i) => (obj[h] = row[i] || ""));
 
+        const duroCategory = obj.durometer_category || (function() {
+          const n = parseInt(obj.durometer_number);
+          if (n >= 88 && n <= 92) return "88A\u201392A";
+          if (n >= 93 && n <= 96) return "93A\u201396A";
+          if (n >= 97 && n <= 103) return "97A\u2013103A";
+          return "";
+        })();
+
         return {
           id: obj.wheel_id,
           name: obj.wheel_name,
@@ -1648,7 +1680,7 @@ h1{
           imageUrl: obj.image_url || "",
           size: obj.wheel_size,
           material: obj.wheel_material,
-          duroRange: obj.durometer_category,
+          duroRange: duroCategory,
           bestFor: obj.best_for ? obj.best_for.split(",").map((s) => s.trim()) : [],
           status: obj.status ? String(obj.status).toLowerCase() : "available",
           lenderId: obj.lender_id || "",
@@ -2172,6 +2204,16 @@ const closeAddWheelsModal = document.getElementById('closeAddWheelsModal');
 const cancelAddWheelsBtn = document.getElementById('cancelAddWheelsBtn');
 const addWheelsForm = document.getElementById('addWheelsForm');
 const addWheelsMessage = document.getElementById('addWheelsMessage');
+
+// Auto-map durometer number to category
+document.getElementById('duroNumber').addEventListener('change', function() {
+  const num = parseInt(this.value);
+  const catSelect = document.getElementById('durometer');
+  if (num >= 88 && num <= 92) catSelect.value = '88A\u201392A';
+  else if (num >= 93 && num <= 96) catSelect.value = '93A\u201396A';
+  else if (num >= 97 && num <= 103) catSelect.value = '97A\u2013103A';
+  else catSelect.value = '';
+});
 
 // Open modal
 setTimeout(function() {
