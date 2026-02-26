@@ -189,7 +189,7 @@ function handleReviewSubmission(sheet, data) {
 function handleAddWheelSubmission(sheet, data) {
   try {
     // Validate required fields
-    const requiredFields = ['lender_display_name', 'wheel_name', 'brand', 'wheel_size', 'durometer', 'material'];
+    const requiredFields = ['lender_display_name', 'wheel_name', 'brand', 'wheel_size', 'durometer_number', 'durometer_category', 'material'];
     for (const field of requiredFields) {
       if (!data[field]) {
         throw new Error(`Missing required field: ${field}`);
@@ -241,7 +241,8 @@ function handleAddWheelSubmission(sheet, data) {
     rowData[headers.indexOf('brand')] = data.brand;
     rowData[headers.indexOf('wheel_size')] = data.wheel_size;
     rowData[headers.indexOf('wheel_material')] = data.material;
-    rowData[headers.indexOf('durometer_category')] = data.durometer;
+    rowData[headers.indexOf('durometer_number')] = data.durometer_number;
+    rowData[headers.indexOf('durometer_category')] = data.durometer_category;
     rowData[headers.indexOf('best_for')] = bestFor;
     rowData[headers.indexOf('status')] = 'available';
     rowData[headers.indexOf('lender_id')] = lenderId;
